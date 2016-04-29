@@ -1,12 +1,11 @@
 package Pojo;
 
-import org.springframework.data.annotation.Id;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentGroup {
-    @Id
+
+
     private String id;
     private String name;
     private String description;

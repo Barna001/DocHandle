@@ -1,11 +1,6 @@
 package Pojo;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document
 public class Access {
-    @Id
     private String id;
     private PermissionSubject who;//todo index
     private Pojo.Document what;

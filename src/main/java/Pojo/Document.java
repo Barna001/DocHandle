@@ -1,21 +1,16 @@
 package Pojo;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@org.springframework.data.mongodb.core.mapping.Document
+
 public class Document {
-    @Id
     private String id;
     private String name;
     private String content;
     private LocalDateTime creationDate;
     private LocalDateTime modificationDate;
-    @DBRef
     private User owner;
     private List<DocumentGroup> containingGroups;
 
