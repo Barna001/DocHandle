@@ -9,19 +9,22 @@ import java.util.List;
 @DiscriminatorValue("U")
 public class User extends PermissionSubject {
 
+    @OneToMany(mappedBy="owner")
+    private List<Document> ownDocuments;
     private UserRoleEnum role;
 
-    @ManyToMany(mappedBy = "users")
-    private List<UserGroup> groups;
+    @JoinTable(name = "group_contains_user",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<UserGroup> groups=new ArrayList<>();
 
     public User() {
-        this.groups = new ArrayList<>();
     }
 
     public User(String name, UserRoleEnum role) {
         this.name=name;
         this.role = role;
-        this.groups = new ArrayList<>();
     }
 
     public UserRoleEnum getRole() {

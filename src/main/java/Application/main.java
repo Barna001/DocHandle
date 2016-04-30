@@ -1,15 +1,14 @@
 package Application;
 
-import Pojo.User;
-import Pojo.UserGroup;
-import Pojo.UserRoleEnum;
+import Pojo.*;
+import Pojo.Access;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
+import javax.sound.midi.Soundbank;
 import javax.sound.midi.SysexMessage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Barna on 2016.04.28..
@@ -22,15 +21,21 @@ public class main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
         EntityManager em = emf.createEntityManager();
 
-        Query delete = em.createNamedQuery("delete from User");
-        delete.executeUpdate();
-        Query delete1 = em.createNamedQuery("delete from UserGroup");
-        delete1.executeUpdate();
-        Query delete2=em.createNamedQuery("delete from PermissionSubject");
-        delete2.executeUpdate();
+        deleteAll(em);
 
         group.getUsers().add(me);
         em.persist(group);
+
+        Document document=new Document("doksi","tartalom",me);
+        em.persist(document);
+
+        Document document1 = new Document("doksikakakkak","eze",me);
+        em.persist(document1);
+
+        Access access=new Access(me,document,AccessTypeEnum.DELETE,200);
+        em.persist(access);
+        Access access1=new Access(me,document1,AccessTypeEnum.DENY,1000);
+        em.persist(access1);
         em.flush();
 
         String idGroup=group.getId();
@@ -44,8 +49,33 @@ public class main {
         User meGet=get.getUsers().get(0);
         System.out.println("EZ az ember aki bennvan: "+ meGet);
 
+        TypedQuery<Access> query1 = em.createQuery("select a from Access a where a.who=:userId",Access.class).setParameter("userId",meGet.getId());
+        List<Access> getDocumentsForUser= query1.getResultList();
+        StringBuilder sb = new StringBuilder();
+        for (Access a : getDocumentsForUser) {
+            sb.append(a.getWhat()).append("\n");
+        }
+        System.out.println("Ezekhez a doksikhoz fér hozzá:\n"+sb.toString());
+
         em.close();
         emf.close();
         System.in.read();
+    }
+
+    private static void deleteAll(EntityManager em) {
+        Query delete = em.createNamedQuery("delete from User");
+        delete.executeUpdate();
+        Query delete1 = em.createNamedQuery("delete from UserGroup");
+        delete1.executeUpdate();
+        Query delete2=em.createNamedQuery("delete from PermissionSubject");
+        delete2.executeUpdate();
+        Query delete3=em.createNamedQuery("delete from Document");
+        delete3.executeUpdate();
+        Query delete4=em.createNamedQuery("delete from DocumentGroup");
+        delete4.executeUpdate();
+        Query delete5=em.createNamedQuery("delete from Access");
+        delete5.executeUpdate();
+
+
     }
 }
