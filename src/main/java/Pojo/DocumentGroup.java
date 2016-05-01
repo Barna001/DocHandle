@@ -8,6 +8,7 @@ import java.util.List;
 public class DocumentGroup {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String name;
     private String description;

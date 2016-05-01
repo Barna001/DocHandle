@@ -1,13 +1,7 @@
 package Pojo;
 
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-
 import javax.persistence.*;
-import javax.persistence.criteria.FetchParent;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Document {
@@ -22,14 +16,19 @@ public class Document {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner")
     private User owner;
 
-    @ManyToMany(mappedBy = "documents")
-    private List<DocumentGroup> containingGroups;
+    @JoinTable(name = "group_contains_document",
+            joinColumns = @JoinColumn(name = "document_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.MERGE})
+    private List<DocumentGroup> containingGroups = new ArrayList<>();
 
     public Document() {
-        this.containingGroups = new ArrayList<>();
+        this.creationDate = new Date();
+        this.modificationDate = this.creationDate;
     }
 
     public Document(String name, String content, User owner) {
@@ -37,12 +36,75 @@ public class Document {
         this.name = name;
         this.content = content;
         this.creationDate = new Date();
+        this.modificationDate = this.creationDate;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
         this.modificationDate = new Date();
-        this.containingGroups = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.modificationDate = new Date();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+        this.modificationDate = new Date();
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+        this.modificationDate = new Date();
+    }
+
+    public List<DocumentGroup> getContainingGroups() {
+        return Collections.unmodifiableList(containingGroups);
+    }
+
+    public boolean addDocumentGroup(DocumentGroup group) {
+        this.modificationDate = new Date();
+        return this.containingGroups.add(group);
+    }
+
+    public boolean removeDocumentGroup(DocumentGroup group){
+        this.modificationDate=new Date();
+        return this.containingGroups.remove(group);
+    }
+
+    public void setContainingGroups(List<DocumentGroup> containingGroups) {
+        this.containingGroups = containingGroups;
+        this.modificationDate = new Date();
     }
 
     @Override
-    public String toString(){
-        return "Id:"+id+" name:"+name;
+    public String toString() {
+        return "Id:" + id + " name:" + name;
     }
+
 }

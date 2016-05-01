@@ -9,14 +9,15 @@ import java.util.List;
 @DiscriminatorValue("U")
 public class User extends PermissionSubject {
 
-    @OneToMany(mappedBy="owner")
-    private List<Document> ownDocuments;
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},mappedBy="owner",fetch = FetchType.LAZY)
+    private List<Document> ownDocuments=new ArrayList<>();
+
     private UserRoleEnum role;
 
     @JoinTable(name = "group_contains_user",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<UserGroup> groups=new ArrayList<>();
 
     public User() {
@@ -41,6 +42,14 @@ public class User extends PermissionSubject {
 
     public void setGroups(List<UserGroup> groups) {
         this.groups = groups;
+    }
+
+    public List<Document> getOwnDocuments() {
+        return ownDocuments;
+    }
+
+    public void setOwnDocuments(List<Document> ownDocuments) {
+        this.ownDocuments = ownDocuments;
     }
 
     @Override

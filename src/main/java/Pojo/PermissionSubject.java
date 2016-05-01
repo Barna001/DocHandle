@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="Subject_type")
 @Table
-public class PermissionSubject {
+public abstract class PermissionSubject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

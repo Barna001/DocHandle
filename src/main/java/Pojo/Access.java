@@ -9,10 +9,10 @@ public class Access {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private PermissionSubject who;//todo index
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Pojo.Document what;
     private AccessTypeEnum type;
     private long priority;
