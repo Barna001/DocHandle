@@ -16,14 +16,14 @@ public class Document {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
     private User owner;
 
     @JoinTable(name = "group_contains_document",
             joinColumns = @JoinColumn(name = "document_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     private List<DocumentGroup> containingGroups = new ArrayList<>();
 
     public Document() {
@@ -83,17 +83,20 @@ public class Document {
         this.modificationDate = new Date();
     }
 
+    //we return an unmodifiableList to prevent changes without updating the modification date
     public List<DocumentGroup> getContainingGroups() {
         return Collections.unmodifiableList(containingGroups);
     }
 
+    //methods below is created because this way we can maintain modification date
+    //(JPA does not allows any other type than Collection, List... etc. so no wrapper class or observablecollections allowed)
     public boolean addDocumentGroup(DocumentGroup group) {
         this.modificationDate = new Date();
         return this.containingGroups.add(group);
     }
 
-    public boolean removeDocumentGroup(DocumentGroup group){
-        this.modificationDate=new Date();
+    public boolean removeDocumentGroup(DocumentGroup group) {
+        this.modificationDate = new Date();
         return this.containingGroups.remove(group);
     }
 

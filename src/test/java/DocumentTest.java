@@ -149,18 +149,18 @@ public class DocumentTest {
         em.flush();
         User dbOwner = em.createQuery("select u from User u", User.class).getSingleResult();
         DocumentGroup dbGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
-        Assert.assertEquals("deleteDocumentButOwnerAndDocumentGroupExists",dbOwner.getName());
-        Assert.assertEquals("deleteDocumentButOwnerAndDocumentGroupExists",dbGroup.getName());
+        Assert.assertEquals("deleteDocumentButOwnerAndDocumentGroupExists", dbOwner.getName());
+        Assert.assertEquals("deleteDocumentButOwnerAndDocumentGroupExists", dbGroup.getName());
     }
 
     @Test
     public void testModificationDateEqualsCreationDateAfterConstruct() {
         Document document = new Document("document", "content", null);
-        Assert.assertEquals(document.getCreationDate().toString(),document.getModificationDate().toString());
+        Assert.assertEquals(document.getCreationDate().toString(), document.getModificationDate().toString());
     }
 
     @Test
-    public void testModificationDateIsDifferentFromCreationDateAfterModif(){
+    public void testModificationDateIsDifferentFromCreationDateAfterModif() {
         Document document = new Document("document", "content", null);
         try {
             Thread.sleep(2000);//this is important, because commands below run under 1 sec, and Date would be the same
@@ -168,15 +168,15 @@ public class DocumentTest {
             e.printStackTrace();
         }
         document.setName("newName");
-        Assert.assertNotEquals(document.getCreationDate().toString(),document.getModificationDate().toString());
-        Date prevModifDate=document.getModificationDate();
+        Assert.assertNotEquals(document.getCreationDate().toString(), document.getModificationDate().toString());
+        Date prevModifDate = document.getModificationDate();
         try {
             Thread.sleep(2000);//this is important, because commands below run under 1 sec, and Date would be the same
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         document.addDocumentGroup(new DocumentGroup());
-        Assert.assertNotEquals(prevModifDate.toString(),document.getModificationDate().toString());
+        Assert.assertNotEquals(prevModifDate.toString(), document.getModificationDate().toString());
     }
 
 }

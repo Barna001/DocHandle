@@ -111,7 +111,7 @@ public class UserTest {
         em.flush();
         UserGroup dbGroup = em.createQuery("select ug from UserGroup ug", UserGroup.class).getSingleResult();
         Document dbOwned = em.createQuery("select d from Document d", Document.class).getSingleResult();
-        Assert.assertEquals("deleteUserButGroupAndDocumentExists",dbGroup.getName());
-        Assert.assertEquals("deleteUserButGroupAndDocumentExists",dbOwned.getName());
+        Assert.assertEquals("deleteUserButGroupAndDocumentExists", dbGroup.getName());
+        Assert.assertEquals("deleteUserButGroupAndDocumentExists", dbOwned.getName());
     }
 }

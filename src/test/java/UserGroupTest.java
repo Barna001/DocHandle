@@ -54,6 +54,7 @@ public class UserGroupTest {
         em.persist(userGroup);
         em.flush();
         UserGroup dbUserGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
+        Assert.assertEquals(1, dbUserGroup.getUsers().size());
         Assert.assertEquals("Barna", dbUserGroup.getUsers().get(0).getName());
         Assert.assertEquals(UserRoleEnum.SUPER_ADMIN, dbUserGroup.getUsers().get(0).getRole());
     }
