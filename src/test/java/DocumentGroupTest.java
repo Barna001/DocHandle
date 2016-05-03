@@ -7,6 +7,7 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,6 @@ public class DocumentGroupTest {
         Assert.assertEquals("groupPersist", dbDocGroup.getName());
         Assert.assertEquals("descPersist", dbDocGroup.getDescription());
     }
-    //todo tesztelni azt, ha már van document perzisztálva, és azzal akarunk groupot csinálni
 
     @Test
     public void testPersistCascadeDocument() {
@@ -75,6 +75,23 @@ public class DocumentGroupTest {
         DocumentGroup documentContainingGroup = dbDocGroup.getDocuments().get(0).getContainingGroups().get(0);
         Assert.assertEquals(1, documentContainingGroup.getDocuments().size());
         Assert.assertEquals("groupPersist", documentContainingGroup.getName());
+    }
+
+    @Test
+    public void testDocumentAlreadyPersistedAndItIsPutInNewGroup() {
+        Document doc = new Document("docName", "docCont", null);
+        em.persist(doc);
+        em.flush();
+
+        DocumentGroup group = new DocumentGroup("docGroup", "docDescr");
+        group.getDocuments().add(doc);
+        em.persist(group);
+        em.flush();
+
+        DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
+        Document dbDoc = em.createQuery("select d from Document d", Document.class).getSingleResult();
+        Assert.assertEquals("docName", dbDocGroup.getDocuments().get(0).getName());
+        Assert.assertEquals("docGroup", dbDoc.getContainingGroups().get(0).getName());
     }
 
 }

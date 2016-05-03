@@ -1,6 +1,4 @@
-import Pojo.User;
-import Pojo.UserGroup;
-import Pojo.UserRoleEnum;
+import Pojo.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +66,26 @@ public class UserGroupTest {
         em.persist(userGroup);
         em.flush();
         UserGroup dbUserGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
-        Assert.assertEquals("groupPersist", dbUserGroup.getUsers().get(0).getGroups().get(0).getName());
+        List<UserGroup> usersGroups = dbUserGroup.getUsers().get(0).getGroups();
+        Assert.assertEquals(1, usersGroups.size());
+        Assert.assertEquals("groupPersist", usersGroups.get(0).getName());
+    }
+
+    @Test
+    public void testUserAlreadyPersistedAndItIsPutInNewGroup() {
+        User user = new User("userName", UserRoleEnum.GUEST);
+        em.persist(user);
+        em.flush();
+
+        UserGroup group = new UserGroup("groupName");
+        group.getUsers().add(user);
+        em.persist(group);
+        em.flush();
+
+        UserGroup dbUserGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
+        User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
+        Assert.assertEquals("userName", dbUserGroup.getUsers().get(0).getName());
+        Assert.assertEquals("groupName", dbUser.getGroups().get(0).getName());
     }
 
 }
