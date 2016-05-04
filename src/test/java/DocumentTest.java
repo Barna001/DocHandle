@@ -25,6 +25,7 @@ public class DocumentTest {
     public void deleteAll() {
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from Document ").executeUpdate();
+        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup Group").executeUpdate();
     }
 

@@ -1,9 +1,13 @@
 package Pojo;
 
+import javax.management.InvalidAttributeValueException;
 import javax.persistence.*;
 
 @Entity
 public class Access {
+
+    public static final int minimumPriority = 1;
+    public static final int maximumPriority = 10000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,17 +18,22 @@ public class Access {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Pojo.Document what;
+
     private AccessTypeEnum type;
-    private long priority;
+    private int priority;
 
     public Access() {
     }
 
-    public Access(PermissionSubject who, Pojo.Document what, AccessTypeEnum type, long priority) {
+    public Access(PermissionSubject who, Document what, AccessTypeEnum type, int priority) throws InvalidAttributeValueException {
         this.who = who;
         this.what = what;
         this.type = type;
-        this.priority = priority;
+        if (priority < minimumPriority || priority > maximumPriority) {
+            throw new InvalidAttributeValueException("The priority must be at least 1 and maximum 10.000");
+        } else {
+            this.priority = priority;
+        }
     }
 
     public String getId() {
@@ -59,12 +68,16 @@ public class Access {
         this.type = type;
     }
 
-    public long getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(long priority) {
-        this.priority = priority;
+    public void setPriority(int priority) throws InvalidAttributeValueException {
+        if (priority < minimumPriority || priority > maximumPriority) {
+            throw new InvalidAttributeValueException("The priority must be at least 1 and maximum 10.000");
+        } else {
+            this.priority = priority;
+        }
     }
 
 }

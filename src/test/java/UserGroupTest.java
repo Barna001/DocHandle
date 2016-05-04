@@ -20,6 +20,7 @@ public class UserGroupTest {
     @Before
     public void deleteAll() {
         em.createQuery("delete from User").executeUpdate();
+        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
     }
 

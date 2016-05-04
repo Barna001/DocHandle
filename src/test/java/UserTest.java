@@ -26,6 +26,7 @@ public class UserTest {
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
         em.createQuery("delete from Document ").executeUpdate();
+        em.createQuery("delete from PermissionSubject").executeUpdate();
     }
 
     @Test

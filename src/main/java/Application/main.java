@@ -3,18 +3,16 @@ package Application;
 import Pojo.*;
 import Pojo.Access;
 
+import javax.management.InvalidAttributeValueException;
 import javax.persistence.*;
-import javax.sound.midi.Soundbank;
-import javax.sound.midi.SysexMessage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Barna on 2016.04.28..
  */
 public class main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InvalidAttributeValueException {
         User me = new User("Barna", UserRoleEnum.SUPER_ADMIN);
         UserGroup group = new UserGroup();
 

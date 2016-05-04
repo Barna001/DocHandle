@@ -22,6 +22,7 @@ public class DocumentGroupTest {
     @Before
     public void deleteAll() {
         em.createQuery("delete from Document ").executeUpdate();
+        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup ").executeUpdate();
     }
 

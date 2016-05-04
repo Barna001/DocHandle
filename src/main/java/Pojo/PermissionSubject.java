@@ -3,9 +3,8 @@ package Pojo;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="Subject_type")
-@Table
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "subject_type")
 public abstract class PermissionSubject {
 
     @Id
@@ -13,11 +12,11 @@ public abstract class PermissionSubject {
     protected String id;
     protected String name;
 
-    public PermissionSubject(){
+    public PermissionSubject() {
     }
 
-    public PermissionSubject(String name){
-        this.name=name;
+    public PermissionSubject(String name) {
+        this.name = name;
     }
 
     public String getId() {
