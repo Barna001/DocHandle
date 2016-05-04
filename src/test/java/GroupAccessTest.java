@@ -79,9 +79,8 @@ public class GroupAccessTest {
     @Test(expected = InvalidAttributeValueException.class)
     public void testMoreThanMaximumPrio() throws InvalidAttributeValueException {
         User user = new User("Barna", UserRoleEnum.ADMIN);
-        Document doc = new Document("Doc", "content", null);
-        Access access = new Access(user, doc, AccessTypeEnum.DELETE, 10001);
+        DocumentGroup doc = new DocumentGroup("Doc", "content");
+        GroupAccess access = new GroupAccess(user, doc, GroupAccessTypeEnum.DENY, 10001);
     }
-
 
 }
