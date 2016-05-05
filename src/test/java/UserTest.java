@@ -21,7 +21,7 @@ public class UserTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory("mongo_pu");
+        emf = Persistence.createEntityManagerFactory("test_pu");
     }
 
     @Before
@@ -127,8 +127,6 @@ public class UserTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        //MongoUtils.dropDatabase(emf, "mongo_pu");
         emf.close();
     }
-
 }
