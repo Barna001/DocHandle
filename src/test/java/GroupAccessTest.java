@@ -1,7 +1,5 @@
 import Pojo.*;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityManager;
@@ -13,15 +11,22 @@ import javax.persistence.Persistence;
  */
 public class GroupAccessTest {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
-    EntityManager em = emf.createEntityManager();
+    private static EntityManagerFactory emf;
+    private EntityManager em;
+
+    @BeforeClass
+    public static void SetUpBeforeClass() throws Exception {
+        emf = Persistence.createEntityManagerFactory("mongo_pu");
+    }
 
     @Before
     public void deleteAll() {
+        em = emf.createEntityManager();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
         em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup").executeUpdate();
+        em.createQuery("delete from GroupAccess ").executeUpdate();
     }
 
     @Test
@@ -41,7 +46,7 @@ public class GroupAccessTest {
         DocumentGroup group = new DocumentGroup("DocGroup", "content");
         em.persist(user);
         em.persist(group);
-        em.flush();
+
         GroupAccess access = new GroupAccess(user, group, GroupAccessTypeEnum.ADD_DOCUMENT, 1000);
         em.persist(access);
 
@@ -58,7 +63,7 @@ public class GroupAccessTest {
         DocumentGroup docGroup = new DocumentGroup("DocG", "cont");
         em.persist(group);
         em.persist(docGroup);
-        em.flush();
+
         GroupAccess access = new GroupAccess(group, docGroup, GroupAccessTypeEnum.DENY, 1);
         em.persist(access);
 
@@ -81,6 +86,17 @@ public class GroupAccessTest {
         User user = new User("Barna", UserRoleEnum.ADMIN);
         DocumentGroup doc = new DocumentGroup("Doc", "content");
         GroupAccess access = new GroupAccess(user, doc, GroupAccessTypeEnum.DENY, 10001);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        em.close();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        //MongoUtils.dropDatabase(emf, "mongo_pu");
+        emf.close();
     }
 
 }

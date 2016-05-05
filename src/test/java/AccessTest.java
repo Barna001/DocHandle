@@ -1,7 +1,5 @@
 import Pojo.*;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityManager;
@@ -12,11 +10,18 @@ import javax.persistence.Persistence;
  * Created by Barna on 2016.05.04..
  */
 public class AccessTest {
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
-    EntityManager em = emf.createEntityManager();
+
+    private static EntityManagerFactory emf;
+    private EntityManager em;
+
+    @BeforeClass
+    public static void SetUpBeforeClass() throws Exception {
+        emf = Persistence.createEntityManagerFactory("mongo_pu");
+    }
 
     @Before
     public void deleteAll() {
+        em = emf.createEntityManager();
         em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
@@ -40,7 +45,7 @@ public class AccessTest {
         Document doc = new Document("Doc", "content", null);
         em.persist(user);
         em.persist(doc);
-        em.flush();
+
         Access access = new Access(user, doc, AccessTypeEnum.DELETE, 1000);
         em.persist(access);
 
@@ -57,7 +62,7 @@ public class AccessTest {
         Document doc = new Document("Doc", "content", null);
         em.persist(group);
         em.persist(doc);
-        em.flush();
+
         Access access = new Access(group, doc, AccessTypeEnum.DENY, 1);
         em.persist(access);
 
@@ -80,5 +85,16 @@ public class AccessTest {
         User user = new User("Barna", UserRoleEnum.ADMIN);
         Document doc = new Document("Doc", "content", null);
         Access access = new Access(user, doc, AccessTypeEnum.DELETE, 10001);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        em.close();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        //MongoUtils.dropDatabase(emf, "mongo_pu");
+        emf.close();
     }
 }

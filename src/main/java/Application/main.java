@@ -34,7 +34,7 @@ public class main {
         em.persist(access);
         Access access1=new Access(me,document1,AccessTypeEnum.DENY,1000);
         em.persist(access1);
-        em.flush();
+
 
         String idGroup=group.getId();
 

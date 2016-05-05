@@ -26,6 +26,9 @@ public class Document {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     private List<DocumentGroup> containingGroups = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "rootDocument", fetch = FetchType.LAZY)
+    private List<File> files = new ArrayList<>();
+
     public Document() {
         this.creationDate = new Date();
         this.modificationDate = this.creationDate;

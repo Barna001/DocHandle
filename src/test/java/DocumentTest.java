@@ -2,9 +2,7 @@ import Pojo.Document;
 import Pojo.DocumentGroup;
 import Pojo.User;
 import Pojo.UserRoleEnum;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,11 +16,17 @@ import java.util.Date;
  */
 public class DocumentTest {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
-    EntityManager em = emf.createEntityManager();
+    private static EntityManagerFactory emf;
+    private EntityManager em;
+
+    @BeforeClass
+    public static void SetUpBeforeClass() throws Exception {
+        emf = Persistence.createEntityManagerFactory("mongo_pu");
+    }
 
     @Before
     public void deleteAll() {
+        em = emf.createEntityManager();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from PermissionSubject").executeUpdate();
@@ -51,7 +55,7 @@ public class DocumentTest {
         document.setContainingGroups(groups);
         document.setOwner(new User("userName", UserRoleEnum.GUEST));
         em.persist(document);
-        em.flush();
+
         Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals("document", dbDocument.getName());
         Assert.assertEquals("content", dbDocument.getContent());
@@ -66,7 +70,7 @@ public class DocumentTest {
         document.setContainingGroups(groups);
         document.setOwner(new User("userName", UserRoleEnum.GUEST));
         em.persist(document);
-        em.flush();
+
         Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals(1, dbDocument.getContainingGroups().size());
         Assert.assertEquals("newGroup", dbDocument.getContainingGroups().get(0).getName());
@@ -82,7 +86,7 @@ public class DocumentTest {
         document.setContainingGroups(groups);
         document.setOwner(new User("userName", UserRoleEnum.GUEST));
         em.persist(document);
-        em.flush();
+
         Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals("content", dbDocument.getContainingGroups().get(0).getDocuments().get(0).getContent());
         Assert.assertEquals("content", dbDocument.getOwner().getOwnDocuments().get(0).getContent());
@@ -131,9 +135,9 @@ public class DocumentTest {
     public void deleteDocument() {
         Document document = new Document("document", "content", new User());
         em.persist(document);
-        em.flush();
+
         em.remove(document);
-        em.flush();
+
         Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
     }
 
@@ -145,9 +149,9 @@ public class DocumentTest {
         document.setContainingGroups(groups);
         document.setOwner(new User("deleteDocumentButOwnerAndDocumentGroupExists", UserRoleEnum.GUEST));
         em.persist(document);
-        em.flush();
+
         em.remove(document);
-        em.flush();
+
         User dbOwner = em.createQuery("select u from User u", User.class).getSingleResult();
         DocumentGroup dbGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals("deleteDocumentButOwnerAndDocumentGroupExists", dbOwner.getName());
@@ -178,6 +182,17 @@ public class DocumentTest {
         }
         document.addDocumentGroup(new DocumentGroup());
         Assert.assertNotEquals(prevModifDate.toString(), document.getModificationDate().toString());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        em.close();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        //MongoUtils.dropDatabase(emf, "mongo_pu");
+        emf.close();
     }
 
 }
