@@ -88,9 +88,9 @@ public class UserTest {
         user.getOwnDocuments().add(document);
         em.persist(user);
 
-        List<Document> dbDocument = em.createQuery("select u from User u", User.class).getSingleResult().getOwnDocuments();
-        Assert.assertEquals(1, dbDocument.size());
-        Assert.assertEquals("Barna", dbDocument.get(0).getOwner().getName());
+        List<Document> dbDocuments = em.createQuery("select u from User u", User.class).getSingleResult().getOwnDocuments();
+        Assert.assertEquals(1, dbDocuments.size());
+        Assert.assertEquals("Barna", dbDocuments.get(0).getOwner().getName());
     }
 
     @Test(expected = NoResultException.class)

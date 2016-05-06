@@ -1,5 +1,7 @@
 package Pojo;
 
+import com.impetus.kundera.index.IndexingException;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -13,11 +15,11 @@ public class File {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rootDocument", nullable = false)
+    @JoinColumn(name = "rootDocument")
     private Document rootDocument;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootFile", fetch = FetchType.LAZY)
-    private Map<Integer, FileVersion> versionsMap = new HashMap<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootFile",fetch = FetchType.LAZY)
+    private List<FileVersion> versionsList=new ArrayList<>();
 
     public File() {
     }
@@ -51,15 +53,27 @@ public class File {
         this.rootDocument = rootDocument;
     }
 
-    public Map<Integer, FileVersion> getVersionsMap() {
-        return versionsMap;
-    }
-
-    public void setVersionsMap(Map<Integer, FileVersion> versionsMap) {
-        this.versionsMap = versionsMap;
+    public int getLatestNumber(){
+        return versionsList.size()-1;
     }
 
     public FileVersion getLatestVersion() {
-        return this.versionsMap.get(Collections.max(this.versionsMap.keySet()));
+        return versionsList.get(getLatestNumber());
+    }
+
+    public FileVersion getFileVersionByNumber(int versionNumber) {
+        if (versionsList.size()>versionNumber) {
+            return versionsList.get(versionNumber);
+        } else {
+            throw new IndexingException("No such version exists from the file");
+        }
+    }
+
+    public List<FileVersion> getVersionsList() {
+        return versionsList;
+    }
+
+    public void setVersionsList(List<FileVersion> versionsList) {
+        this.versionsList = versionsList;
     }
 }
