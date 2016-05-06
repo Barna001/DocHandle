@@ -4,10 +4,7 @@ import Pojo.User;
 import Pojo.UserRoleEnum;
 import org.junit.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -182,6 +179,12 @@ public class DocumentTest {
         }
         document.addDocumentGroup(new DocumentGroup());
         Assert.assertNotEquals(prevModifDate.toString(), document.getModificationDate().toString());
+    }
+
+    @Test
+    //todo test to create files too
+    public void testCascadeWithFiles(){
+
     }
 
     @After

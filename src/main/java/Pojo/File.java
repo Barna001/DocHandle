@@ -15,11 +15,12 @@ public class File {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rootDocument")
+    @JoinColumn(name = "rootDocument",nullable = false)
     private Document rootDocument;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootFile",fetch = FetchType.LAZY)
-    private List<FileVersion> versionsList=new ArrayList<>();
+    private int latestVersionNumber;
+    private String latestVersionId;
+
 
     public File() {
     }
@@ -29,6 +30,21 @@ public class File {
         this.rootDocument = root;
     }
 
+    public String getLatestVersionId() {
+        return latestVersionId;
+    }
+
+    public void setLatestVersionId(String latestVersionId) {
+        this.latestVersionId = latestVersionId;
+    }
+
+    public int getLatestVersionNumber() {
+        return latestVersionNumber;
+    }
+
+    public void setLatestVersionNumber(int latestVersionNumber) {
+        this.latestVersionNumber = latestVersionNumber;
+    }
     public String getId() {
         return id;
     }
@@ -53,27 +69,4 @@ public class File {
         this.rootDocument = rootDocument;
     }
 
-    public int getLatestNumber(){
-        return versionsList.size()-1;
-    }
-
-    public FileVersion getLatestVersion() {
-        return versionsList.get(getLatestNumber());
-    }
-
-    public FileVersion getFileVersionByNumber(int versionNumber) {
-        if (versionsList.size()>versionNumber) {
-            return versionsList.get(versionNumber);
-        } else {
-            throw new IndexingException("No such version exists from the file");
-        }
-    }
-
-    public List<FileVersion> getVersionsList() {
-        return versionsList;
-    }
-
-    public void setVersionsList(List<FileVersion> versionsList) {
-        this.versionsList = versionsList;
-    }
 }
