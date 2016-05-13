@@ -1,4 +1,4 @@
-import DatabaseQueries.FileVersionUtil;
+import databaseQuerries.FileVersionUtil;
 import Pojo.Document;
 import Pojo.File;
 import Pojo.FileVersion;

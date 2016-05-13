@@ -1,12 +1,9 @@
-package DatabaseQueries;
+package databaseQuerries;
 
 import Pojo.File;
 import Pojo.FileVersion;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,21 +15,7 @@ import java.util.List;
  */
 public class FileVersionUtil {
 
-//    public static FileVersion getLatestVersionOfFile(String fileId, EntityManager em) {
-//        List<FileVersion> dbVersions = em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class).setParameter("id", fileId).getResultList();
-//
-//        FileVersion latest = dbVersions.get(0);
-//        for (FileVersion dbVersion : dbVersions) {
-//            if (dbVersion.getVersionNumber() > latest.getVersionNumber()) {
-//                latest = dbVersion;
-//            }
-//        }
-//        return latest;
-//    }
-
     public synchronized static File addVersionToFileAndPersistMerge(String fileId, FileVersion fileVersion, EntityManager em) {
-//        List<FileVersion> dbVersions = em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class).setParameter("id", fileId).getResultList();
-//        int calCulatedVersion = getNextVersionNumber(dbVersions);
         File dbFile = em.find(File.class, fileId);
         int calCulatedVersion = dbFile.getLatestVersionNumber() + 1;
         fileVersion.setVersionNumber(calCulatedVersion);
