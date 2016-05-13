@@ -4,27 +4,7 @@
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <body>
 
-<script>
-    var app = angular.module("myShoppingList", []);
-    app.controller("myCtrl", function($scope) {
-        $scope.products = ["Milk", "Bread", "Cheese"];
-        $scope.addItem = function () {
-            $scope.errortext = "";
-            if (!$scope.addMe) {return;}
-            if ($scope.products.indexOf($scope.addMe) == -1) {
-                $scope.products.push($scope.addMe);
-            } else {
-                $scope.errortext = "The item is already in your shopping list.";
-            }
-        }
-        $scope.removeItem = function (x) {
-            $scope.errortext = "";
-            $scope.products.splice(x, 1);
-        }
-    });
-</script>
-
-<div ng-app="myShoppingList" ng-cloak ng-controller="myCtrl" class="w3-card-2 w3-margin" style="max-width:400px;">
+<div ng-app="shoppingApp" ng-cloak ng-controller="shoppingController" class="w3-card-2 w3-margin" style="max-width:400px;">
     <header class="w3-container w3-light-grey w3-padding-hor-16">
         <h3>My Shopping List</h3>
     </header>
@@ -44,5 +24,7 @@
     </div>
 </div>
 
+<script src="js/shoppingList/shoppingApp.js"></script>
+<script src="js/shoppingList/shoppingController.js"></script>
 </body>
 </html>
