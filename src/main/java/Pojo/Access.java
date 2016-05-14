@@ -1,4 +1,4 @@
-package Pojo;
+package pojo;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.*;
@@ -17,7 +17,7 @@ public class Access {
     private PermissionSubject who;//todo index
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Pojo.Document what;
+    private pojo.Document what;
 
     private AccessTypeEnum type;
     private int priority;

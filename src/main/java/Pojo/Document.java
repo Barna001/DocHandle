@@ -1,4 +1,4 @@
-package Pojo;
+package pojo;
 
 import javax.persistence.*;
 import java.util.*;
@@ -24,10 +24,10 @@ public class Document {
             joinColumns = @JoinColumn(name = "document_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
-    private List<DocumentGroup> containingGroups = new ArrayList<>();
+    private List<DocumentGroup> containingGroups = new ArrayList<DocumentGroup>();
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "rootDocument", fetch = FetchType.LAZY)
-    private List<File> files = new ArrayList<>();
+    private List<File> files = new ArrayList<File>();
 
     public Document() {
         this.creationDate = new Date();

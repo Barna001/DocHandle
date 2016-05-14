@@ -1,7 +1,7 @@
-package Application;
+package application;
 
-import Pojo.*;
-import Pojo.Access;
+import pojo.*;
+import pojo.Access;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.*;

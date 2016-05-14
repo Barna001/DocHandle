@@ -1,9 +1,6 @@
-package Pojo;
-
-import com.impetus.kundera.index.IndexingException;
+package pojo;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 public class File {

@@ -1,4 +1,4 @@
-package Pojo;
+package pojo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 public class User extends PermissionSubject {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "owner", fetch = FetchType.LAZY)
-    private List<Document> ownDocuments = new ArrayList<>();
+    private List<Document> ownDocuments = new ArrayList<Document>();
 
     private UserRoleEnum role;
 
@@ -18,7 +18,7 @@ public class User extends PermissionSubject {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    private List<UserGroup> groups = new ArrayList<>();
+    private List<UserGroup> groups = new ArrayList<UserGroup>();
 
     public User() {
     }

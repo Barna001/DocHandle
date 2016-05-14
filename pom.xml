@@ -6,26 +6,19 @@
 
     <groupId>DocHandle</groupId>
     <artifactId>DocHandle</artifactId>
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <dependencies>
+    <name>DocHandle Maven Webapp</name>
 
-        <dependency>
-            <groupId>com.impetus.kundera.core</groupId>
-            <artifactId>kundera-core</artifactId>
-            <version>3.3</version>
-        </dependency>
+    <dependencies>
+        <!-- JPA for mongoDB = Kundera-->
+        <!--<dependency>-->
+            <!--<groupId>com.impetus.kundera.core</groupId>-->
+            <!--<artifactId>kundera-core</artifactId>-->
+            <!--<version>3.3</version>-->
+        <!--</dependency>-->
+
+
 
         <dependency>
             <groupId>com.impetus.kundera.client</groupId>
@@ -33,17 +26,19 @@
             <version>3.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
-        </dependency>
+        <!-- Kundera needs logger-->
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-api</artifactId>-->
+            <!--<version>1.7.5</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-log4j12</artifactId>-->
+            <!--<version>1.7.5</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.5</version>
-        </dependency>
+        <!-- For testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -51,7 +46,32 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- RESTful web service: Jersey -->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.jersey</groupId>-->
+            <!--<artifactId>jersey-servlet</artifactId>-->
+            <!--<version>1.17.1</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.jersey</groupId>-->
+            <!--<artifactId>jersey-json</artifactId>-->
+            <!--<version>1.17.1</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.glassfish.jersey.core</groupId>-->
+            <!--<artifactId>jersey-server</artifactId>-->
+            <!--<version>2.17</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.22</version>
+        </dependency>
+
     </dependencies>
 
-
+    <build>
+        <finalName>ngdemo</finalName>
+    </build>
 </project>

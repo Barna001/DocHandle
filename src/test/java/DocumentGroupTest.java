@@ -1,6 +1,6 @@
-import Pojo.Document;
-import Pojo.DocumentGroup;
 import org.junit.*;
+import pojo.Document;
+import pojo.DocumentGroup;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

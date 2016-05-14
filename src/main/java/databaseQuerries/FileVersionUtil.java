@@ -1,7 +1,7 @@
 package databaseQuerries;
 
-import Pojo.File;
-import Pojo.FileVersion;
+import pojo.File;
+import pojo.FileVersion;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;

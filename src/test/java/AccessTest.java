@@ -1,5 +1,5 @@
-import Pojo.*;
 import org.junit.*;
+import pojo.*;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityManager;

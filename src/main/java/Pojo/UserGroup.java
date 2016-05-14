@@ -1,4 +1,4 @@
-package Pojo;
+package pojo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class UserGroup extends PermissionSubject {
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<User>();
 
     public UserGroup() {
     }

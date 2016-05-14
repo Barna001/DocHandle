@@ -1,4 +1,4 @@
-package Pojo;
+package pojo;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.*;

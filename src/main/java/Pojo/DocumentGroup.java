@@ -1,4 +1,4 @@
-package Pojo;
+package pojo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ public class DocumentGroup {
     private List<Document> documents;
 
     public DocumentGroup() {
-        this.documents = new ArrayList<>();
+        this.documents = new ArrayList<Document>();
     }
 
     public DocumentGroup(String name, String description) {
         this.name = name;
         this.description = description;
-        this.documents = new ArrayList<>();
+        this.documents = new ArrayList<Document>();
     }
 
     public String getId() {

@@ -1,7 +1,7 @@
-import Pojo.User;
-import Pojo.UserGroup;
-import Pojo.UserRoleEnum;
 import org.junit.*;
+import pojo.User;
+import pojo.UserGroup;
+import pojo.UserRoleEnum;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

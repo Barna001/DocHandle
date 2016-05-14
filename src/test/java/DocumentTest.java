@@ -1,10 +1,13 @@
-import Pojo.Document;
-import Pojo.DocumentGroup;
-import Pojo.User;
-import Pojo.UserRoleEnum;
 import org.junit.*;
+import pojo.Document;
+import pojo.DocumentGroup;
+import pojo.User;
+import pojo.UserRoleEnum;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -183,7 +186,7 @@ public class DocumentTest {
 
     @Test
     //todo test to create files too
-    public void testCascadeWithFiles(){
+    public void testCascadeWithFiles() {
 
     }
 
