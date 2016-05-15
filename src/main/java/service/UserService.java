@@ -1,5 +1,6 @@
 package service;
 
+
 import pojo.User;
 
 import javax.persistence.EntityManager;
@@ -7,21 +8,42 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 
-/**
- * Created by Barna on 2016.05.13..
- */
-public final class UserService {
+public class UserService {
+
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
-    private static EntityManager em=emf.createEntityManager();
+    private static EntityManager em = emf.createEntityManager();
 
-    private UserService(){
+    public static User getDefaultUser() {
+        User user = new User();
+        user.setName("Barna");
+        return user;
     }
 
-    public User getUserById(String id){
-        return em.find(User.class,id);
+    public static User getUserById(String id) {
+        return em.find(User.class, id);
     }
 
-    public List<User> getAllUsers(){
-        return em.createQuery("select u from User u",User.class).getResultList();
+    public static List<User> getUserByName(String name) {
+        String query="select u from User u where u.name=:name";
+        return em.createQuery(query, User.class).setParameter("name", name).getResultList();
+    }
+
+    public static List<User> getAllUsers(){
+        String query="select u from User u";
+        return em.createQuery(query,User.class).getResultList();
+    }
+
+    public static void addUser(User user){
+        em.persist(user);
+    }
+
+    public static void deleteAll(){
+        String query="delete from User";
+        em.createQuery(query).executeUpdate();
+    }
+
+    public static void closeAll(){
+        em.close();
+        emf.close();
     }
 }

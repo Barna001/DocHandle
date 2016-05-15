@@ -19,6 +19,6 @@ app.run(function ($rootScope, $templateCache) {
 app.controller('MyCtrl1', ['$scope', 'UserFactory', function ($scope, UserFactory) {
     $scope.bla = 'bla from controller';
     UserFactory.get({}, function (userFactory) {
-        $scope.firstname = userFactory.firstName;
+        $scope.name = userFactory.name;
     })
 }]);

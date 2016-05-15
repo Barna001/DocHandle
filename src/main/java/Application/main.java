@@ -13,47 +13,49 @@ import java.util.List;
  */
 public class main {
     public static void main(String[] args) throws IOException, InvalidAttributeValueException {
-        User me = new User("Barna", UserRoleEnum.SUPER_ADMIN);
-        UserGroup group = new UserGroup();
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
         EntityManager em = emf.createEntityManager();
 
         deleteAll(em);
 
-        group.getUsers().add(me);
-        em.persist(group);
-
-        Document document=new Document("doksi","tartalom",me);
-        em.persist(document);
-
-        Document document1 = new Document("doksikakakkak","eze",me);
-        em.persist(document1);
-
-        Access access=new Access(me,document,AccessTypeEnum.DELETE,200);
-        em.persist(access);
-        Access access1=new Access(me,document1,AccessTypeEnum.DENY,1000);
-        em.persist(access1);
+        User me = new User("Barna", UserRoleEnum.SUPER_ADMIN);
+        em.persist(me);
 
 
-        String idGroup=group.getId();
-
-        em.clear();   //Clear cache before finding record
-
-        String findById = "Select g from UserGroup g where u.id=:id";
-        Query query = em.createQuery(findById);
-        query.setParameter("id", idGroup);
-        UserGroup get= (UserGroup) query.getSingleResult();
-        User meGet=get.getUsers().get(0);
-        System.out.println("EZ az ember aki bennvan: "+ meGet);
-
-        TypedQuery<Access> query1 = em.createQuery("select a from Access a where a.who=:userId",Access.class).setParameter("userId",meGet.getId());
-        List<Access> getDocumentsForUser= query1.getResultList();
-        StringBuilder sb = new StringBuilder();
-        for (Access a : getDocumentsForUser) {
-            sb.append(a.getWhat()).append("\n");
-        }
-        System.out.println("Ezekhez a doksikhoz fér hozzá:\n"+sb.toString());
+//        group.getUsers().add(me);
+//        em.persist(group);
+//
+//        Document document=new Document("doksi","tartalom",me);
+//        em.persist(document);
+//
+//        Document document1 = new Document("doksikakakkak","eze",me);
+//        em.persist(document1);
+//
+//        Access access=new Access(me,document,AccessTypeEnum.DELETE,200);
+//        em.persist(access);
+//        Access access1=new Access(me,document1,AccessTypeEnum.DENY,1000);
+//        em.persist(access1);
+//
+//
+//        String idGroup=group.getId();
+//
+//        em.clear();   //Clear cache before finding record
+//
+//        String findById = "Select g from UserGroup g where g.id=:id";
+//        Query query = em.createQuery(findById);
+//        query.setParameter("id", idGroup);
+//        UserGroup get= (UserGroup) query.getSingleResult();
+//        User meGet=get.getUsers().get(0);
+//        System.out.println("EZ az ember aki bennvan: "+ meGet);
+//
+//        TypedQuery<Access> query1 = em.createQuery("select a from Access a where a.who=:userId",Access.class).setParameter("userId",meGet.getId());
+//        List<Access> getDocumentsForUser= query1.getResultList();
+//        StringBuilder sb = new StringBuilder();
+//        for (Access a : getDocumentsForUser) {
+//            sb.append(a.getWhat()).append("\n");
+//        }
+//        System.out.println("Ezekhez a doksikhoz fér hozzá:\n"+sb.toString());
 
         em.close();
         emf.close();
@@ -73,7 +75,6 @@ public class main {
         delete4.executeUpdate();
         Query delete5=em.createNamedQuery("delete from Access");
         delete5.executeUpdate();
-
-
+        System.out.println("Deleted successfully");
     }
 }
