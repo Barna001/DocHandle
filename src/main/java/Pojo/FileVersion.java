@@ -1,23 +1,56 @@
-package Pojo;
+package pojo;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import javax.persistence.*;
 
-@org.springframework.data.mongodb.core.mapping.Document
+@Entity
 public class FileVersion {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
+
+    @Lob
+    private byte[] data;
+
+    private String rootFileId;
+
     private int versionNumber;
-    private byte data;
-    @DBRef
-    private File rootFile;
 
     public FileVersion() {
     }
 
-    public FileVersion(int versionNumber, byte data, File rootFile) {
-        this.versionNumber = versionNumber;
+    public FileVersion(byte[] data) {
         this.data = data;
-        this.rootFile = rootFile;
+    }
+
+    public String getRootFileId() {
+        return rootFileId;
+    }
+
+    public void setRootFileId(String rootFileId) {
+        this.rootFileId = rootFileId;
+    }
+
+    public int getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(int versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }

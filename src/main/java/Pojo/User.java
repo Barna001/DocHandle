@@ -1,29 +1,59 @@
-package Pojo;
+package pojo;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by BB on 2016.04.24..
- */
-@Document
-public class User extends PermissionSubject{
+@Entity
+@Table
+@DiscriminatorValue("USER")
+public class User extends PermissionSubject {
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Document> ownDocuments = new ArrayList<Document>();
+
     private UserRoleEnum role;
-    private List<UserGroup> groups;
+
+    @JoinTable(name = "group_contains_user",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<UserGroup> groups = new ArrayList<UserGroup>();
 
     public User() {
-        this.groups=new ArrayList<>();
     }
 
-    public User(String name, UserRoleEnum role){
-        super(name);
-        this.role=role;
-        this.groups=new ArrayList<>();
+    public User(String name, UserRoleEnum role) {
+        this.name = name;
+        this.role = role;
     }
 
-    protected void addGroup(UserGroup group){
-        this.groups.add(group);
+    public UserRoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(UserRoleEnum role) {
+        this.role = role;
+    }
+
+    public List<UserGroup> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<UserGroup> groups) {
+        this.groups = groups;
+    }
+
+    public List<Document> getOwnDocuments() {
+        return ownDocuments;
+    }
+
+    public void setOwnDocuments(List<Document> ownDocuments) {
+        this.ownDocuments = ownDocuments;
+    }
+
+    @Override
+    public String toString() {
+        return "Id:" + id + " name:" + name + " role:" + role;
     }
 }

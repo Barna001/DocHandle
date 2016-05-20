@@ -1,18 +1,37 @@
-package Pojo;
+package pojo;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.*;
 
-public class PermissionSubject {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "subject_type")
+public abstract class PermissionSubject {
+
     @Id
-    private String id;
-    private String name;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected String id;
+    protected String name;
 
-    public PermissionSubject(){
+    public PermissionSubject() {
     }
 
-    public PermissionSubject(String name){
-        this.name=name;
+    public PermissionSubject(String name) {
+        this.name = name;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
