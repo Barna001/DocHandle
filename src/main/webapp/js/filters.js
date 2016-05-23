@@ -2,7 +2,7 @@
 
 /* Filters */
 
-angular.module('ngdemo.filters', []).
+angular.module('docHandler.filters', []).
   filter('interpolate', ['version', function(version) {
     return function(text) {
       return String(text).replace(/\%VERSION\%/mg, version);
