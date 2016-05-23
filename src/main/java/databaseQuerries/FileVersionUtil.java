@@ -17,28 +17,15 @@ public class FileVersionUtil {
 
     public synchronized static File addVersionToFileAndPersistMerge(String fileId, FileVersion fileVersion, EntityManager em) {
         File dbFile = em.find(File.class, fileId);
-        int calCulatedVersion = dbFile.getLatestVersionNumber() + 1;
-        fileVersion.setVersionNumber(calCulatedVersion);
+        int calculatedVersion = dbFile.getLatestVersionNumber() + 1;
+        fileVersion.setVersionNumber(calculatedVersion);
         fileVersion.setRootFileId(fileId);
         em.persist(fileVersion);//todo lehet hogy már egy előre lemergelt-et kellene átadni, de az meg csak lógna magában
 
         dbFile.setLatestVersionId(fileVersion.getId());
-        dbFile.setLatestVersionNumber(calCulatedVersion);
+        dbFile.setLatestVersionNumber(calculatedVersion);
         em.merge(dbFile);//Here, this way the db remains in a consistent state
         return dbFile;
-    }
-
-    private static int getNextVersionNumber(List<FileVersion> dbVersions) {
-        int number = 1;//Default, this is the starting versionNumber, could be configurable
-        if (dbVersions != null && !dbVersions.isEmpty()) {
-            for (FileVersion dbVersion : dbVersions) {
-                if (dbVersion.getVersionNumber() > number) {
-                    number = dbVersion.getVersionNumber();
-                }
-            }
-            number++;//Give the next version number
-        }
-        return number;
     }
 
     public static byte[] createBinaryData(String locationPath) {

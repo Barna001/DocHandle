@@ -42,27 +42,42 @@ public class UserRestService {
     @Path("/all")
     public String getAllUsers() throws IOException {
         Object users = service.getAllUsers();
-        System.out.println("aha");
         return ow.writeValueAsString(users);
+    }
+
+    @GET
+    @Path("/usersGroups")
+    public String getUsersGroups(@QueryParam("id") String userId) throws IOException {
+        User user=service.getUserById(userId);
+        Object groups= user.getGroups();
+        return ow.writeValueAsString(groups);
+    }
+
+    @GET
+    @Path("/usersOwnDocuments")
+    public String getUsersDocuments(@QueryParam("id") String userId) throws IOException{
+        User user = service.getUserById(userId);
+        Object documents = user.getOwnDocuments();
+        return ow.writeValueAsString(documents);
     }
 
     @POST
     @Path("/new")
-    public void addNewUser(@QueryParam("name") String name){
-        User user=new User(name,null);
+    public void addNewUser(@QueryParam("name") String name) {
+        User user = new User(name, null);
         service.addUser(user);
     }
 
     @POST
-    @Path("/delete")
-    public void deleteAll(){
+    @Path("/deleteAll")
+    public void deleteAll() {
         service.deleteAll();
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped
     @POST
     @Path("/close")
-    public void closeConnections(){
+    public void closeConnections() {
         service.closeAll();
     }
 

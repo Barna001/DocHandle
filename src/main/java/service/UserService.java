@@ -1,7 +1,9 @@
 package service;
 
 
+import pojo.Document;
 import pojo.User;
+import pojo.UserGroup;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,25 +26,25 @@ public class UserService {
     }
 
     public static List<User> getUserByName(String name) {
-        String query="select u from User u where u.name=:name";
+        String query = "select u from User u where u.name=:name";
         return em.createQuery(query, User.class).setParameter("name", name).getResultList();
     }
 
-    public static List<User> getAllUsers(){
-        String query="select u from User u";
-        return em.createQuery(query,User.class).getResultList();
+    public static List<User> getAllUsers() {
+        String query = "select u from User u";
+        return em.createQuery(query, User.class).getResultList();
     }
 
-    public static void addUser(User user){
+    public static void addUser(User user) {
         em.persist(user);
     }
 
-    public static void deleteAll(){
-        String query="delete from User";
+    public static void deleteAll() {
+        String query = "delete from User";
         em.createQuery(query).executeUpdate();
     }
 
-    public static void closeAll(){
+    public static void closeAll() {
         em.close();
         emf.close();
     }
