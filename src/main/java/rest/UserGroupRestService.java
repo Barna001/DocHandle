@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by BB on 2016.05.22..
  */
-@Path("/users")
+@Path("/userGroups")
 @Produces(MediaType.APPLICATION_JSON)
 public class UserGroupRestService {
 
@@ -41,7 +41,7 @@ public class UserGroupRestService {
     }
 
     @GET
-    @Path("/allUsers")
+    @Path("/allUserGroups")
     public String getAllUserInGroup(@QueryParam("id") String id) throws IOException {
         UserGroup group = service.getUserGroupById(id);
         Object users = group.getUsers();
