@@ -1,17 +1,17 @@
 <div class="table-title">
-    <h3>Users List</h3>
+    <h3>UserGroups List</h3>
 </div>
 <table class="table-fill" ng-init="init()">
     <thead>
     <tr>
         <th class="text-left">Name</th>
-        <th class="text-left">Role</th>
+        <th class="text-left">Users in this group</th>
     </tr>
     </thead>
     <tbody class="table-hover">
-    <tr ng-repeat="x in users">
+    <tr ng-repeat="x in groups">
         <td class="text-left">{{ x.name }}</td>
-        <td class="text-left">{{ x.role }}</td>
+        <td class="text-left">{{ x.users.length }}</td>
     </tr>
     </tbody>
 </table>

@@ -14,15 +14,17 @@ services.factory('UserFactory', function ($resource) {
     })
 });
 
-services.factory('UserService',UserService)
+services.factory('UserService', UserService);
+services.factory('DocService', DocService);
+services.factory('FileService', FileService);
+services.factory('UserGroupService', UserGroupService);
 
-UserService.$inject = [ '$http', '$q' ];
 function UserService($http, $q) {
 
     var service = {
-        saveUser : saveUser,
-        getUser : getUser
-        //getUsers : getUsers,
+        saveUser: saveUser,
+        getUser: getUser,
+        getUsers: getUsers
         //updateUser : updateUser,
         //deleteUser: deleteUser,
         //getCurrentUser : getCurrentUser
@@ -32,9 +34,9 @@ function UserService($http, $q) {
 
     function saveUser(userName) {
         var deferred = $q.defer();
-        $http.post("rest/users/new", userName).success(function(data, status) {
+        $http.post("rest/users/new", userName).success(function (data, status) {
             deferred.resolve(data);
-        }).error(function(status) {
+        }).error(function (status) {
             deferred.reject(status);
         });
         return deferred.promise;
@@ -42,58 +44,101 @@ function UserService($http, $q) {
 
     function getUser(name) {
         var deferred = $q.defer();
-        $http.get("rest/users/userByName",{params:{name:name}}).success(function(data, status) {
+        $http.get("rest/users/userByName", {params: {name: name}}).success(function (data, status) {
             deferred.resolve(data);
-        }).error(function(data, status) {
+        }).error(function (data, status) {
             deferred.reject(status);
         });
         return deferred.promise;
     }
 
-    //function getUsers(){
-    //    var deferred = $q.defer();
-    //    $http.get("api/user").success(function(data, status) {
-    //        deferred.resolve(data);
-    //    }).error(function(data, status) {
-    //        deferred.reject(status);
-    //    });
-    //    return deferred.promise;
-    //}
-    //
-    //function updateUser(user) {
-    //    user.id = user.userId;
-    //    //must delete, because the PUT would not work
-    //    delete user['links'];
-    //    delete user['userId'];
-    //    delete user['password-re'];
-    //    var deferred = $q.defer();
-    //    $http.put("api/user/"+user.id, user).success(function(data, status) {
-    //        deferred.resolve(data);
-    //    }).error(function(data, status) {
-    //        deferred.reject(status);
-    //    });
-    //    return deferred.promise;
-    //
-    //}
-    //
-    //function getCurrentUser() {
-    //    var deferred = $q.defer();
-    //    $http.get("api/user/username").success(function(data, status) {
-    //        deferred.resolve(data);
-    //    }).error(function(status) {
-    //        deferred.reject(status);
-    //    });
-    //    return deferred.promise;
-    //}
-    //
-    //function deleteUser(id) {
-    //    var deferred = $q.defer();
-    //    $http.delete("api/user/"+id).success(function(data, status) {
-    //        deferred.resolve(data);
-    //    }).error(function(status) {
-    //        deferred.reject(status);
-    //    });
-    //    return deferred.promise;
-    //}
+    function getUsers() {
+        var deferred = $q.defer();
+        $http.get("rest/users/all").success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+};
 
+function DocService($http, $q) {
+
+    var service = {
+        saveDoc: saveDoc,
+        getDoc: getDoc,
+        getDocs: getDocs
+    };
+
+    return service;
+
+    function saveDoc(userName) {
+        var deferred = $q.defer();
+        $http.post("rest/documents/new", userName).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
+    function getDoc(name) {
+        var deferred = $q.defer();
+        $http.get("rest/documents/documentByName", {params: {name: name}}).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
+    function getDocs() {
+        var deferred = $q.defer();
+        $http.get("rest/documents/all").success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+};
+
+function FileService($http, $q) {
+
+    var service = {
+        getFiles: getFiles
+    };
+
+    return service;
+
+    function getFiles() {
+        var deferred = $q.defer();
+        $http.get("rest/files/all").success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
 }
+
+function UserGroupService($http, $q) {
+
+    var service = {
+        getUserGroups: getUGroups
+    };
+
+    return service;
+
+    function getUGroups() {
+        var deferred = $q.defer();
+        $http.get("rest/userGroups/all").success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+}
+

@@ -5,10 +5,6 @@
 
 var app = angular.module('docHandler.controllers', []);
 
-
-// Clear browser cache (in development mode)
-//
-// http://stackoverflow.com/questions/14718826/angularjs-disable-partial-caching-on-dev-machine
 app.run(function ($rootScope, $templateCache) {
     $rootScope.$on('$viewContentLoaded', function () {
         $templateCache.removeAll();
@@ -21,4 +17,72 @@ app.controller('MyCtrl1', ['$scope', 'UserFactory', function ($scope, UserFactor
     UserFactory.get({}, function (userFactory) {
         $scope.name = userFactory.name;
     })
+}]);
+
+app.controller('UserController', ['$scope', 'UserService', function ($scope, UserService) {
+    $scope.users = {};
+    $scope.error = "";
+
+    $scope.init = function () {
+        $scope.getUsers();
+    }
+
+    $scope.getUsers = function () {
+        UserService.getUsers().then(function (data) {
+            $scope.users = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+}]);
+
+app.controller('DocumentController', ['$scope', 'DocService', function ($scope, DocService) {
+    $scope.docs = {};
+    $scope.error = "";
+
+    $scope.init = function () {
+        $scope.getDocs();
+    }
+
+    $scope.getDocs = function () {
+        DocService.getDocs().then(function (data) {
+            $scope.docs = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+}]);
+
+app.controller('FileController', ['$scope', 'FileService', function ($scope, FileService) {
+    $scope.files = {};
+    $scope.error = "";
+
+    $scope.init = function () {
+        $scope.getFiles();
+    }
+
+    $scope.getFiles = function () {
+        FileService.getFiles().then(function (data) {
+            $scope.files = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+}]);
+
+app.controller('UserGroupController', ['$scope', 'UserGroupService', function ($scope, UserGroupService) {
+    $scope.groups = {};
+    $scope.error = "";
+
+    $scope.init = function () {
+        $scope.getGroups();
+    }
+
+    $scope.getGroups = function () {
+        UserGroupService.getUserGroups().then(function (data) {
+            $scope.groups = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
 }]);
