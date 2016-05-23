@@ -1,0 +1,24 @@
+<h1>Users List</h1>
+<hr />
+<div class="row-fluid" ng-hide='error==""'>
+    <div class="col-md-12">
+        <div class="alert alert-danger" role="alert">{{error}}</div>
+    </div>
+</div>
+<div class="panel-body">
+    <div>
+        <div class="row cardContainer">
+            <div class="col-md-9 col-md-offset-1">
+                <h3>Filter:</h3>
+                <input type="text" ng-model="nameText" />
+            </div>
+            <br /><br />
+            <div class="span3 card" ng-repeat="user in users | filter:{name:nameText} | orderBy:'name'">
+                <button  class="btn close cardClose" ng-click="deleteUser(user.userId)" >&times;</button>
+                <div class="cardHeader">{{user.name}}</div>
+                <div class="cardBody">{{user.role}}</div>
+                <a href="#/update/user/{{user.userId}}">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>

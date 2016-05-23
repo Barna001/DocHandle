@@ -1,30 +1,29 @@
 /* app css stylesheet */
-
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+.card {
+  background-color:#eeeeee;
+  border: 4px solid black;
+  height:90px;
+  width: 250px;
+  margin-bottom: 20px;
 }
 
-.menu:before {
-  content: "[";
+.cardHeader {
+  background-color: #ff5500;
+  font-size:15pt;
+  color:white;
+  padding:5px;
 }
 
-.menu:after {
-  content: "]";
+.cardClose {
+  color: white;
+  font-weight:bold;
+  margin-right:5px;
 }
 
-.menu > li {
-  display: inline;
+.cardContainer {
+  width:90%;
 }
 
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
+.cardBody {
+  padding-left: 5px;
 }
