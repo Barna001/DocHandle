@@ -1,17 +1,28 @@
 <div class="table-title">
     <h3>Users List</h3>
 </div>
-<table class="table-fill" ng-init="init()">
-    <thead>
-    <tr>
-        <th class="text-left">Name</th>
-        <th class="text-left">Role</th>
-    </tr>
-    </thead>
-    <tbody class="table-hover">
-    <tr ng-repeat="x in users">
-        <td class="text-left">{{ x.name }}</td>
-        <td class="text-left">{{ x.role }}</td>
-    </tr>
-    </tbody>
-</table>
+<div>
+    <table class="table-fill" ng-init="init()">
+        <thead>
+        <tr>
+            <th class="text-left">Name</th>
+            <th class="text-left">Role</th>
+        </tr>
+        </thead>
+        <tbody class="table-hover">
+        <tr ng-repeat="x in users">
+            <td class="text-left">{{ x.name }}</td>
+            <td class="text-left">{{ x.role }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-init="init()" align="center">
+    <div class="title"><h1>Name</h1></div>
+    <input type="text" ng-model="new.name">
+    <div class="title"><h1>Role</h1></div>
+    <select ng-model="new.role" ng-options="role for role in roles"/>
+    <br/><br/>
+    <!--I have no idea, why on earth it does not put new line-->
+    <input type="submit" class="button2" value="Save" ng-click="save()"/>
+</div>

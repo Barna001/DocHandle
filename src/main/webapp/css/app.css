@@ -7,6 +7,15 @@ body {
     font-weight: 400;
     text-rendering: optimizeLegibility;
 }
+.title h1 {
+    color: #fafafa;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Roboto", helvetica, arial, sans-serif;
+    text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+}
 
 div.table-title {
     display: block;
@@ -15,6 +24,7 @@ div.table-title {
     padding: 5px;
     width: 100%;
 }
+
 
 .table-title h3 {
     color: #fafafa;
@@ -146,6 +156,40 @@ td.text-right {
     width: 500px;
     text-align: center;
     margin: auto;
+}
+
+.button2 {
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    padding-right: 70px;
+    padding-left: 30px;
+    position: relative;
+    background-color: rgb(51, 204, 0);
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.5);
+    -ms-filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=1,Color=#ff123852,Positive=true)";
+    zoom: 1;
+    filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1, Color=#ff123852, Positive=true);
+
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+    -ms-filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=2,Color=#33000000,Positive=true)";
+    filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=2, Color=#33000000, Positive=true);
+}
+
+.button2:hover{
+    background-color: rgb(0, 102, 26);
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .button {

@@ -21,15 +21,37 @@ app.controller('MyCtrl1', ['$scope', 'UserFactory', function ($scope, UserFactor
 
 app.controller('UserController', ['$scope', 'UserService', function ($scope, UserService) {
     $scope.users = {};
+    $scope.roles = {};
     $scope.error = "";
+    $scope.new = {
+        name: "",
+        role: ""
+    };
 
     $scope.init = function () {
         $scope.getUsers();
+        $scope.getRoles();
     }
 
     $scope.getUsers = function () {
         UserService.getUsers().then(function (data) {
             $scope.users = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+
+    $scope.getRoles = function () {
+        UserService.getRoles().then(function (data) {
+            $scope.roles = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+
+    $scope.save = function () {
+        UserService.save($scope.new).then(function () {
+
         }, function (response) {
             $scope.error = response;
         })

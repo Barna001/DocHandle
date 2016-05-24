@@ -24,7 +24,8 @@ function UserService($http, $q) {
     var service = {
         saveUser: saveUser,
         getUser: getUser,
-        getUsers: getUsers
+        getUsers: getUsers,
+        getRoles: getRoles
         //updateUser : updateUser,
         //deleteUser: deleteUser,
         //getCurrentUser : getCurrentUser
@@ -32,9 +33,9 @@ function UserService($http, $q) {
 
     return service;
 
-    function saveUser(userName) {
+    function saveUser(user) {
         var deferred = $q.defer();
-        $http.post("rest/users/new", userName).success(function (data, status) {
+        $http.post("rest/users/new", user).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -55,6 +56,16 @@ function UserService($http, $q) {
     function getUsers() {
         var deferred = $q.defer();
         $http.get("rest/users/all").success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
+    function getRoles() {
+        var deferred = $q.defer();
+        $http.get("rest/users/roles").success(function (data, status) {
             deferred.resolve(data);
         }).error(function (data, status) {
             deferred.reject(status);
