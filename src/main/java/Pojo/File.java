@@ -1,5 +1,7 @@
 package pojo;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class File {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rootDocument",nullable = false)
+    @JsonIgnore
     private Document rootDocument;
 
     private int latestVersionNumber;

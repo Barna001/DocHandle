@@ -15,3 +15,12 @@
     </tr>
     </tbody>
 </table>
+<div ng-init="init()" align="center">
+    <div class="title"><h1>Name</h1></div>
+    <input type="text" ng-model="new.name">
+    <div class="title"><h1>RootDocument</h1></div>
+    <select ng-model="new.rootDocument" ng-options="doc.name for doc in docs"/>
+    <br/><br/>
+    <!--I have no idea, why on earth it does not put new line-->
+    <input type="submit" class="button2" value="Save" ng-click="save()"/>
+</div>

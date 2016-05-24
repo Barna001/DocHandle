@@ -25,7 +25,7 @@ app.controller('UserController', ['$scope', 'UserService', function ($scope, Use
     $scope.error = "";
     $scope.new = {
         id: null,
-        name: "",
+        name: null,
         ownDocuments: [],
         role: null,
         groups: []
@@ -78,12 +78,21 @@ app.controller('DocumentController', ['$scope', 'DocService', function ($scope, 
     }
 }]);
 
-app.controller('FileController', ['$scope', 'FileService', function ($scope, FileService) {
+app.controller('FileController', ['$scope', 'FileService', 'DocService', function ($scope, FileService, DocService) {
     $scope.files = {};
+    $scope.docs = {};
     $scope.error = "";
+    $scope.new = {
+        id: null,
+        name: null,
+        rootDocument: null,
+        latestVersionNumber: 0,
+        latestVersionId: null
+    }
 
     $scope.init = function () {
         $scope.getFiles();
+        $scope.getDocs();
     }
 
     $scope.getFiles = function () {
@@ -92,6 +101,22 @@ app.controller('FileController', ['$scope', 'FileService', function ($scope, Fil
         }, function (response) {
             $scope.error = response;
         })
+    }
+
+    $scope.getDocs = function () {
+        DocService.getDocs().then(function (data) {
+            $scope.docs = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+
+    $scope.save = function () {
+        FileService.saveFile($scope.new).then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
     }
 }]);
 

@@ -118,7 +118,8 @@ function DocService($http, $q) {
 function FileService($http, $q) {
 
     var service = {
-        getFiles: getFiles
+        getFiles: getFiles,
+        saveFile: saveFile
     };
 
     return service;
@@ -128,6 +129,16 @@ function FileService($http, $q) {
         $http.get("rest/files/all").success(function (data, status) {
             deferred.resolve(data);
         }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
+    function saveFile(file) {
+        var deferred = $q.defer();
+        $http.post("rest/files/new", file).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (status) {
             deferred.reject(status);
         });
         return deferred.promise;

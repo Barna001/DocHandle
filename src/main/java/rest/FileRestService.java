@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 @Path("/files")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class FileRestService {
 
     private static FileService service = new FileService();
@@ -34,6 +35,9 @@ public class FileRestService {
         return ow.writeValueAsString(files);
     }
 
+    //todo valahogy meg kellene oldani, hogy a fájlnak a rootdoksijának az id-ját megkapjuk,
+    //todo a többi részét ne(ha a fájlok rész is benne van, végtelen körkörös hivatkozás lesz :/
+    //todo első körben lehetne egy ilyen endpoint is, ami a fájl id-jához lekéri a doksit, csak ez minden fájlhoz meghívódik majd
     @GET
     @Path("/all")
     public String getAllFiles() throws IOException {
@@ -57,9 +61,8 @@ public class FileRestService {
 
     @POST
     @Path("/new")
-    public void addNewFile(@QueryParam("name") String name) {
-        File doc = new File(name, null);
-        service.addFile(doc);
+    public void addNewFile(File file) {
+        service.addFile(file);
     }
 
     @POST
