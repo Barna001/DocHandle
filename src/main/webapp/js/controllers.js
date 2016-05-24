@@ -24,8 +24,11 @@ app.controller('UserController', ['$scope', 'UserService', function ($scope, Use
     $scope.roles = {};
     $scope.error = "";
     $scope.new = {
+        id: null,
         name: "",
-        role: ""
+        ownDocuments: [],
+        role: null,
+        groups: []
     };
 
     $scope.init = function () {
@@ -50,11 +53,11 @@ app.controller('UserController', ['$scope', 'UserService', function ($scope, Use
     }
 
     $scope.save = function () {
-        UserService.save($scope.new).then(function () {
-
+        UserService.saveUser($scope.new).then(function () {
         }, function (response) {
             $scope.error = response;
-        })
+        });
+        $scope.init();
     }
 }]);
 

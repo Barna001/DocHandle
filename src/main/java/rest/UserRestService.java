@@ -74,10 +74,7 @@ public class UserRestService {
 
     @POST
     @Path("/new")
-    @Consumes(MediaType.APPLICATION_JSON)
     public void addNewUser(User user) {
-        System.out.println(user);
-//        User user = new User(name, role);
         service.addUser(user);
     }
 
