@@ -15,7 +15,7 @@
     </tr>
     </tbody>
 </table>
-<div ng-init="init()" align="center">
+<div ng-init="initDocs()" align="center">
     <div class="title"><h1>Name</h1></div>
     <input type="text" ng-model="new.name">
     <div class="title"><h1>RootDocument</h1></div>
@@ -23,4 +23,9 @@
     <br/><br/>
     <!--I have no idea, why on earth it does not put new line-->
     <input type="submit" class="button2" value="Save" ng-click="save()"/>
+    <div class="title"><h1>FileVersionMessage</h1></div>
+    <input type="text" ng-model="versionMessage">
+    <div class="title"><h1>RootFileOfVersion</h1></div>
+    <select ng-model="newVersion.rootFileId" ng-options="file.id as file.name for file in files"/>
+    <input type="submit" class="button2" value="SaveVersion" ng-click="saveVersion()"/>
 </div>

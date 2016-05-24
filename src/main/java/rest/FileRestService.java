@@ -9,6 +9,7 @@ import service.FileService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by BB on 2016.05.22..
@@ -35,9 +36,8 @@ public class FileRestService {
         return ow.writeValueAsString(files);
     }
 
-    //todo valahogy meg kellene oldani, hogy a fájlnak a rootdoksijának az id-ját megkapjuk,
-    //todo a többi részét ne(ha a fájlok rész is benne van, végtelen körkörös hivatkozás lesz :/
-    //todo első körben lehetne egy ilyen endpoint is, ami a fájl id-jához lekéri a doksit, csak ez minden fájlhoz meghívódik majd
+    //// TODO: 2016.05.24. kézzel össze kellene fűzni a json-t, és azt visszaadni, abba bele lehet tenni a rootdoc nevét és id-ját,
+    //// egyenlőre csak ki van kapcsolva a jsonösítés a rootDocument változóra
     @GET
     @Path("/all")
     public String getAllFiles() throws IOException {
@@ -73,10 +73,35 @@ public class FileRestService {
     }
 
     @POST
-    @Path("/addNewVersion")
-    public void addNewVersionToFile(@QueryParam("fileId") String fileId, FileVersion version) {
-        service.addVersionToFile(fileId, version);
+    @Path("/testAddNewVersion")
+    public void addNewFileVersion() {
+        try {
+            //have to use a present file
+            FileVersion fv = new FileVersion("5744356a817aefdee5b38fab", "Sárga bögre, görbe bögre, felakasztották a szögre".getBytes("UTF-8"));
+            service.addVersionToFile(fv);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    @POST
+    @Path("/addNewVersion")
+    public void addNewVersionToFile(FileVersion version) {
+        service.addVersionToFile(version);
+    }
+
+    @POST
+    @Path("/addNewVersionString/{str}")
+    public void addNewVersionToFileString(FileVersion version, @PathParam("str") String str) {
+        try {
+            version.setData(str.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        service.addVersionToFile(version);
+    }
+
 
     @POST
     @Path("/deleteAll")

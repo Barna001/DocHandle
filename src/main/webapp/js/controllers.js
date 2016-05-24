@@ -82,6 +82,15 @@ app.controller('FileController', ['$scope', 'FileService', 'DocService', functio
     $scope.files = {};
     $scope.docs = {};
     $scope.error = "";
+    $scope.chosen = null;
+
+    $scope.versionMessage = "";
+    $scope.newVersion = {
+        id: "",
+        data: null,
+        rootFileId: null,
+        versionNumber: 0
+    }
     $scope.new = {
         id: null,
         name: null,
@@ -90,9 +99,12 @@ app.controller('FileController', ['$scope', 'FileService', 'DocService', functio
         latestVersionId: null
     }
 
+    $scope.initDocs = function () {
+        $scope.getDocs();
+    }
+
     $scope.init = function () {
         $scope.getFiles();
-        $scope.getDocs();
     }
 
     $scope.getFiles = function () {
@@ -113,6 +125,14 @@ app.controller('FileController', ['$scope', 'FileService', 'DocService', functio
 
     $scope.save = function () {
         FileService.saveFile($scope.new).then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
+    }
+
+    $scope.saveVersion = function () {
+        FileService.addNewVersionToFile($scope.newVersion, $scope.versionMessage).then(function () {
         }, function (response) {
             $scope.error = response;
         });

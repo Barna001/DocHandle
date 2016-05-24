@@ -36,11 +36,12 @@ public class FileService {
 
     public static void addFileWithVersion(File file, FileVersion version) {
         em.persist(file);
-        FileVersionUtil.addVersionToFileAndPersistMerge(file.getId(), version, em);
+        version.setRootFileId(file.getId());
+        FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
     }
 
-    public static void addVersionToFile(String fileId, FileVersion version) {
-        FileVersionUtil.addVersionToFileAndPersistMerge(fileId, version, em);
+    public static void addVersionToFile(FileVersion version) {
+        FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
     }
 
     public static FileVersion getLatestVersion(String fileId) {

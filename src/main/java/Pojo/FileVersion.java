@@ -18,8 +18,9 @@ public class FileVersion {
     public FileVersion() {
     }
 
-    public FileVersion(byte[] data) {
+    public FileVersion(String rootFileId, byte[] data) {
         this.data = data;
+        this.rootFileId = rootFileId;
     }
 
     public String getRootFileId() {

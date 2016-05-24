@@ -15,17 +15,21 @@ import java.util.List;
  */
 public class FileVersionUtil {
 
-    public synchronized static File addVersionToFileAndPersistMerge(String fileId, FileVersion fileVersion, EntityManager em) {
-        File dbFile = em.find(File.class, fileId);
-        int calculatedVersion = dbFile.getLatestVersionNumber() + 1;
-        fileVersion.setVersionNumber(calculatedVersion);
-        fileVersion.setRootFileId(fileId);
-        em.persist(fileVersion);//todo lehet hogy már egy előre lemergelt-et kellene átadni, de az meg csak lógna magában
+    // FileVersion must have
+    public synchronized static File addVersionToFileAndPersistMerge(FileVersion fileVersion, EntityManager em) {
+        if (fileVersion.getRootFileId() != null) {
+            File dbFile = em.find(File.class, fileVersion.getRootFileId());
+            int calculatedVersion = dbFile.getLatestVersionNumber() + 1;
+            fileVersion.setVersionNumber(calculatedVersion);
+            em.persist(fileVersion);//todo lehet hogy már egy előre lemergelt-et kellene átadni, de az meg csak lógna magában
 
-        dbFile.setLatestVersionId(fileVersion.getId());
-        dbFile.setLatestVersionNumber(calculatedVersion);
-        em.merge(dbFile);//Here, this way the db remains in a consistent state
-        return dbFile;
+            dbFile.setLatestVersionId(fileVersion.getId());
+            dbFile.setLatestVersionNumber(calculatedVersion);
+            em.merge(dbFile);//Here, this way the db remains in a consistent state
+            return dbFile;
+        } else {// We could throw exception too, to fill up fileId
+            return null;
+        }
     }
 
     public static byte[] createBinaryData(String locationPath) {
