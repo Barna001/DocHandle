@@ -51,9 +51,8 @@ public class UserGroupRestService {
 
     @POST
     @Path("/new")
-    public void addNewUserGroup(@QueryParam("name") String name) {
-        UserGroup userGroup = new UserGroup(name);
-        service.addGroup(userGroup);
+    public void addNewUserGroup(UserGroup group) {
+        service.addGroup(group);
     }
 
     @POST

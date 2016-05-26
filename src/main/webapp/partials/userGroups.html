@@ -1,7 +1,7 @@
 <div class="table-title">
     <h3>UserGroups List</h3>
 </div>
-<table class="table-fill" ng-init="init()">
+<table class="table-fill" ng-init="initGroups()">
     <thead>
     <tr>
         <th class="text-left">Name</th>
@@ -15,3 +15,13 @@
     </tr>
     </tbody>
 </table>
+<div ng-init="initUsers()" align="center">
+    <div class="title"><h1>Name</h1></div>
+    <input type="text" ng-model="new.name">
+    <!--<div class="title"><h1>Role</h1></div>-->
+    <!--<select ng-model="new.role" ng-options="role for role in roles"/>-->
+    <!--<br/><br/>-->
+    <!--&lt;!&ndash;I have no idea, why on earth it does not put new line&ndash;&gt;-->
+    <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
+    <!--todo add users-->
+</div>
