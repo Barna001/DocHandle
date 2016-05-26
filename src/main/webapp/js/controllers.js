@@ -59,6 +59,14 @@ app.controller('UserController', ['$scope', 'UserService', function ($scope, Use
         });
         $scope.init();
     }
+
+    $scope.deleteAll = function(){
+        UserService.deleteAll().then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
+    }
 }]);
 
 app.controller('DocumentController', ['$scope', 'DocService', 'DocumentGroupService', 'UserService', function ($scope, DocService, DocumentGroupService, UserService) {
@@ -109,6 +117,14 @@ app.controller('DocumentController', ['$scope', 'DocService', 'DocumentGroupServ
 
     $scope.save = function () {
         DocService.saveDoc($scope.new).then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
+    }
+
+    $scope.deleteAll = function(){
+        DocService.deleteAll().then(function () {
         }, function (response) {
             $scope.error = response;
         });
@@ -176,6 +192,14 @@ app.controller('FileController', ['$scope', 'FileService', 'DocService', functio
         });
         $scope.init();
     }
+
+    $scope.deleteAll = function(){
+        FileService.deleteAll().then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
+    }
 }]);
 
 app.controller('UserGroupController', ['$scope', 'UserGroupService', 'UserService', function ($scope, UserGroupService, UserService) {
@@ -225,6 +249,14 @@ app.controller('UserGroupController', ['$scope', 'UserGroupService', 'UserServic
         });
         $scope.initGroups();
     }
+
+    $scope.deleteAll = function(){
+        UserGroupService.deleteAll().then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.initGroups();
+    }
 }]);
 
 app.controller('DocumentGroupController', ['$scope', 'DocumentGroupService', function ($scope, DocumentGroupService) {
@@ -251,6 +283,14 @@ app.controller('DocumentGroupController', ['$scope', 'DocumentGroupService', fun
 
     $scope.save = function () {
         DocumentGroupService.saveGroup($scope.new).then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
+    }
+
+    $scope.deleteAll = function(){
+        DocumentGroupService.deleteAll().then(function () {
         }, function (response) {
             $scope.error = response;
         });

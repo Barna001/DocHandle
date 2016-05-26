@@ -57,7 +57,7 @@ public class UserGroupRestService {
 
     @POST
     @Path("/deleteAll")
-    public void deleteAll() {
+    public void deleteAll(UserGroup group) {
         service.deleteAll();
     }
 

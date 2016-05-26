@@ -80,7 +80,7 @@ public class UserRestService {
 
     @POST
     @Path("/deleteAll")
-    public void deleteAll() {
+    public void deleteAll(User user) {
         service.deleteAll();
     }
 

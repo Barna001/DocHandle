@@ -105,7 +105,7 @@ public class FileRestService {
 
     @POST
     @Path("/deleteAll")
-    public void deleteAll() {
+    public void deleteAll(File f) {
         service.deleteAll();
     }
 

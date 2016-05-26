@@ -49,7 +49,7 @@ public class DocumentRestService {
 
     @POST
     @Path("/deleteAll")
-    public void deleteAll() {
+    public void deleteAll(Document doc) {
         service.deleteAll();
     }
 

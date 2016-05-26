@@ -56,7 +56,7 @@ public class DocumentGroupRestService {
 
     @POST
     @Path("/deleteAll")
-    public void deleteAll() {
+    public void deleteAll(DocumentGroup dg) {
         service.deleteAll();
     }
 
