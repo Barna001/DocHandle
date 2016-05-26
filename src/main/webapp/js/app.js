@@ -6,6 +6,7 @@ angular.module('docHandler', ['docHandler.filters', 'docHandler.services', 'docH
         .when('/users', {templateUrl: 'partials/users.html', controller: 'UserController'})
         .when('/documents', {templateUrl: 'partials/documents.html', controller: 'DocumentController'})
         .when('/files', {templateUrl: 'partials/files.html', controller: 'FileController'})
-        .when('/userGroups', {templateUrl: 'partials/userGroups.html', controller: 'UserGroupController'});
+        .when('/userGroups', {templateUrl: 'partials/userGroups.html', controller: 'UserGroupController'})
+        .when('/documentGroups', {templateUrl: 'partials/documentGroups.html', controller: 'DocumentGroupController'});
     $routeProvider.otherwise({redirectTo: '/users'});
 }]);

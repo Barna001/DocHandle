@@ -18,6 +18,7 @@ services.factory('UserService', UserService);
 services.factory('DocService', DocService);
 services.factory('FileService', FileService);
 services.factory('UserGroupService', UserGroupService);
+services.factory('DocumentGroupService', DocumentGroupService);
 
 function UserService($http, $q) {
 
@@ -84,9 +85,9 @@ function DocService($http, $q) {
 
     return service;
 
-    function saveDoc(userName) {
+    function saveDoc(doc) {
         var deferred = $q.defer();
-        $http.post("rest/documents/new", userName).success(function (data, status) {
+        $http.post("rest/documents/new", doc).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -107,6 +108,25 @@ function DocService($http, $q) {
     function getDocs() {
         var deferred = $q.defer();
         $http.get("rest/documents/all").success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+};
+
+function DocumentGroupService($http, $q) {
+
+    var service = {
+        getDocumentGroups: getDGroups
+    };
+
+    return service;
+
+    function getDGroups() {
+        var deferred = $q.defer();
+        $http.get("rest/documentGroups/all").success(function (data, status) {
             deferred.resolve(data);
         }).error(function (data, status) {
             deferred.reject(status);
@@ -145,21 +165,22 @@ function FileService($http, $q) {
         return deferred.promise;
     }
 
-    function addNewVersionToFile(fileVersion,str){
-        var deferred= $q.defer();
-        $http.post("rest/files/addNewVersionString/"+str, fileVersion).success(function (data, status) {
+    function addNewVersionToFile(fileVersion, str) {
+        var deferred = $q.defer();
+        $http.post("rest/files/addNewVersionString/" + str, fileVersion).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
         });
         return deferred.promise;
     }
-}
+};
 
 function UserGroupService($http, $q) {
 
     var service = {
-        getUserGroups: getUGroups
+        getUserGroups: getUGroups,
+        saveGroup: saveGroup
     };
 
     return service;
@@ -173,5 +194,14 @@ function UserGroupService($http, $q) {
         });
         return deferred.promise;
     }
-}
 
+    function saveGroup(group) {
+        var deferred = $q.defer();
+        $http.post("rest/userGroups/new", group).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+};

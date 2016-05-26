@@ -22,10 +22,10 @@
     <select ng-model="new.rootDocument" ng-options="doc.name for doc in docs"/>
     <br/><br/>
     <!--I have no idea, why on earth it does not put new line-->
-    <input type="submit" class="button2" value="Save" ng-click="save()"/>
+    <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
     <div class="title"><h1>FileVersionMessage</h1></div>
     <input type="text" ng-model="versionMessage">
     <div class="title"><h1>RootFileOfVersion</h1></div>
     <select ng-model="newVersion.rootFileId" ng-options="file.id as file.name for file in files"/>
-    <input type="submit" class="button2" value="SaveVersion" ng-click="saveVersion()"/>
+    <input type="submit" class="saveButton" value="SaveVersion" ng-click="saveVersion()"/>
 </div>

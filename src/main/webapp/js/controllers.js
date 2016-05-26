@@ -61,12 +61,28 @@ app.controller('UserController', ['$scope', 'UserService', function ($scope, Use
     }
 }]);
 
-app.controller('DocumentController', ['$scope', 'DocService', function ($scope, DocService) {
+app.controller('DocumentController', ['$scope', 'DocService', 'DocumentGroupService', 'UserService', function ($scope, DocService, DocumentGroupService, UserService) {
     $scope.docs = {};
+    $scope.groups = {};
+    $scope.users = {};
     $scope.error = "";
+    $scope.new = {
+        id: null,
+        name: null,
+        content: null,
+        creationDate: null,
+        modificationDate: null,
+        owner: null,
+        containingGroups: []
+    }
 
     $scope.init = function () {
         $scope.getDocs();
+    }
+
+    $scope.initGroupsAndUsers = function () {
+        $scope.getGroups();
+        $scope.getUsers();
     }
 
     $scope.getDocs = function () {
@@ -75,6 +91,28 @@ app.controller('DocumentController', ['$scope', 'DocService', function ($scope, 
         }, function (response) {
             $scope.error = response;
         })
+    }
+    $scope.getGroups = function () {
+        DocumentGroupService.getDocumentGroups().then(function (data) {
+            $scope.groups = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+    $scope.getUsers = function () {
+        UserService.getUsers().then(function (data) {
+            $scope.users = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+
+    $scope.save = function () {
+        DocService.saveDoc($scope.new).then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
     }
 }]);
 
@@ -143,6 +181,7 @@ app.controller('FileController', ['$scope', 'FileService', 'DocService', functio
 app.controller('UserGroupController', ['$scope', 'UserGroupService', function ($scope, UserGroupService) {
     $scope.groups = {};
     $scope.error = "";
+    $scope.new = {}
 
     $scope.init = function () {
         $scope.getGroups();
@@ -150,6 +189,31 @@ app.controller('UserGroupController', ['$scope', 'UserGroupService', function ($
 
     $scope.getGroups = function () {
         UserGroupService.getUserGroups().then(function (data) {
+            $scope.groups = data;
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+
+    $scope.save = function () {
+        UserGroupService.saveGroup($scope.new).then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
+    }
+}]);
+
+app.controller('DocumentGroupController', ['$scope', 'DocumentGroupService', function ($scope, DocumentGroupService) {
+    $scope.groups = {};
+    $scope.error = "";
+
+    $scope.init = function () {
+        $scope.getGroups();
+    }
+
+    $scope.getGroups = function () {
+        DocumentGroupService.getDocumentGroups().then(function (data) {
             $scope.groups = data;
         }, function (response) {
             $scope.error = response;

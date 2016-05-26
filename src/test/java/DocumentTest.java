@@ -62,35 +62,37 @@ public class DocumentTest {
 
     }
 
-    @Test
-    public void testPersistCascade() {
-        Document document = new Document("document", "content", null);
-        ArrayList<DocumentGroup> groups = new ArrayList<>();
-        groups.add(new DocumentGroup("newGroup", "desc"));
-        document.setContainingGroups(groups);
-        document.setOwner(new User("userName", UserRoleEnum.GUEST));
-        em.persist(document);
+    //Useless again, you will not have option on frontend to create Document AND Group at the same time
+//    @Test
+//    public void testPersistCascade() {
+//        Document document = new Document("document", "content", null);
+//        ArrayList<DocumentGroup> groups = new ArrayList<>();
+//        groups.add(new DocumentGroup("newGroup", "desc"));
+//        document.setContainingGroups(groups);
+//        document.setOwner(new User("userName", UserRoleEnum.GUEST));
+//        em.persist(document);
+//
+//        Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
+//        Assert.assertEquals(1, dbDocument.getContainingGroups().size());
+//        Assert.assertEquals("newGroup", dbDocument.getContainingGroups().get(0).getName());
+//        Assert.assertEquals(1, dbDocument.getOwner().getOwnDocuments().size());
+//        Assert.assertEquals("userName", dbDocument.getOwner().getName());
+//    }
 
-        Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
-        Assert.assertEquals(1, dbDocument.getContainingGroups().size());
-        Assert.assertEquals("newGroup", dbDocument.getContainingGroups().get(0).getName());
-        Assert.assertEquals(1, dbDocument.getOwner().getOwnDocuments().size());
-        Assert.assertEquals("userName", dbDocument.getOwner().getName());
-    }
-
-    @Test
-    public void testPersistCascadeBidirectional() {
-        Document document = new Document("document", "content", null);
-        ArrayList<DocumentGroup> groups = new ArrayList<>();
-        groups.add(new DocumentGroup("newGroup", "desc"));
-        document.setContainingGroups(groups);
-        document.setOwner(new User("userName", UserRoleEnum.GUEST));
-        em.persist(document);
-
-        Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
-        Assert.assertEquals("content", dbDocument.getContainingGroups().get(0).getDocuments().get(0).getContent());
-        Assert.assertEquals("content", dbDocument.getOwner().getOwnDocuments().get(0).getContent());
-    }
+    //Dont need it anymore, because you have to create a Group or User first, just after you can create a document for them
+//    @Test
+//    public void testPersistCascadeBidirectional() {
+//        Document document = new Document("document", "content", null);
+//        ArrayList<DocumentGroup> groups = new ArrayList<>();
+//        groups.add(new DocumentGroup("newGroup", "desc"));
+//        document.setContainingGroups(groups);
+//        document.setOwner(new User("userName", UserRoleEnum.GUEST));
+//        em.persist(document);
+//
+//        Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
+//        Assert.assertEquals("content", dbDocument.getContainingGroups().get(0).getDocuments().get(0).getContent());
+//        Assert.assertEquals("content", dbDocument.getOwner().getOwnDocuments().get(0).getContent());
+//    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testImmutableList() {
@@ -147,9 +149,11 @@ public class DocumentTest {
         ArrayList<DocumentGroup> groups = new ArrayList<>();
         groups.add(new DocumentGroup("deleteDocumentButOwnerAndDocumentGroupExists", "desc"));
         document.setContainingGroups(groups);
-        document.setOwner(new User("deleteDocumentButOwnerAndDocumentGroupExists", UserRoleEnum.GUEST));
         em.persist(document);
-
+        User user = new User("deleteDocumentButOwnerAndDocumentGroupExists", UserRoleEnum.GUEST);
+        em.persist(user);
+        document.setOwner(user);
+        em.flush();
         em.remove(document);
 
         User dbOwner = em.createQuery("select u from User u", User.class).getSingleResult();

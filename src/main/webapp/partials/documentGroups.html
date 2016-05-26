@@ -1,0 +1,17 @@
+<div class="table-title">
+    <h3>DocumentGroups List</h3>
+</div>
+<table class="table-fill" ng-init="init()">
+    <thead>
+    <tr>
+        <th class="text-left">Name</th>
+        <th class="text-left">Documents in this group</th>
+    </tr>
+    </thead>
+    <tbody class="table-hover">
+    <tr ng-repeat="x in groups">
+        <td class="text-left">{{ x.name }}</td>
+        <td class="text-left">{{ x.documents.length }}</td>
+    </tr>
+    </tbody>
+</table>

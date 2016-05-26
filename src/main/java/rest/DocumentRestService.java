@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 @Path("/documents")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class DocumentRestService {
 
     private static DocumentService service = new DocumentService();
@@ -42,9 +43,8 @@ public class DocumentRestService {
 
     @POST
     @Path("/new")
-    public void addNewDoc(@QueryParam("name") String name, @QueryParam("content") String content) {
-        Document doc = new Document(name, content, null);
-        service.addDocument(doc);
+    public void addNewDoc(Document document) {
+        service.addDocument(document);
     }
 
     @POST

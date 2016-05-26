@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 @Path("/userGroups")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class UserGroupRestService {
 
     private static UserGroupService service = new UserGroupService();
@@ -41,7 +42,7 @@ public class UserGroupRestService {
     }
 
     @GET
-    @Path("/allUserGroups")
+    @Path("/allUserInGroup")
     public String getAllUserInGroup(@QueryParam("id") String id) throws IOException {
         UserGroup group = service.getUserGroupById(id);
         Object users = group.getUsers();

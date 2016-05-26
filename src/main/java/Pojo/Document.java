@@ -1,5 +1,7 @@
 package pojo;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -16,8 +18,10 @@ public class Document {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    //todo implement json construction
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
+    @JsonIgnore
     private User owner;
 
     @JoinTable(name = "group_contains_document",
@@ -26,7 +30,7 @@ public class Document {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     private List<DocumentGroup> containingGroups = new ArrayList<DocumentGroup>();
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "rootDocument", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootDocument", fetch = FetchType.LAZY)
     private List<File> files = new ArrayList<File>();
 
     public Document() {
