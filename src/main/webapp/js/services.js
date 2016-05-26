@@ -119,7 +119,8 @@ function DocService($http, $q) {
 function DocumentGroupService($http, $q) {
 
     var service = {
-        getDocumentGroups: getDGroups
+        getDocumentGroups: getDGroups,
+        saveGroup: saveGroup
     };
 
     return service;
@@ -129,6 +130,16 @@ function DocumentGroupService($http, $q) {
         $http.get("rest/documentGroups/all").success(function (data, status) {
             deferred.resolve(data);
         }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
+    function saveGroup(group) {
+        var deferred = $q.defer();
+        $http.post("rest/documentGroups/new", group).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (status) {
             deferred.reject(status);
         });
         return deferred.promise;

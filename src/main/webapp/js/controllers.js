@@ -230,6 +230,12 @@ app.controller('UserGroupController', ['$scope', 'UserGroupService', 'UserServic
 app.controller('DocumentGroupController', ['$scope', 'DocumentGroupService', function ($scope, DocumentGroupService) {
     $scope.groups = {};
     $scope.error = "";
+    $scope.new = {
+        id: null,
+        name: null,
+        description: null,
+        documents: []
+    }
 
     $scope.init = function () {
         $scope.getGroups();
@@ -241,5 +247,13 @@ app.controller('DocumentGroupController', ['$scope', 'DocumentGroupService', fun
         }, function (response) {
             $scope.error = response;
         })
+    }
+
+    $scope.save = function () {
+        DocumentGroupService.saveGroup($scope.new).then(function () {
+        }, function (response) {
+            $scope.error = response;
+        });
+        $scope.init();
     }
 }]);
