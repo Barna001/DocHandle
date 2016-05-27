@@ -18,7 +18,7 @@
 
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>rest;org.codehaus.jackson.jaxrs</param-value>
+            <param-value>rest;org.codehaus.jackson.jaxrs;org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
         </init-param>
 
         <load-on-startup>1</load-on-startup>

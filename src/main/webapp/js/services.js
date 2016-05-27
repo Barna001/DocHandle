@@ -185,7 +185,8 @@ function FileService($http, $q) {
         getFiles: getFiles,
         saveFile: saveFile,
         addNewVersionToFile: addNewVersionToFile,
-        deleteAll: deleteAll
+        deleteAll: deleteAll,
+        uploadFileToUrl: uploadFileToUrl
     };
 
     return service;
@@ -228,6 +229,20 @@ function FileService($http, $q) {
             deferred.reject(status);
         });
         return deferred.promise;
+    }
+
+    function uploadFileToUrl(file, fileId) {
+        var fd = new FormData();
+        fd.append('file', file);
+
+        $http.post('http://localhost:8080/rest/files/addNewVersionFile?fileId=' + fileId, fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function () {
+            })
+            .error(function () {
+            });
     }
 };
 

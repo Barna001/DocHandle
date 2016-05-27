@@ -24,9 +24,10 @@
     <!--I have no idea, why on earth it does not put new line-->
     <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
     <div class="title"><h1>FileVersionMessage</h1></div>
-    <input type="text" ng-model="versionMessage">
+    <!--<input type="text" ng-model="versionMessage">-->
+    <input type="file" file-model="myFile"/>
     <div class="title"><h1>RootFileOfVersion</h1></div>
     <select ng-model="newVersion.rootFileId" ng-options="file.id as file.name for file in files"/>
-    <input type="submit" class="saveButton" value="SaveVersion" ng-click="saveVersion()"/>
+    <input type="submit" class="saveButton" value="SaveVersionUpload" ng-click="uploadFile()"/>
     <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
 </div>

@@ -60,7 +60,7 @@ app.controller('UserController', ['$scope', 'UserService', function ($scope, Use
         $scope.init();
     }
 
-    $scope.deleteAll = function(){
+    $scope.deleteAll = function () {
         UserService.deleteAll().then(function () {
         }, function (response) {
             $scope.error = response;
@@ -123,7 +123,7 @@ app.controller('DocumentController', ['$scope', 'DocService', 'DocumentGroupServ
         $scope.init();
     }
 
-    $scope.deleteAll = function(){
+    $scope.deleteAll = function () {
         DocService.deleteAll().then(function () {
         }, function (response) {
             $scope.error = response;
@@ -137,7 +137,7 @@ app.controller('FileController', ['$scope', 'FileService', 'DocService', functio
     $scope.docs = {};
     $scope.error = "";
     $scope.chosen = null;
-
+    //$scope.myFile = null;
     $scope.versionMessage = "";
     $scope.newVersion = {
         id: "",
@@ -185,20 +185,28 @@ app.controller('FileController', ['$scope', 'FileService', 'DocService', functio
         $scope.init();
     }
 
-    $scope.saveVersion = function () {
-        FileService.addNewVersionToFile($scope.newVersion, $scope.versionMessage).then(function () {
+    //$scope.saveVersion = function () {
+    //    FileService.addNewVersionToFile($scope.newVersion, $scope.versionMessage).then(function () {
+    //    }, function (response) {
+    //        $scope.error = response;
+    //    });
+    //    $scope.init();
+    //}
+    $scope.deleteAll = function () {
+        FileService.deleteAll().then(function () {
         }, function (response) {
             $scope.error = response;
         });
         $scope.init();
     }
 
-    $scope.deleteAll = function(){
-        FileService.deleteAll().then(function () {
-        }, function (response) {
-            $scope.error = response;
-        });
-        $scope.init();
+    $scope.uploadFile = function () {
+        var file = $scope.myFile;
+
+        console.log('file is ');
+        console.dir(file);
+
+        FileService.uploadFileToUrl(file, $scope.newVersion.rootFileId);
     }
 }]);
 
@@ -250,7 +258,7 @@ app.controller('UserGroupController', ['$scope', 'UserGroupService', 'UserServic
         $scope.initGroups();
     }
 
-    $scope.deleteAll = function(){
+    $scope.deleteAll = function () {
         UserGroupService.deleteAll().then(function () {
         }, function (response) {
             $scope.error = response;
@@ -289,7 +297,7 @@ app.controller('DocumentGroupController', ['$scope', 'DocumentGroupService', fun
         $scope.init();
     }
 
-    $scope.deleteAll = function(){
+    $scope.deleteAll = function () {
         DocumentGroupService.deleteAll().then(function () {
         }, function (response) {
             $scope.error = response;
