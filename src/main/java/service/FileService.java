@@ -57,7 +57,9 @@ public class FileService {
 
     public static void deleteAll() {
         String query = "delete from File";
+        String queryVersion = "delete from FileVersion";
         em.createQuery(query).executeUpdate();
+        em.createQuery(queryVersion).executeUpdate();
     }
 
     public static void closeAll() {
