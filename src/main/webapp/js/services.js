@@ -231,18 +231,22 @@ function FileService($http, $q) {
         return deferred.promise;
     }
 
-    function uploadFileToUrl(file, fileId) {
+    function uploadFileToUrl(fileVersion, fileId) {
+        var deferred = $q.defer();
         var fd = new FormData();
-        fd.append('file', file);
+        fd.append('file', fileVersion);
 
         $http.post('http://localhost:8080/rest/files/addNewVersionFile?fileId=' + fileId, fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
             .success(function () {
+                return deferred.promise;
             })
             .error(function () {
+                return deferred.promise;
             });
+        return deferred.promise;
     }
 };
 
