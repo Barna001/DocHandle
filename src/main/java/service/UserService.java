@@ -39,6 +39,11 @@ public class UserService {
         em.persist(user);
     }
 
+    public static void deleteUser(String userId) {
+        String query = "delete from User u where u.id=:id";
+        em.createQuery(query).setParameter("id", userId).executeUpdate();
+    }
+
     public static void deleteAll() {
         String query = "delete from User";
         em.createQuery(query).executeUpdate();
@@ -48,4 +53,5 @@ public class UserService {
         em.close();
         emf.close();
     }
+
 }

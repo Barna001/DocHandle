@@ -54,7 +54,8 @@ public class DocumentGroupRestService {
         service.addGroup(dg);
     }
 
-    @POST
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
     @Path("/deleteAll")
     public void deleteAll(DocumentGroup dg) {
         service.deleteAll();

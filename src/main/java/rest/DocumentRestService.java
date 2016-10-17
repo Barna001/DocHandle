@@ -47,7 +47,8 @@ public class DocumentRestService {
         service.addDocument(document);
     }
 
-    @POST
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
     @Path("/deleteAll")
     public void deleteAll(Document doc) {
         service.deleteAll();

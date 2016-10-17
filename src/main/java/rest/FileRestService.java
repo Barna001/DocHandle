@@ -123,11 +123,11 @@ public class FileRestService {
         service.addVersionToFile(version);
     }
 
-    @POST
+    @DELETE
     @Path("/deleteAll")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteAll(File f) {
+    @Consumes(MediaType.TEXT_PLAIN)
+    public void deleteAll() {
         service.deleteAll();
     }
 

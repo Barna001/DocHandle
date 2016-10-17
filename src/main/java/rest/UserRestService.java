@@ -78,9 +78,17 @@ public class UserRestService {
         service.addUser(user);
     }
 
-    @POST
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("/deleteUser")
+    public void deleteUser(@QueryParam("id") String userId) {
+        service.deleteUser(userId);
+    }
+
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
     @Path("/deleteAll")
-    public void deleteAll(User user) {
+    public void deleteAll() {
         service.deleteAll();
     }
 

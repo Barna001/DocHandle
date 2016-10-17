@@ -55,7 +55,8 @@ public class UserGroupRestService {
         service.addGroup(group);
     }
 
-    @POST
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
     @Path("/deleteAll")
     public void deleteAll(UserGroup group) {
         service.deleteAll();

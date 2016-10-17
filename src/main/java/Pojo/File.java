@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
+//todo xml rootelement
 @Entity
 public class File {
 
@@ -16,6 +17,7 @@ public class File {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rootDocument",nullable = false)
     @JsonIgnore
+    //todo xml transient
     private Document rootDocument;
 
     private int latestVersionNumber;

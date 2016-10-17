@@ -27,9 +27,9 @@ function UserService($http, $q) {
         getUser: getUser,
         getUsers: getUsers,
         getRoles: getRoles,
-        deleteAll: deleteAll
+        deleteAll: deleteAll,
+        deleteUser: deleteUser
         //updateUser : updateUser,
-        //deleteUser: deleteUser,
         //getCurrentUser : getCurrentUser
     };
 
@@ -75,9 +75,19 @@ function UserService($http, $q) {
         return deferred.promise;
     }
 
+    function deleteUser(id) {
+        var deferred = $q.defer();
+        $http.delete("rest/users/deleteUser?id=" + id, null).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
     function deleteAll() {
         var deferred = $q.defer();
-        $http.post("rest/users/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/users/deleteAll", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -129,7 +139,7 @@ function DocService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.post("rest/documents/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/documents/deleteAll", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -170,7 +180,7 @@ function DocumentGroupService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.post("rest/documentGroups/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/documentGroups/deleteAll", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -223,7 +233,7 @@ function FileService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.post("rest/files/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/files/deleteAll", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -283,7 +293,7 @@ function UserGroupService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.post("rest/userGroups/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/userGroups/deleteAll", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);

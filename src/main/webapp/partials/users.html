@@ -7,12 +7,14 @@
         <tr>
             <th class="text-left">Name</th>
             <th class="text-left">Role</th>
+            <th class="text-left">Options</th>
         </tr>
         </thead>
         <tbody class="table-hover">
         <tr ng-repeat="x in users">
             <td class="text-left">{{ x.name }}</td>
             <td class="text-left">{{ x.role }}</td>
+            <td><input type="submit" class="deleteButton" value="Delete" ng-click="deleteUser(x.id)"/></td>
         </tr>
         </tbody>
     </table>

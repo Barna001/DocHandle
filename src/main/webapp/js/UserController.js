@@ -43,6 +43,15 @@ angular.module('docHandler.controllers').controller('UserController', ['$scope',
         });
     }
 
+    $scope.deleteUser = function (id) {
+        console.log("Az id:" + id);
+        UserService.deleteUser(id).then(function () {
+            $scope.initUsers();
+        }, function (response) {
+            $scope.error = response;
+        });
+    }
+
     $scope.deleteAll = function () {
         UserService.deleteAll().then(function () {
             $scope.initUsers();
