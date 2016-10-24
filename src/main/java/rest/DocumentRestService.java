@@ -49,6 +49,12 @@ public class DocumentRestService {
 
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
+    public void delete(@QueryParam("id") String id){
+        service.deleteDocumentById(id);
+    }
+
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
     @Path("/deleteAll")
     public void deleteAll(Document doc) {
         service.deleteAll();

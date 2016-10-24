@@ -55,6 +55,14 @@ angular.module('docHandler.controllers').controller('DocumentController', ['$sco
         });
     }
 
+    $scope.deleteDoc = function (id) {
+        DocService.deleteDoc(id).then(function () {
+            $scope.init();
+        },function (response) {
+            $scope.error=response;
+        })
+    }
+
     $scope.deleteAll = function () {
         DocService.deleteAll().then(function () {
             $scope.init();

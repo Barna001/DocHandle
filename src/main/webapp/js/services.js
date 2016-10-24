@@ -102,7 +102,8 @@ function DocService($http, $q) {
         saveDoc: saveDoc,
         getDoc: getDoc,
         getDocs: getDocs,
-        deleteAll: deleteAll
+        deleteAll: deleteAll,
+        deleteDoc: deleteDoc
     };
 
     return service;
@@ -137,6 +138,16 @@ function DocService($http, $q) {
         return deferred.promise;
     }
 
+    function deleteDoc(id) {
+        var deferred = $q.defer();
+        $http.delete("rest/documents?id=" + id, null).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+    
     function deleteAll() {
         var deferred = $q.defer();
         $http.delete("rest/documents/deleteAll", null).success(function (data, status) {

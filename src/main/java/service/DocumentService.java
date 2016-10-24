@@ -32,6 +32,11 @@ public class DocumentService {
         em.persist(document);
     }
 
+    public void deleteDocumentById(String id) {
+        String query = "delete from Document d where d.id=:id";
+        em.createQuery(query).setParameter("id", id).executeUpdate();
+    }
+
     public static void deleteAll() {
         String query = "delete from Document";
         em.createQuery(query).executeUpdate();
@@ -41,4 +46,5 @@ public class DocumentService {
         em.close();
         emf.close();
     }
+
 }
