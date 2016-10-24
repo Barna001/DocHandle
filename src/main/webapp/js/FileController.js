@@ -61,6 +61,16 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
     //    });
     //    $scope.init();
     //}
+
+    $scope.deleteFile = function (id) {
+        console.log("A fájl id-ja:"+id);
+        FileService.deleteFile(id).then(function () {
+            $scope.init();
+        },function (response) {
+            $scope.error = response;
+        });
+    }
+
     $scope.deleteAll = function () {
         FileService.deleteAll().then(function () {
             $scope.init();

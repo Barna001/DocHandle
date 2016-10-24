@@ -125,6 +125,12 @@ public class FileRestService {
     }
 
     @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
+    public void delete(@QueryParam("id") String id){
+        service.delete(id);
+    }
+
+    @DELETE
     @Path("/deleteAll")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)

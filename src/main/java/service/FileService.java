@@ -55,6 +55,13 @@ public class FileService {
                 .setParameter("id", fileId).getResultList();
     }
 
+    public void delete(String id) {
+        String query = "delete from File f where f.id=:id";
+        String queryVersion = "delete from FileVersion fv where fv.rootFileId=:rootId";
+        em.createQuery(query).setParameter("id",id).executeUpdate();
+        em.createQuery(queryVersion).setParameter("rootId",id).executeUpdate();
+    }
+
     public static void deleteAll() {
         String query = "delete from File";
         String queryVersion = "delete from FileVersion";
@@ -66,4 +73,6 @@ public class FileService {
         em.close();
         emf.close();
     }
+
+
 }

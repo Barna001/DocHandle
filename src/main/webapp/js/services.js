@@ -206,6 +206,7 @@ function FileService($http, $q) {
         getFiles: getFiles,
         saveFile: saveFile,
         addNewVersionToFile: addNewVersionToFile,
+        deleteFile: deleteFile,
         deleteAll: deleteAll,
         uploadFileToUrl: uploadFileToUrl
     };
@@ -235,6 +236,16 @@ function FileService($http, $q) {
     function addNewVersionToFile(fileVersion, str) {
         var deferred = $q.defer();
         $http.post("rest/files/addNewVersionString/" + str, fileVersion).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
+    function deleteFile(id){
+        var deferred = $q.defer();
+        $http.delete("rest/files?id="+id, null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
