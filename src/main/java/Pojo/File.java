@@ -15,10 +15,12 @@ public class File {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rootDocument",nullable = false)
+    @JoinColumn(name = "rootDocument", nullable = false)
     @JsonIgnore
     //todo xml transient
     private Document rootDocument;
+
+    private String rootDocumentName;
 
     private int latestVersionNumber;
     private String latestVersionId;
@@ -30,6 +32,7 @@ public class File {
     public File(String name, Document root) {
         this.name = name;
         this.rootDocument = root;
+        this.rootDocumentName = root.getName();
     }
 
     public String getLatestVersionId() {
@@ -47,6 +50,7 @@ public class File {
     public void setLatestVersionNumber(int latestVersionNumber) {
         this.latestVersionNumber = latestVersionNumber;
     }
+
     public String getId() {
         return id;
     }
@@ -70,5 +74,11 @@ public class File {
     public void setRootDocument(Document rootDocument) {
         this.rootDocument = rootDocument;
     }
+    public String getRootDocumentName() {
+        return rootDocumentName;
+    }
 
+    public void setRootDocumentName(String rootDocumentName) {
+        this.rootDocumentName = rootDocumentName;
+    }
 }

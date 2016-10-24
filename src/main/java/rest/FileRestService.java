@@ -76,6 +76,7 @@ public class FileRestService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public void addNewFile(File file) {
+        file.setRootDocumentName(file.getRootDocument().getName());
         service.addFile(file);
     }
 

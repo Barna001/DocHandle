@@ -5,12 +5,14 @@
     <thead>
     <tr>
         <th class="text-left">Name</th>
+        <th class="text-left">Root Document</th>
         <th class="text-left">Latest Version Number</th>
     </tr>
     </thead>
     <tbody class="table-hover">
     <tr ng-repeat="x in files">
         <td class="text-left">{{ x.name }}</td>
+        <td class="text-left">{{ x.rootDocumentName }}</td>
         <td class="text-left">{{ x.latestVersionNumber }}</td>
     </tr>
     </tbody>
