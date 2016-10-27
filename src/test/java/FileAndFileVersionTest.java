@@ -40,7 +40,8 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersist() {
-        File file = new File("file", null);
+        Document doc = new Document("doc", "content", null);
+        File file = new File("file", doc);
         em.persist(file);
         File dbFile = em.createQuery("select f from File f", File.class).getSingleResult();
         Assert.assertEquals("file", dbFile.getName());
@@ -67,7 +68,8 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersistWithVersion() {
-        File file = new File("file", null);
+        Document doc = new Document("doc", "content", null);
+        File file = new File("file", doc);
         em.persist(file);
 
         FileVersion version = new FileVersion(file.getId(),new byte[]{2, 3, 4});
@@ -84,7 +86,8 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testAddSecondVersionsNumber() {
-        File file = new File("file", null);
+        Document document = new Document("docName","content",null);
+        File file = new File("file", document);
         em.persist(file);
         FileVersion version = new FileVersion(file.getId(),new byte[]{2, 3, 4});
         FileVersion version2 = new FileVersion(file.getId(),new byte[]{5, 6, 7, 8});
@@ -98,7 +101,8 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testFindLatestVersionOfFile() {
-        File file = new File("file", null);
+        Document doc = new Document("doc", "content", null);
+        File file = new File("file", doc);
         em.persist(file);
 
         FileVersion version = new FileVersion(file.getId(),new byte[]{2, 3, 4});
