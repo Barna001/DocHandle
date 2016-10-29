@@ -1,7 +1,7 @@
 /**
  * Created by Barna on 2016.09.24..
  */
-angular.module('docHandler.controllers').controller('FileController', ['$scope', 'FileService', 'DocService', function ($scope, FileService, DocService) {
+angular.module('docHandler.controllers').controller('FileController', ['$scope', 'FileService', 'DocService', /*'FileSaver',*/ function ($scope, FileService, DocService/*, FileSaver*/) {
     $scope.files = {};
     $scope.docs = {};
     $scope.error = "";
@@ -62,6 +62,32 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
     //    $scope.init();
     //}
 
+    $scope.downloadLatestVersion = function (fileId, fileName) {
+        console.log("A fájl id-ja:"+fileId);
+        FileService.downloadLatestVersion(fileId).then(function(data){
+            console.log("size:"+data.length);
+            var bytes = [];
+            for(var i=0;i<data.length;++i){
+                var code = data.charCodeAt(i);
+                bytes = bytes.concat([code & 0xff, code / 256 >>>0]);
+            }
+            //console.log(data);
+            var blob = new Blob([bytes], {type: "application/msword"});
+            //FileSaver.saveAs(data, "name");
+            var hiddenElement = document.createElement('a');
+            hiddenElement.href = window.URL.createObjectURL(blob);
+            hiddenElement.download = fileName;
+            hiddenElement.click();
+            //var clickEvent = new MouseEvent("click",{
+            //    "view":window,
+            //    "bubbles":true,
+            //    "cancelable":false
+            //});
+            //hiddenElement.dispatchEvent(clickEvent);
+            window.URL.revokeObjectURL(blob);
+        })
+    }
+
     $scope.deleteFile = function (id) {
         console.log("A fájl id-ja:"+id);
         FileService.deleteFile(id).then(function () {
@@ -81,7 +107,6 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
 
     $scope.uploadFile = function () {
         var fileVersion = $scope.myFile;
-
         console.log('file is ');
         console.dir(fileVersion);
 

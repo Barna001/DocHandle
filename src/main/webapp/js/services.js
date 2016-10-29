@@ -147,7 +147,7 @@ function DocService($http, $q) {
         });
         return deferred.promise;
     }
-    
+
     function deleteAll() {
         var deferred = $q.defer();
         $http.delete("rest/documents/deleteAll", null).success(function (data, status) {
@@ -206,6 +206,7 @@ function FileService($http, $q) {
         getFiles: getFiles,
         saveFile: saveFile,
         addNewVersionToFile: addNewVersionToFile,
+        downloadLatestVersion: downloadLatestVersion,
         deleteFile: deleteFile,
         deleteAll: deleteAll,
         uploadFileToUrl: uploadFileToUrl
@@ -243,9 +244,19 @@ function FileService($http, $q) {
         return deferred.promise;
     }
 
-    function deleteFile(id){
+    function downloadLatestVersion(fileId) {
         var deferred = $q.defer();
-        $http.delete("rest/files?id="+id, null).success(function (data, status) {
+        $http.get("rest/files/latestVersion?fileId=" + fileId).success(function (data, status) {
+            deferred.resolve(data);
+        }).error(function (data, status) {
+            deferred.reject(status);
+        });
+        return deferred.promise;
+    }
+
+    function deleteFile(id) {
+        var deferred = $q.defer();
+        $http.delete("rest/files?id=" + id, null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);

@@ -108,8 +108,8 @@ public class FileAndFileVersionTest {
         FileVersion version = new FileVersion(file.getId(),new byte[]{2, 3, 4});
         FileVersion version2 = new FileVersion(file.getId(),new byte[]{5, 6, 7, 8});
 
-        file = FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
-        file = FileVersionUtil.addVersionToFileAndPersistMerge(version2, em);
+        FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
+        FileVersionUtil.addVersionToFileAndPersistMerge(version2, em);
 
         List<FileVersion> dbVersions = em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class).setParameter("id", file.getId()).getResultList();
         Assert.assertEquals(2, dbVersions.size());

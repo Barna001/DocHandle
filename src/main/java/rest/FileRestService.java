@@ -3,14 +3,15 @@ package rest;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.glassfish.jersey.server.filter.HttpMethodOverrideFilter;
 import pojo.File;
 import pojo.FileVersion;
 import service.FileService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -55,11 +56,21 @@ public class FileRestService {
 
     @GET
     @Path("/latestVersion")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String getLatestVersion(@QueryParam("fileId") String fileId) throws IOException {
-        Object version = service.getLatestVersion(fileId);
-        return ow.writeValueAsString(version);
+    public byte[] getLatestVersion(@QueryParam("fileId") String fileId) throws IOException {
+        FileVersion version = service.getLatestVersion(fileId);
+        byte[] data = version.getData();
+//        java.io.File file = new java.io.File("d:/Munka/proba2.docx");
+//        if (!file.exists()) {
+//            file.createNewFile();
+//        }
+//        FileOutputStream fos = new FileOutputStream(file);
+//        fos.write(data);
+//        fos.flush();
+//        fos.close();
+//        return new String(data,"ISO-8859-1");
+        return data;
     }
 
     @GET
@@ -113,7 +124,7 @@ public class FileRestService {
     @POST
     @Path("/addNewVersionFile")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @QueryParam("fileId") String rootId) {
+    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @QueryParam("fileId") String rootId) throws IOException {
         FileVersion version = new FileVersion(rootId, null);
         try {
             byte[] byteData = IOUtils.toByteArray(fileData);
@@ -122,11 +133,12 @@ public class FileRestService {
             e.printStackTrace();
         }
         service.addVersionToFile(version);
+        fileData.close();
     }
 
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    public void delete(@QueryParam("id") String id){
+    public void delete(@QueryParam("id") String id) {
         service.delete(id);
     }
 
