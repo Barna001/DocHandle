@@ -1,5 +1,6 @@
 package pojo;
 
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class UserGroup extends PermissionSubject {
     @JoinTable(name = "group_contains_user",
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<User> users = new ArrayList<User>();
 
     public UserGroup() {
@@ -28,15 +29,5 @@ public class UserGroup extends PermissionSubject {
 
     public void setUsers(List<User> users) {
         this.users = users;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("\t Users in group:\t");
-        for (User user : users) {
-            sb.append("\t\t" + user.toString() + "\n");
-        }
-        return "Id:" + id + " name:" + name + "\n" +
-                sb.toString();
     }
 }

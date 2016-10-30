@@ -8,6 +8,7 @@ import pojo.UserGroup;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
@@ -36,7 +37,14 @@ public class UserService {
     }
 
     public static void addUser(User user) {
-        em.persist(user);
+        User userToDb = new User(user.getName(), user.getRole());
+        List<UserGroup> groups = new ArrayList<>();
+        for (UserGroup userGroup : user.getGroups()) {
+            UserGroup udb=em.find(UserGroup.class, userGroup.getId());
+            groups.add(udb);
+        }
+        userToDb.setGroups(groups);
+        em.merge(userToDb);
     }
 
     public static void deleteUser(String userId) {

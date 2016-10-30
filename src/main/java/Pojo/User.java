@@ -1,7 +1,10 @@
 package pojo;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -17,8 +20,11 @@ public class User extends PermissionSubject {
     @JoinTable(name = "group_contains_user",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<UserGroup> groups = new ArrayList<UserGroup>();
+
+    private String groupNames = "";
 
     public User() {
     }
@@ -37,11 +43,18 @@ public class User extends PermissionSubject {
     }
 
     public List<UserGroup> getGroups() {
-        return groups;
+        return Collections.unmodifiableList(this.groups);
     }
 
     public void setGroups(List<UserGroup> groups) {
         this.groups = groups;
+        for (UserGroup group : groups) {
+            if (this.groupNames.isEmpty()) {
+                this.groupNames = group.getName();
+            } else {
+                this.groupNames += "," + group.getName();
+            }
+        }
     }
 
     public List<Document> getOwnDocuments() {
@@ -52,8 +65,40 @@ public class User extends PermissionSubject {
         this.ownDocuments = ownDocuments;
     }
 
-    @Override
-    public String toString() {
-        return "Id:" + id + " name:" + name + " role:" + role;
+    public String getGroupNames() {
+        return groupNames;
     }
+
+    //    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("{");
+//        sb.append("id:" + this.id + ",");
+//        sb.append("name:" + this.name + ",");
+//        sb.append("[");
+//        boolean first = true;
+//        for (Document ownDocument : ownDocuments) {
+//            if (first) {
+//                sb.append("{name:" + ownDocument.getName() + "}");
+//                first = false;
+//            } else {
+//                sb.append(",{name:" + ownDocument.getName() + "}");
+//            }
+//        }
+//        sb.append("],");
+//        sb.append("role:" + this.role + ",");
+//        sb.append("[");
+//        first = true;
+//        for (UserGroup group : this.groups) {
+//            if (first) {
+//                sb.append("{name:" + group.getName() + "}");
+//                first = false;
+//            } else {
+//                sb.append(",{name:" + group.getName() + "}");
+//            }
+//        }
+//        sb.append("]");
+//        sb.append("}");
+//        return sb.toString();
+//    }
 }

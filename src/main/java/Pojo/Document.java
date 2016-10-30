@@ -21,7 +21,6 @@ public class Document {
     //todo implement json construction
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
-    @JsonIgnore
     private User owner;
 
     @JoinTable(name = "group_contains_document",
@@ -30,7 +29,7 @@ public class Document {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     private List<DocumentGroup> containingGroups = new ArrayList<DocumentGroup>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootDocument", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootDocument", fetch = FetchType.EAGER)
     private List<File> files = new ArrayList<File>();
 
     public Document() {

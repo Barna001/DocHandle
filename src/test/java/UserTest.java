@@ -38,10 +38,12 @@ public class UserTest {
         User user = new User("Barna", UserRoleEnum.SUPER_ADMIN);
         user.setGroups(new ArrayList<UserGroup>() {{
             add(new UserGroup("New Group"));
+            add(new UserGroup("G2"));
         }});
         Assert.assertEquals("Barna", user.getName());
         Assert.assertEquals(UserRoleEnum.SUPER_ADMIN, user.getRole());
         Assert.assertEquals("New Group", user.getGroups().get(0).getName());
+        Assert.assertEquals("New Group,G2", user.getGroupNames());
     }
 
     @Test
@@ -57,28 +59,36 @@ public class UserTest {
     @Test
     public void testPersistCascadeGroup() {
         User user = new User("Barna", UserRoleEnum.SUPER_ADMIN);
-        List<UserGroup> userGroupList = new ArrayList<>();
-        userGroupList.add(new UserGroup("New Group Cascade"));
-        user.setGroups(userGroupList);
-        em.persist(user);
+        UserGroup userGroup = new UserGroup("New Group Cascade");
+        em.persist(userGroup);
+        List<UserGroup> groups = new ArrayList<>();
+        groups.add(userGroup);
+        user.setGroups(groups);
+        em.merge(user);
 
 
         User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
         Assert.assertEquals(1, dbUser.getGroups().size());
         Assert.assertEquals("New Group Cascade", dbUser.getGroups().get(0).getName());
+        Assert.assertEquals("New Group Cascade", dbUser.getGroupNames());
     }
 
     @Test
     public void testPersistCascadeGroupBidirectionally() {
         User user = new User("Barna", UserRoleEnum.SUPER_ADMIN);
-        List<UserGroup> userGroupList = new ArrayList<>();
-        userGroupList.add(new UserGroup("New Group Cascade"));
-        user.setGroups(userGroupList);
-        em.persist(user);
+        UserGroup userGroup = new UserGroup("New Group Cascade");
+        em.persist(userGroup);
+        List<UserGroup> groups = new ArrayList<>();
+        groups.add(userGroup);
+        user.setGroups(groups);
+        em.merge(user);
 
         User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
+        UserGroup dbGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
         Assert.assertEquals(1, dbUser.getGroups().size());
+        Assert.assertEquals(1, dbGroup.getUsers().size());
         Assert.assertEquals("Barna", dbUser.getGroups().get(0).getUsers().get(0).getName());
+        Assert.assertEquals("New Group Cascade", dbGroup.getUsers().get(0).getGroups().get(0).getName());
     }
 
     @Test
@@ -110,7 +120,7 @@ public class UserTest {
         userGroupList.add(new UserGroup("deleteUserButGroupAndDocumentExists"));
         user.setGroups(userGroupList);
         user.getOwnDocuments().add(new Document("deleteUserButGroupAndDocumentExists", "simple doc", user));
-        em.persist(user);
+        em.merge(user);
 
         em.remove(user);
 

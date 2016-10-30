@@ -14,9 +14,9 @@ public class File {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rootDocument", nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
     //todo xml transient
     private Document rootDocument;
 
@@ -73,12 +73,13 @@ public class File {
 
     public void setRootDocument(Document rootDocument) {
         this.rootDocument = rootDocument;
+        this.rootDocumentName = rootDocument.getName();
     }
     public String getRootDocumentName() {
         return rootDocumentName;
     }
 
     public void setRootDocumentName(String rootDocumentName) {
-        this.rootDocumentName = rootDocumentName;
+        this.rootDocumentName = rootDocumentName; this.rootDocument.setName(rootDocumentName);
     }
 }

@@ -2,8 +2,9 @@
  * Created by Barna on 2016.09.24..
  */
 
-angular.module('docHandler.controllers').controller('UserController', ['$scope', 'UserService', function ($scope, UserService) {
+angular.module('docHandler.controllers').controller('UserController', ['$scope', 'UserService', 'UserGroupService', function ($scope, UserService, UserGroupService) {
     $scope.users = {};
+    $scope.groups = {};
     $scope.roles = {};
     $scope.error = "";
     $scope.new = {
@@ -11,17 +12,28 @@ angular.module('docHandler.controllers').controller('UserController', ['$scope',
         name: null,
         ownDocuments: [],
         role: null,
-        groups: []
+        groups: [],
+        groupNames: null
     };
 
     $scope.initUsers = function () {
         $scope.getUsers();
         $scope.getRoles();
+        $scope.getGroups();
     }
 
     $scope.getUsers = function () {
         UserService.getUsers().then(function (data) {
             $scope.users = data;
+            console.log($scope.users);
+        }, function (response) {
+            $scope.error = response;
+        })
+    }
+
+    $scope.getGroups = function () {
+        UserGroupService.getUserGroups().then(function (data) {
+            $scope.groups = data;
         }, function (response) {
             $scope.error = response;
         })
