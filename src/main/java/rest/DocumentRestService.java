@@ -49,15 +49,12 @@ public class DocumentRestService {
 
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    public void delete(@QueryParam("id") String id){
-        service.deleteDocumentById(id);
-    }
-
-    @DELETE
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Path("/deleteAll")
-    public void deleteAll(Document doc) {
-        service.deleteAll();
+    public void delete(@QueryParam("id") String id) {
+        if (id.equals("*")) {
+            service.deleteAll();
+        } else {
+            service.deleteDocumentById(id);
+        }
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

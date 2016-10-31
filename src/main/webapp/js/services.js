@@ -77,7 +77,7 @@ function UserService($http, $q) {
 
     function deleteUser(id) {
         var deferred = $q.defer();
-        $http.delete("rest/users/deleteUser?id=" + id, null).success(function (data, status) {
+        $http.delete("rest/users?id=" + id, null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -87,7 +87,7 @@ function UserService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.delete("rest/users/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/users?id=*", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -150,7 +150,7 @@ function DocService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.delete("rest/documents/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/documents?id=*", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -191,7 +191,7 @@ function DocumentGroupService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.delete("rest/documentGroups/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/documentGroups?id=*", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -266,7 +266,7 @@ function FileService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.delete("rest/files/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/files?id=*", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);
@@ -326,7 +326,7 @@ function UserGroupService($http, $q) {
 
     function deleteAll() {
         var deferred = $q.defer();
-        $http.delete("rest/userGroups/deleteAll", null).success(function (data, status) {
+        $http.delete("rest/userGroups?id=*", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);

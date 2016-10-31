@@ -25,17 +25,17 @@ angular.module('docHandler.controllers').controller('DocumentGroupController', [
 
     $scope.save = function () {
         DocumentGroupService.saveGroup($scope.new).then(function () {
+            $scope.init();
         }, function (response) {
             $scope.error = response;
         });
-        $scope.init();
     }
 
     $scope.deleteAll = function () {
         DocumentGroupService.deleteAll().then(function () {
+            $scope.init();
         }, function (response) {
             $scope.error = response;
         });
-        $scope.init();
     }
 }]);

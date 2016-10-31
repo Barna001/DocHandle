@@ -57,9 +57,11 @@ public class UserGroupRestService {
 
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    @Path("/deleteAll")
-    public void deleteAll(UserGroup group) {
-        service.deleteAll();
+    public void deleteAll(@QueryParam("id") String userGroupId) {
+        if (userGroupId.equals("*")) {
+            service.deleteAll();
+        } else {
+        }
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

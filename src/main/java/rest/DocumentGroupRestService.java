@@ -56,9 +56,11 @@ public class DocumentGroupRestService {
 
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    @Path("/deleteAll")
-    public void deleteAll(DocumentGroup dg) {
-        service.deleteAll();
+    public void deleteDocGroup(@QueryParam("id") String docGroupId) {
+        if (docGroupId.equals("*")) {
+            service.deleteAll();
+        } else {
+        }
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

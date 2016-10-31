@@ -139,15 +139,11 @@ public class FileRestService {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     public void delete(@QueryParam("id") String id) {
-        service.delete(id);
-    }
-
-    @DELETE
-    @Path("/deleteAll")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.TEXT_PLAIN)
-    public void deleteAll() {
-        service.deleteAll();
+        if (id.equals("*")) {
+            service.deleteAll();
+        } else {
+            service.delete(id);
+        }
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

@@ -80,16 +80,12 @@ public class UserRestService {
 
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    @Path("/deleteUser")
     public void deleteUser(@QueryParam("id") String userId) {
-        service.deleteUser(userId);
-    }
-
-    @DELETE
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Path("/deleteAll")
-    public void deleteAll() {
-        service.deleteAll();
+        if (userId.equals("*")) {
+            service.deleteAll();
+        } else {
+            service.deleteUser(userId);
+        }
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped
