@@ -13,7 +13,7 @@ public class UserGroup extends PermissionSubject {
     @JoinTable(name = "group_contains_user",
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private List<User> users = new ArrayList<User>();
 
     public UserGroup() {

@@ -62,22 +62,26 @@ public class DocumentTest {
 
     }
 
-    //Useless again, you will not have option on frontend to create Document AND Group at the same time
-//    @Test
-//    public void testPersistCascade() {
-//        Document document = new Document("document", "content", null);
-//        ArrayList<DocumentGroup> groups = new ArrayList<>();
-//        groups.add(new DocumentGroup("newGroup", "desc"));
-//        document.setContainingGroups(groups);
-//        document.setOwner(new User("userName", UserRoleEnum.GUEST));
-//        em.persist(document);
-//
-//        Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
-//        Assert.assertEquals(1, dbDocument.getContainingGroups().size());
-//        Assert.assertEquals("newGroup", dbDocument.getContainingGroups().get(0).getName());
-//        Assert.assertEquals(1, dbDocument.getOwner().getOwnDocuments().size());
-//        Assert.assertEquals("userName", dbDocument.getOwner().getName());
-//    }
+    @Test
+    public void testPersistCascade() {
+        Document document = new Document("document", "content", null);
+        DocumentGroup dg = new DocumentGroup("newGroup", "desc");
+        em.persist(dg);
+        ArrayList<DocumentGroup> groups = new ArrayList<>();
+        groups.add(dg);
+        document.setContainingGroups(groups);
+        User user = new User("userName", UserRoleEnum.GUEST);
+        em.persist(user);
+        document.setOwner(user);
+        em.merge(document);
+
+        Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
+        Assert.assertEquals(1, dbDocument.getContainingGroups().size());
+        Assert.assertEquals("newGroup", dbDocument.getContainingGroups().get(0).getName());
+        Assert.assertEquals("newGroup", dbDocument.getGroupNames());
+        Assert.assertEquals(1, dbDocument.getOwner().getOwnDocuments().size());
+        Assert.assertEquals("userName", dbDocument.getOwner().getName());
+    }
 
     //Dont need it anymore, because you have to create a Group or User first, just after you can create a document for them
 //    @Test
@@ -147,7 +151,9 @@ public class DocumentTest {
     public void deleteDocumentButOwnerAndDocumentGroupExists() {
         Document document = new Document("document", "content", null);
         ArrayList<DocumentGroup> groups = new ArrayList<>();
-        groups.add(new DocumentGroup("deleteDocumentButOwnerAndDocumentGroupExists", "desc"));
+        DocumentGroup dg=new DocumentGroup("deleteDocumentButOwnerAndDocumentGroupExists", "desc");
+        em.persist(dg);
+        groups.add(dg);
         document.setContainingGroups(groups);
         em.persist(document);
         User user = new User("deleteDocumentButOwnerAndDocumentGroupExists", UserRoleEnum.GUEST);

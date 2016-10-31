@@ -59,7 +59,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersistFileVersion() {
-        FileVersion version = new FileVersion("",new byte[]{2, 3, 4});
+        FileVersion version = new FileVersion("", new byte[]{2, 3, 4});
         em.persist(version);
         FileVersion dbVersion = em.createQuery("select v from FileVersion v", FileVersion.class).getSingleResult();
         byte[] b = new byte[]{2};
@@ -72,7 +72,7 @@ public class FileAndFileVersionTest {
         File file = new File("file", doc);
         em.persist(file);
 
-        FileVersion version = new FileVersion(file.getId(),new byte[]{2, 3, 4});
+        FileVersion version = new FileVersion(file.getId(), new byte[]{2, 3, 4});
         FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
 
         FileVersion dbVersion = em.createQuery("select v from FileVersion v", FileVersion.class).getSingleResult();
@@ -86,11 +86,11 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testAddSecondVersionsNumber() {
-        Document document = new Document("docName","content",null);
+        Document document = new Document("docName", "content", null);
         File file = new File("file", document);
         em.persist(file);
-        FileVersion version = new FileVersion(file.getId(),new byte[]{2, 3, 4});
-        FileVersion version2 = new FileVersion(file.getId(),new byte[]{5, 6, 7, 8});
+        FileVersion version = new FileVersion(file.getId(), new byte[]{2, 3, 4});
+        FileVersion version2 = new FileVersion(file.getId(), new byte[]{5, 6, 7, 8});
 
         FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
         FileVersionUtil.addVersionToFileAndPersistMerge(version2, em);
@@ -105,11 +105,10 @@ public class FileAndFileVersionTest {
         File file = new File("file", doc);
         em.persist(file);
 
-        FileVersion version = new FileVersion(file.getId(),new byte[]{2, 3, 4});
-        FileVersion version2 = new FileVersion(file.getId(),new byte[]{5, 6, 7, 8});
-
-        FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
-        FileVersionUtil.addVersionToFileAndPersistMerge(version2, em);
+        FileVersion version = new FileVersion(file.getId(), new byte[]{2, 3, 4});
+        FileVersion version2 = new FileVersion(file.getId(), new byte[]{5, 6, 7, 8});
+        file = FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
+        file = FileVersionUtil.addVersionToFileAndPersistMerge(version2, em);
 
         List<FileVersion> dbVersions = em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class).setParameter("id", file.getId()).getResultList();
         Assert.assertEquals(2, dbVersions.size());
@@ -120,7 +119,7 @@ public class FileAndFileVersionTest {
     @Test
     public void testFileSerializationToDb() {
         byte[] data = FileVersionUtil.createBinaryData("src/test/files/Kundera_GridFSTest.pdf");
-        FileVersion version = new FileVersion("",data);
+        FileVersion version = new FileVersion("", data);
         em.persist(version);
 
         FileVersion dbVersion = em.createQuery("select v from FileVersion v", FileVersion.class).getSingleResult();

@@ -18,16 +18,19 @@ public class Document {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
 
-    //todo implement json construction
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
+    @JsonIgnore
     private User owner;
 
     @JoinTable(name = "group_contains_document",
             joinColumns = @JoinColumn(name = "document_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JsonIgnore
     private List<DocumentGroup> containingGroups = new ArrayList<DocumentGroup>();
+
+    private String groupNames = "";
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootDocument", fetch = FetchType.EAGER)
     private List<File> files = new ArrayList<File>();
@@ -98,17 +101,36 @@ public class Document {
     //(JPA does not allows any other type than Collection, List... etc. so no wrapper class or observablecollections allowed)
     public boolean addDocumentGroup(DocumentGroup group) {
         this.modificationDate = new Date();
-        return this.containingGroups.add(group);
+        boolean result = this.containingGroups.add(group);
+        createGroupNames(this.containingGroups);
+        return result;
     }
 
     public boolean removeDocumentGroup(DocumentGroup group) {
         this.modificationDate = new Date();
-        return this.containingGroups.remove(group);
+        boolean result =  this.containingGroups.remove(group);
+        createGroupNames(this.containingGroups);
+        return result;
     }
 
     public void setContainingGroups(List<DocumentGroup> containingGroups) {
         this.containingGroups = containingGroups;
+        createGroupNames(this.containingGroups);
         this.modificationDate = new Date();
+    }
+
+    private void createGroupNames(List<DocumentGroup> groups) {
+        for (DocumentGroup group : groups) {
+            if (this.groupNames.isEmpty()) {
+                this.groupNames = group.getName();
+            } else {
+                this.groupNames += "," + group.getName();
+            }
+        }
+    }
+
+    public String getGroupNames() {
+        return groupNames;
     }
 
     @Override

@@ -16,7 +16,7 @@ public class File {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rootDocument", nullable = false)
-//    @JsonIgnore
+    @JsonIgnore
     //todo xml transient
     private Document rootDocument;
 

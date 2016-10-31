@@ -66,7 +66,6 @@ public class UserTest {
         user.setGroups(groups);
         em.merge(user);
 
-
         User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
         Assert.assertEquals(1, dbUser.getGroups().size());
         Assert.assertEquals("New Group Cascade", dbUser.getGroups().get(0).getName());
