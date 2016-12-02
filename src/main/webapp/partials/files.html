@@ -17,7 +17,8 @@
         <td class="text-left">{{ x.latestVersionNumber }}</td>
         <td>
             <input type="submit" class="deleteButton" value="Delete" ng-click="deleteFile(x.id)"/>
-            <input type="submit" class="downloadButton" value="Download" ng-click="downloadLatestVersion(x.id, x.name)"/>
+            <input type="submit" class="downloadButton" value="Download"
+                   ng-click="downloadLatestVersion(x.id, x.name)"/>
         </td>
     </tr>
     </tbody>
@@ -26,14 +27,18 @@
     <div class="title"><h1>Name</h1></div>
     <input type="text" ng-model="new.name">
     <div class="title"><h1>RootDocument</h1></div>
-    <select ng-model="new.rootDocument" ng-options="doc.name for doc in docs"/>
-    <br/><br/>
-    <!--I have no idea, why on earth it does not put new line-->
-    <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
-    <div class="title"><h1>FileVersionMessage</h1></div>
+    <select ng-model="new.rootDocument" ng-options="doc.name for doc in docs"></select>
+    <div>
+        <p></p>
+        <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
+    </div>
+    <div class="title"><h1>FileVersion</h1></div>
     <input type="file" file-model="myFile"/>
-    <div class="title"><h1>RootFileOfVersion</h1></div>
-    <select ng-model="newVersion.rootFileId" ng-options="file.id as file.name for file in files"/>
-    <input type="submit" class="saveButton" value="SaveVersionUpload" ng-click="uploadFile()"/>
-    <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
+    <div class="title"><h1>RootFile_Of_Version</h1></div>
+    <select ng-model="newVersion.rootFileId" ng-options="file.id as file.name for file in files"></select>
+    <div>
+        <p></p>
+        <input type="submit" class="saveButton" value="SaveVersionUpload" ng-click="uploadFile()"/>
+        <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
+    </div>
 </div>

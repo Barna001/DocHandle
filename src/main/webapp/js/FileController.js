@@ -54,14 +54,6 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
         });
     }
 
-    //$scope.saveVersion = function () {
-    //    FileService.addNewVersionToFile($scope.newVersion, $scope.versionMessage).then(function () {
-    //    }, function (response) {
-    //        $scope.error = response;
-    //    });
-    //    $scope.init();
-    //}
-
     $scope.downloadLatestVersion = function (fileId, fileName) {
         console.log("A fájl id-ja:"+fileId);
         FileService.downloadLatestVersion(fileId).then(function(data){

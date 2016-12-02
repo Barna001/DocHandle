@@ -6,23 +6,22 @@
     <tr>
         <th class="text-left">Name</th>
         <th class="text-left">Users in this group</th>
+        <th class="text-left">Options</th>
     </tr>
     </thead>
     <tbody class="table-hover">
     <tr ng-repeat="x in groups">
         <td class="text-left">{{ x.name }}</td>
         <td class="text-left">{{ x.users.length }}</td>
+        <td><input type="submit" class="deleteButton" value="Delete" ng-click="deleteGroup(x.id)"/></td>
     </tr>
     </tbody>
 </table>
 <div align="center">
     <div class="title"><h1>Name</h1></div>
     <input type="text" ng-model="new.name">
-    <!--<div class="title"><h1>Role</h1></div>-->
-    <!--<select ng-model="new.role" ng-options="role for role in roles"/>-->
-    <!--<br/><br/>-->
-    <!--&lt;!&ndash;I have no idea, why on earth it does not put new line&ndash;&gt;-->
-    <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
-    <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
-    <!--todo add users-->
+    <div style="padding-top: 20px">
+        <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
+        <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
+    </div>
 </div>

@@ -33,6 +33,11 @@ public class DocumentGroupService {
         em.persist(group);
     }
 
+    public static void deleteGroup(String id) {
+        String query = "delete from DocumentGroup dg where dg.id=:id";
+        em.createQuery(query).setParameter("id", id).executeUpdate();
+    }
+
     public static void deleteAll() {
         String query = "delete from DocumentGroup";
         em.createQuery(query).executeUpdate();

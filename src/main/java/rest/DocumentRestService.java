@@ -35,14 +35,12 @@ public class DocumentRestService {
     }
 
     @GET
-    @Path("/all")
     public String getAllDocs() throws IOException {
         Object docs = service.getAllDocuments();
         return ow.writeValueAsString(docs);
     }
 
     @POST
-    @Path("/new")
     public void addNewDoc(Document document) {
         service.addDocument(document);
     }

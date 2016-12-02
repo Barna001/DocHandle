@@ -23,10 +23,12 @@ public class Document {
     @JsonIgnore
     private User owner;
 
+    private String ownerName;
+
     @JoinTable(name = "group_contains_document",
             joinColumns = @JoinColumn(name = "document_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DocumentGroup> containingGroups = new ArrayList<DocumentGroup>();
 
@@ -42,6 +44,7 @@ public class Document {
 
     public Document(String name, String content, User owner) {
         this.owner = owner;
+        this.ownerName = owner.getName();
         this.name = name;
         this.content = content;
         this.creationDate = new Date();
@@ -132,6 +135,8 @@ public class Document {
     public String getGroupNames() {
         return groupNames;
     }
+
+    public String getOwnerName() { return ownerName; }
 
     @Override
     public String toString() {

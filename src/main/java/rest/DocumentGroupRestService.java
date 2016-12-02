@@ -34,7 +34,6 @@ public class DocumentGroupRestService {
     }
 
     @GET
-    @Path("/all")
     public String getAllDocumentGroups() throws IOException {
         Object groups = service.getAllDocumentGroups();
         return ow.writeValueAsString(groups);
@@ -49,7 +48,6 @@ public class DocumentGroupRestService {
     }
 
     @POST
-    @Path("/new")
     public void addNewDocumentGroup(DocumentGroup dg) {
         service.addGroup(dg);
     }
@@ -60,6 +58,7 @@ public class DocumentGroupRestService {
         if (docGroupId.equals("*")) {
             service.deleteAll();
         } else {
+            service.deleteGroup(docGroupId);
         }
     }
 
