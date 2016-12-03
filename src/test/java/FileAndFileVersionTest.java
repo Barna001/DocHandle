@@ -1,8 +1,6 @@
 import databaseQuerries.FileVersionUtil;
 import org.junit.*;
-import pojo.Document;
-import pojo.File;
-import pojo.FileVersion;
+import pojo.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -32,7 +30,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testCreation() {
-        Document doc = new Document("doc", "content", null);
+        Document doc = new Document("doc", "content", new User("Barna", UserRoleEnum.ADMIN));
         File file = new File("file", doc);
         Assert.assertEquals("file", file.getName());
         Assert.assertEquals("content", file.getRootDocument().getContent());
@@ -40,7 +38,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersist() {
-        Document doc = new Document("doc", "content", null);
+        Document doc = new Document("doc", "content", new User("Barna", UserRoleEnum.ADMIN));
         File file = new File("file", doc);
         em.persist(file);
         File dbFile = em.createQuery("select f from File f", File.class).getSingleResult();
@@ -49,7 +47,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersistWithDocument() {
-        Document doc = new Document("doc", "cont", null);
+        Document doc = new Document("doc", "cont", new User("Barna", UserRoleEnum.ADMIN));
         File file = new File("file", doc);
         em.persist(doc);
         em.persist(file);
@@ -68,7 +66,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersistWithVersion() {
-        Document doc = new Document("doc", "content", null);
+        Document doc = new Document("doc", "content", new User("Barna", UserRoleEnum.ADMIN));
         File file = new File("file", doc);
         em.persist(file);
 
@@ -86,7 +84,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testAddSecondVersionsNumber() {
-        Document document = new Document("docName", "content", null);
+        Document document = new Document("docName", "content", new User("Barna", UserRoleEnum.ADMIN));
         File file = new File("file", document);
         em.persist(file);
         FileVersion version = new FileVersion(file.getId(), new byte[]{2, 3, 4});
@@ -101,7 +99,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testFindLatestVersionOfFile() {
-        Document doc = new Document("doc", "content", null);
+        Document doc = new Document("doc", "content", new User("Barna", UserRoleEnum.ADMIN));
         File file = new File("file", doc);
         em.persist(file);
 

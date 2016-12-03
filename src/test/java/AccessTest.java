@@ -32,7 +32,7 @@ public class AccessTest {
     @Test
     public void testCreation() throws InvalidAttributeValueException {
         User user = new User("Barna", UserRoleEnum.ADMIN);
-        Document doc = new Document("Doc", "content", null);
+        Document doc = new Document("Doc", "content", user);
         Access access = new Access(user, doc, AccessTypeEnum.DELETE, 1000);
         Assert.assertEquals("Barna", access.getWho().getName());
         Assert.assertEquals("content", access.getWhat().getContent());
@@ -42,7 +42,7 @@ public class AccessTest {
     @Test
     public void testPersistWithUser() throws InvalidAttributeValueException {
         User user = new User("Barna", UserRoleEnum.ADMIN);
-        Document doc = new Document("Doc", "content", null);
+        Document doc = new Document("Doc", "content", user);
         em.persist(user);
         em.persist(doc);
 
@@ -59,7 +59,7 @@ public class AccessTest {
     @Test
     public void testPersistWithUserGroup() throws InvalidAttributeValueException {
         UserGroup group = new UserGroup("group");
-        Document doc = new Document("Doc", "content", null);
+        Document doc = new Document("Doc", "content", new User("username",UserRoleEnum.ADMIN));
         em.persist(group);
         em.persist(doc);
 
@@ -76,14 +76,14 @@ public class AccessTest {
     @Test(expected = InvalidAttributeValueException.class)
     public void testLessThanMinimumPrio() throws InvalidAttributeValueException {
         User user = new User("Barna", UserRoleEnum.ADMIN);
-        Document doc = new Document("Doc", "content", null);
+        Document doc = new Document("Doc", "content", user);
         Access access = new Access(user, doc, AccessTypeEnum.DELETE, 0);
     }
 
     @Test(expected = InvalidAttributeValueException.class)
     public void testMoreThanMaximumPrio() throws InvalidAttributeValueException {
         User user = new User("Barna", UserRoleEnum.ADMIN);
-        Document doc = new Document("Doc", "content", null);
+        Document doc = new Document("Doc", "content", user);
         Access access = new Access(user, doc, AccessTypeEnum.DELETE, 10001);
     }
 
