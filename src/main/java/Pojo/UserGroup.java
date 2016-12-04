@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table
+//@Table
 @DiscriminatorValue("GROUP")
 public class UserGroup extends PermissionSubject {
 

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table
+//@Table
 @DiscriminatorValue("USER")
 public class User extends PermissionSubject {
 

@@ -14,13 +14,17 @@ import java.util.List;
 public class main {
     public static void main(String[] args) throws IOException, InvalidAttributeValueException {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+        EntityManagerFactory emf= Util.getFactory();
         EntityManager em = emf.createEntityManager();
+        System.out.println(em.getClass());
 
-        deleteAll(em);
-
-        User me = new User("Barna", UserRoleEnum.SUPER_ADMIN);
-        em.persist(me);
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+//        EntityManager em = emf.createEntityManager();
+//
+//        deleteAll(em);
+//
+//        User me = new User("Barna", UserRoleEnum.SUPER_ADMIN);
+//        em.persist(me);
 
 
 //        group.getUsers().add(me);
@@ -57,8 +61,8 @@ public class main {
 //        }
 //        System.out.println("Ezekhez a doksikhoz fér hozzá:\n"+sb.toString());
 
-        em.close();
-        emf.close();
+//        em.close();
+//        emf.close();
         System.in.read();
     }
 

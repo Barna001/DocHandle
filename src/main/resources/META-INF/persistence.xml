@@ -16,6 +16,27 @@
                       value="com.impetus.client.mongodb.MongoDBClientFactory" />
         </properties>
     </persistence-unit>
+    <!-- The MsSQL application uses this unit -->
+    <!--<persistence-unit name="mssql_pu" transaction-type="RESOURCE_LOCAL">-->
+        <!--<class>pojo.Access</class>-->
+        <!--<class>pojo.AccessTypeEnum</class>-->
+        <!--<class>pojo.Document</class>-->
+        <!--<class>pojo.DocumentGroup</class>-->
+        <!--<class>pojo.File</class>-->
+        <!--<class>pojo.FileVersion</class>-->
+        <!--<class>pojo.GroupAccess</class>-->
+        <!--<class>pojo.GroupAccessTypeEnum</class>-->
+        <!--<class>pojo.PermissionSubject</class>-->
+        <!--<class>pojo.User</class>-->
+        <!--<class>pojo.UserGroup</class>-->
+        <!--<class>pojo.UserRoleEnum</class>-->
+        <!--<properties>-->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=DocHandle"/>-->
+            <!--<property name="javax.persistence.jdbc.user" value="Doc"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value="qwe123"/>-->
+            <!--<property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>-->
+        <!--</properties>-->
+    <!--</persistence-unit>-->
     <!-- The tests use this unit and collection-->
     <persistence-unit name="test_pu">
         <provider>com.impetus.kundera.KunderaPersistence</provider>
