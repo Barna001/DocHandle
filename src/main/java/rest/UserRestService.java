@@ -22,28 +22,20 @@ public class UserRestService {
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @GET
-    @Path("/defaultUser")
-    public String getDefaultUserInJSON() throws IOException {
-        Object user = service.getDefaultUser();
-        return ow.writeValueAsString(user);
-    }
-
-    @GET
-    @Path("/userById")
+    @Path("/id")
     public String getUserById(@QueryParam("id") String id) throws IOException {
         Object user = service.getUserById(id);
         return ow.writeValueAsString(user);
     }
 
     @GET
-    @Path("/userByName")
+    @Path("/name")
     public String getUserByName(@QueryParam("name") String name) throws IOException {
         Object user = service.getUserByName(name);
         return ow.writeValueAsString(user);
     }
 
     @GET
-    @Path("/all")
     public String getAllUsers() throws IOException {
         Object users = service.getAllUsers();
         return ow.writeValueAsString(users);
@@ -73,7 +65,6 @@ public class UserRestService {
     }
 
     @POST
-    @Path("/new")
     public void addNewUser(User user) {
         service.addUser(user);
     }

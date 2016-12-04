@@ -1,10 +1,13 @@
 package service;
 
 import pojo.Document;
+import pojo.DocumentGroup;
+import pojo.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +32,16 @@ public class DocumentService {
     }
 
     public static void addDocument(Document document) {
-        em.persist(document);
+        Document docToDb = new Document(document.getName(),document.getContent(),document.getOwner());
+        List<DocumentGroup> groups = new ArrayList<>();
+        for (DocumentGroup documentGroup : document.getContainingGroups()) {
+            DocumentGroup ddb=em.find(DocumentGroup.class, documentGroup.getId());
+            groups.add(ddb);
+        }
+        docToDb.setContainingGroups(groups);
+        User udb = em.find(User.class, docToDb.getOwner().getId());
+        docToDb.setOwner(udb);
+        em.merge(docToDb);
     }
 
     public void deleteDocumentById(String id) {

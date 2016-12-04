@@ -1,6 +1,8 @@
 import org.junit.*;
 import pojo.Document;
 import pojo.DocumentGroup;
+import pojo.User;
+import pojo.UserRoleEnum;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +27,7 @@ public class DocumentGroupTest {
     public void deleteAll() {
         em = emf.createEntityManager();
         em.createQuery("delete from Document ").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
+//        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup ").executeUpdate();
     }
 
@@ -33,7 +35,7 @@ public class DocumentGroupTest {
     public void testCreation() {
         DocumentGroup documentGroup = new DocumentGroup("group", "description");
         documentGroup.setDocuments(new ArrayList<Document>() {{
-            add(new Document("doc", "cont", null));
+            add(new Document("doc", "cont", new User("Barna", UserRoleEnum.ADMIN)));
         }});
         Assert.assertEquals("group", documentGroup.getName());
         Assert.assertEquals("description", documentGroup.getDescription());
@@ -43,7 +45,7 @@ public class DocumentGroupTest {
     @Test
     public void TestPersist() {
         DocumentGroup docGroup = new DocumentGroup("groupPersist", "descPersist");
-        em.persist(docGroup);
+        em.merge(docGroup);
 
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals("groupPersist", dbDocGroup.getName());
@@ -54,16 +56,16 @@ public class DocumentGroupTest {
     public void testPersistCascadeDocument() {
         DocumentGroup docGroup = new DocumentGroup("groupPersist", "descPersist");
         List<Document> list = new ArrayList<>();
-        list.add(new Document("doc", "cont", null));
+        list.add(new Document("doc", "cont", new User("Barna", UserRoleEnum.ADMIN)));
         docGroup.setDocuments(list);
-        em.persist(docGroup);
+        em.merge(docGroup);
 
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals(1, dbDocGroup.getDocuments().size());
         Document dbDocument = dbDocGroup.getDocuments().get(0);
         Assert.assertEquals("doc", dbDocument.getName());
         Assert.assertEquals("cont", dbDocument.getContent());
-        Assert.assertNull(dbDocument.getOwner());
+        Assert.assertEquals("Barna",dbDocument.getOwner().getName());
     }
 
 
@@ -71,9 +73,9 @@ public class DocumentGroupTest {
     public void testPersistCascadeDocumentBidirectionally() {
         DocumentGroup docGroup = new DocumentGroup("groupPersist", "descPersist");
         List<Document> list = new ArrayList<>();
-        list.add(new Document("doc", "cont", null));
+        list.add(new Document("doc", "cont", new User("Barna", UserRoleEnum.ADMIN)));
         docGroup.setDocuments(list);
-        em.persist(docGroup);
+        em.merge(docGroup);
 
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         DocumentGroup documentContainingGroup = dbDocGroup.getDocuments().get(0).getContainingGroups().get(0);
@@ -83,13 +85,13 @@ public class DocumentGroupTest {
 
     @Test
     public void testDocumentAlreadyPersistedAndItIsPutInNewGroup() {
-        Document doc = new Document("docName", "docCont", null);
-        em.persist(doc);
+        Document doc = new Document("docName", "docCont", new User("Barna", UserRoleEnum.ADMIN));
+        em.merge(doc);
 
 
         DocumentGroup group = new DocumentGroup("docGroup", "docDescr");
         group.getDocuments().add(doc);
-        em.persist(group);
+        em.merge(group);
 
 
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();

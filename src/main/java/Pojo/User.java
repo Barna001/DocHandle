@@ -12,7 +12,7 @@ import java.util.List;
 @DiscriminatorValue("USER")
 public class User extends PermissionSubject {
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "owner", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "owner", fetch = FetchType.LAZY)
     private List<Document> ownDocuments = new ArrayList<Document>();
 
     private UserRoleEnum role;

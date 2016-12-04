@@ -34,6 +34,11 @@ public class UserGroupService {
         em.persist(group);
     }
 
+    public static void deleteGroup(String id) {
+        String query = "delete from UserGroup ug where ug.id=:id";
+        em.createQuery(query).setParameter("id", id).executeUpdate();
+    }
+
     public static void deleteAll() {
         String query = "delete from UserGroup";
         em.createQuery(query).executeUpdate();
@@ -43,4 +48,5 @@ public class UserGroupService {
         em.close();
         emf.close();
     }
+
 }

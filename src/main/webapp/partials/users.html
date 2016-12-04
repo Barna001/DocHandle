@@ -29,9 +29,9 @@
     <div class="title"><h1>Groups(CTRL+click for multiple selection)</h1></div>
     <select id="groupSelection" multiple="true" ng-model="new.groups"
             ng-options="group.name for group in groups"></select>
-
     <div>
         <p></p>
         <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
         <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
     </div>
+</div>

@@ -95,7 +95,7 @@ public class UserTest {
         User user = new User("Barna", UserRoleEnum.ADMIN);
         Document document = new Document("OwnedByBarna", "simple doc", user);
         user.getOwnDocuments().add(document);
-        em.persist(user);
+        em.merge(user);
 
         List<Document> dbDocuments = em.createQuery("select u from User u", User.class).getSingleResult().getOwnDocuments();
         Assert.assertEquals(1, dbDocuments.size());

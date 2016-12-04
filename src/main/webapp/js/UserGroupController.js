@@ -26,6 +26,14 @@ angular.module('docHandler.controllers').controller('UserGroupController', ['$sc
         });
     }
 
+    $scope.deleteGroup = function (id) {
+        UserGroupService.deleteGroup(id).then(function () {
+            $scope.initGroups();
+        }, function (response) {
+            $scope.error = response;
+        });
+    }
+
     $scope.deleteAll = function () {
         UserGroupService.deleteAll().then(function () {
             $scope.initGroups();

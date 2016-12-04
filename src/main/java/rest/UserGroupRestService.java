@@ -35,7 +35,6 @@ public class UserGroupRestService {
     }
 
     @GET
-    @Path("/all")
     public String getAllUserGroups() throws IOException {
         Object groups = service.getAllUserGroups();
         return ow.writeValueAsString(groups);
@@ -50,7 +49,6 @@ public class UserGroupRestService {
     }
 
     @POST
-    @Path("/new")
     public void addNewUserGroup(UserGroup group) {
         service.addGroup(group);
     }
@@ -61,6 +59,7 @@ public class UserGroupRestService {
         if (userGroupId.equals("*")) {
             service.deleteAll();
         } else {
+            service.deleteGroup(userGroupId);
         }
     }
 

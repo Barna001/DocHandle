@@ -35,7 +35,7 @@ public class DocumentTest {
 
     @Test
     public void testCreation() {
-        Document document = new Document("document", "content", null);
+        Document document = new Document("document", "content", new User("Barna", UserRoleEnum.ADMIN));
         document.setContainingGroups(new ArrayList<DocumentGroup>() {{
             add(new DocumentGroup("newGroup", "groupDescription"));
         }});
@@ -49,7 +49,7 @@ public class DocumentTest {
 
     @Test
     public void testPersist() {
-        Document document = new Document("document", "content", null);
+        Document document = new Document("document", "content", new User("Barna", UserRoleEnum.ADMIN));
         ArrayList<DocumentGroup> groups = new ArrayList<>();
         groups.add(new DocumentGroup("newGroup", "desc"));
         document.setContainingGroups(groups);
@@ -64,7 +64,7 @@ public class DocumentTest {
 
     @Test
     public void testPersistCascade() {
-        Document document = new Document("document", "content", null);
+        Document document = new Document("document", "content", new User("Barna", UserRoleEnum.ADMIN));
         DocumentGroup dg = new DocumentGroup("newGroup", "desc");
         em.persist(dg);
         ArrayList<DocumentGroup> groups = new ArrayList<>();
@@ -149,7 +149,7 @@ public class DocumentTest {
 
     @Test
     public void deleteDocumentButOwnerAndDocumentGroupExists() {
-        Document document = new Document("document", "content", null);
+        Document document = new Document("document", "content", new User("Barna", UserRoleEnum.ADMIN));
         ArrayList<DocumentGroup> groups = new ArrayList<>();
         DocumentGroup dg=new DocumentGroup("deleteDocumentButOwnerAndDocumentGroupExists", "desc");
         em.persist(dg);
@@ -170,13 +170,13 @@ public class DocumentTest {
 
     @Test
     public void testModificationDateEqualsCreationDateAfterConstruct() {
-        Document document = new Document("document", "content", null);
+        Document document = new Document("document", "content", new User("Barna", UserRoleEnum.ADMIN));
         Assert.assertEquals(document.getCreationDate().toString(), document.getModificationDate().toString());
     }
 
     @Test
     public void testModificationDateIsDifferentFromCreationDateAfterModif() {
-        Document document = new Document("document", "content", null);
+        Document document = new Document("document", "content", new User("Barna", UserRoleEnum.ADMIN));
         try {
             Thread.sleep(2000);//this is important, because commands below run under 1 sec, and Date would be the same
         } catch (InterruptedException e) {

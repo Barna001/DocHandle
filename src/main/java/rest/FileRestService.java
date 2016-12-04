@@ -46,7 +46,6 @@ public class FileRestService {
     //// TODO: 2016.05.24. kézzel össze kellene fűzni a json-t, és azt visszaadni, abba bele lehet tenni a rootdoc nevét és id-ját,
     //// egyenlőre csak ki van kapcsolva a jsonösítés a rootDocument változóra
     @GET
-    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String getAllFiles() throws IOException {
@@ -83,7 +82,6 @@ public class FileRestService {
     }
 
     @POST
-    @Path("/new")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public void addNewFile(File file) {
@@ -105,19 +103,6 @@ public class FileRestService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public void addNewVersionToFile(FileVersion version) {
-        service.addVersionToFile(version);
-    }
-
-    @POST
-    @Path("/addNewVersionString/{str}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void addNewVersionToFileString(FileVersion version, @PathParam("str") String str) {
-        try {
-            version.setData(str.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
         service.addVersionToFile(version);
     }
 

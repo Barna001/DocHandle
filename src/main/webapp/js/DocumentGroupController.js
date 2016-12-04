@@ -31,6 +31,14 @@ angular.module('docHandler.controllers').controller('DocumentGroupController', [
         });
     }
 
+    $scope.deleteGroup = function (id) {
+        DocumentGroupService.deleteGroup(id).then(function () {
+            $scope.init();
+        }, function (response) {
+            $scope.error = response;
+        });
+    }
+
     $scope.deleteAll = function () {
         DocumentGroupService.deleteAll().then(function () {
             $scope.init();
