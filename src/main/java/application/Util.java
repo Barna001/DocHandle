@@ -11,9 +11,14 @@ import java.io.IOException;
  * Created by Barna on 2016.11.26..
  */
 public class Util {
+
+    private static Config config = new Config();
+
     private static Config readConfig() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        Config config = mapper.readValue(new File("config.json"), Config.class);
+//        ObjectMapper mapper = new ObjectMapper();
+//        Config config = mapper.readValue(new File("config.json"), Config.class);
+//        return config;
+        config.isModeInMongo=false;
         return config;
     }
 
@@ -28,6 +33,7 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Error with EntityManagerFactory loading, return null");
         return null;
     }
 
@@ -42,6 +48,7 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Error with EntityManagerFactory loading, return null");
         return null;
     }
 

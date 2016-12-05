@@ -1,5 +1,6 @@
 package service;
 
+import application.Util;
 import databaseQuerries.FileVersionUtil;
 import pojo.File;
 import pojo.FileVersion;
@@ -13,7 +14,7 @@ import java.util.List;
  * Created by BB on 2016.05.22..
  */
 public class FileService {
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+    private static EntityManagerFactory emf = Util.getFactory();
     private static EntityManager em = emf.createEntityManager();
 
     public static File getFileById(String id) {
@@ -46,7 +47,7 @@ public class FileService {
 
     public static FileVersion getLatestVersion(String fileId) {
         File file = em.find(File.class, fileId);
-        String versionId = file.getLatestVersionId();
+        int versionId = file.getLatestVersionId();
         return em.find(FileVersion.class, versionId);
     }
 

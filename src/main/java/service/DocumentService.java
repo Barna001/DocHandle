@@ -1,11 +1,13 @@
 package service;
 
+import application.Util;
 import pojo.Document;
 import pojo.DocumentGroup;
 import pojo.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +16,9 @@ import java.util.List;
  * Created by BB on 2016.05.22..
  */
 public class DocumentService {
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+    private static EntityManagerFactory emf = Util.getFactory();
     private static EntityManager em = emf.createEntityManager();
+    private static EntityTransaction transaction = em.getTransaction();
 
     public static Document getDocumentById(String id) {
         return em.find(Document.class, id);
@@ -32,6 +35,7 @@ public class DocumentService {
     }
 
     public static void addDocument(Document document) {
+        transaction.begin();
         Document docToDb = new Document(document.getName(),document.getContent(),document.getOwner());
         List<DocumentGroup> groups = new ArrayList<>();
         for (DocumentGroup documentGroup : document.getContainingGroups()) {
@@ -42,16 +46,21 @@ public class DocumentService {
         User udb = em.find(User.class, docToDb.getOwner().getId());
         docToDb.setOwner(udb);
         em.merge(docToDb);
+        transaction.commit();
     }
 
     public void deleteDocumentById(String id) {
+        transaction.begin();
         String query = "delete from Document d where d.id=:id";
         em.createQuery(query).setParameter("id", id).executeUpdate();
+        transaction.commit();
     }
 
     public static void deleteAll() {
+        transaction.begin();
         String query = "delete from Document";
         em.createQuery(query).executeUpdate();
+        transaction.commit();
     }
 
     public static void closeAll() {

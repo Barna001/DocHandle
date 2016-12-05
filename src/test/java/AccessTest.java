@@ -1,9 +1,11 @@
+import application.Util;
 import org.junit.*;
 import pojo.*;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
@@ -13,20 +15,25 @@ public class AccessTest {
 
     private static EntityManagerFactory emf;
     private EntityManager em;
+    EntityTransaction transaction;
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory("test_pu");
+        emf = Util.getTestFactory();
     }
 
     @Before
     public void deleteAll() {
         em = emf.createEntityManager();
+        transaction = em.getTransaction();
+        transaction.begin();
+        em.createQuery("delete from Access ").executeUpdate();
         em.createQuery("delete from Document ").executeUpdate();
+        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
-        em.createQuery("delete from Access ").executeUpdate();
+        transaction.commit();
+        transaction.begin();
     }
 
     @Test
@@ -45,10 +52,12 @@ public class AccessTest {
         Document doc = new Document("Doc", "content", user);
         em.persist(user);
         em.persist(doc);
-
+        transaction.commit();
+        transaction.begin();
         Access access = new Access(user, doc, AccessTypeEnum.DELETE, 1000);
         em.persist(access);
-
+        transaction.commit();
+        transaction.begin();
         Access dbAccess = em.createQuery("select a from Access a", Access.class).getSingleResult();
         Assert.assertEquals("Barna", dbAccess.getWho().getName());
         Assert.assertEquals("Doc", dbAccess.getWhat().getName());
@@ -59,13 +68,17 @@ public class AccessTest {
     @Test
     public void testPersistWithUserGroup() throws InvalidAttributeValueException {
         UserGroup group = new UserGroup("group");
-        Document doc = new Document("Doc", "content", new User("username",UserRoleEnum.ADMIN));
+        User user = new User("username",UserRoleEnum.ADMIN);
+        Document doc = new Document("Doc", "content", user);
         em.persist(group);
+        em.persist(user);
         em.persist(doc);
-
+        transaction.commit();
+        transaction.begin();
         Access access = new Access(group, doc, AccessTypeEnum.DENY, 1);
         em.persist(access);
-
+        transaction.commit();
+        transaction.begin();
         Access dbAccess = em.createQuery("select a from Access a", Access.class).getSingleResult();
         Assert.assertEquals("group", dbAccess.getWho().getName());
         Assert.assertEquals("Doc", dbAccess.getWhat().getName());
@@ -89,6 +102,7 @@ public class AccessTest {
 
     @After
     public void tearDown() throws Exception {
+        transaction.commit();
         em.close();
     }
 

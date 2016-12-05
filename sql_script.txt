@@ -22,6 +22,51 @@ create table [PermissionSubject] (
 	id int identity primary key,
 	name nvarchar(20),
 	subject_type nvarchar(20),
-	role nvarchar(20),
-
+	role nvarchar(20)
 )
+
+create table [group_contains_user](
+	user_id int,
+	group_id int
+)
+alter table [group_contains_user] add constraint usergroup_join foreign key (group_id) references [PermissionSubject](id)
+alter table [group_contains_user] add constraint user_join foreign key (user_id) references [PermissionSubject](id)
+
+alter table [Document] add constraint owner_join foreign key (owner) references [PermissionSubject](id)
+
+create table [Access](
+	id int identity primary key,
+	who int,
+	what int,
+	type nvarchar(20),
+	priority int
+)
+alter table [Access] add constraint who_join foreign key (who) references [PermissionSubject](id)
+alter table [Access] add constraint what_join foreign key (what) references [Document](id)
+
+create table [GroupAccess](
+	id int identity primary key,
+	who int,
+	what int,
+	type nvarchar(20),
+	priority int
+)
+alter table [GroupAccess] add constraint group_who_join foreign key (who) references [PermissionSubject](id)
+alter table [GroupAccess] add constraint gropu_what_join foreign key (what) references [DocumentGroup](id)
+
+create table [File](
+	id int identity primary key,
+	name nvarchar(20),
+	rootDocument int,
+	latestVersionNumber int,
+	latestVersionId int
+)
+alter table [File] add constraint root_doc_join foreign key (rootDocument) references [Document](id)
+
+create table [FileVersion](
+	id int identity primary key,
+	rootFileId int,
+	versionNumber int
+)
+alter table [FileVersion] add constraint root_file_join foreign key (rootFileId) references [File](id)
+alter table [File] add constraint latest_version_join foreign key (latestVersionId) references [Fileversion](id)

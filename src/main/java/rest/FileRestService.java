@@ -109,7 +109,7 @@ public class FileRestService {
     @POST
     @Path("/addNewVersionFile")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @QueryParam("fileId") String rootId) throws IOException {
+    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @QueryParam("fileId") int rootId) throws IOException {
         FileVersion version = new FileVersion(rootId, null);
         try {
             byte[] byteData = IOUtils.toByteArray(fileData);

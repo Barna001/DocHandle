@@ -6,17 +6,22 @@ import javax.persistence.*;
 @Entity
 public class Access {
 
+    @Transient
     public static final int minimumPriority = 1;
+    @Transient
     public static final int maximumPriority = 10000;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "who")
     private PermissionSubject who;//todo index
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "what")
     private pojo.Document what;
 
     private AccessTypeEnum type;
@@ -36,11 +41,11 @@ public class Access {
         }
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

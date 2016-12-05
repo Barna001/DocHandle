@@ -1,9 +1,11 @@
+import application.Util;
 import databaseQuerries.FileVersionUtil;
 import org.junit.*;
 import pojo.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -14,18 +16,24 @@ import java.util.List;
 public class FileAndFileVersionTest {
     private static EntityManagerFactory emf;
     private EntityManager em;
+    EntityTransaction transaction;
+
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory("test_pu");
+        emf = Util.getTestFactory();
     }
 
     @Before
     public void deleteAll() {
         em = emf.createEntityManager();
+        transaction = em.getTransaction();
+        transaction.begin();
         em.createQuery("delete from File").executeUpdate();
         em.createQuery("delete from Document").executeUpdate();
         em.createQuery("delete from FileVersion").executeUpdate();
+        transaction.commit();
+        transaction.begin();
     }
 
     @Test
@@ -57,7 +65,8 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersistFileVersion() {
-        FileVersion version = new FileVersion("", new byte[]{2, 3, 4});
+//        FileVersion version = new FileVersion("", new byte[]{2, 3, 4});
+        FileVersion version = new FileVersion(0, new byte[]{2, 3, 4});
         em.persist(version);
         FileVersion dbVersion = em.createQuery("select v from FileVersion v", FileVersion.class).getSingleResult();
         byte[] b = new byte[]{2};
@@ -117,7 +126,8 @@ public class FileAndFileVersionTest {
     @Test
     public void testFileSerializationToDb() {
         byte[] data = FileVersionUtil.createBinaryData("src/test/files/Kundera_GridFSTest.pdf");
-        FileVersion version = new FileVersion("", data);
+//        FileVersion version = new FileVersion("", data);
+        FileVersion version = new FileVersion(0, data);
         em.persist(version);
 
         FileVersion dbVersion = em.createQuery("select v from FileVersion v", FileVersion.class).getSingleResult();
@@ -126,6 +136,7 @@ public class FileAndFileVersionTest {
 
     @After
     public void tearDown() throws Exception {
+        transaction.commit();
         em.close();
     }
 

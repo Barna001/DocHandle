@@ -1,20 +1,23 @@
 package service;
 
 
+import application.Util;
 import pojo.Document;
 import pojo.User;
 import pojo.UserGroup;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
 
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+    private static EntityManagerFactory emf = Util.getFactory();
     private static EntityManager em = emf.createEntityManager();
+    private static EntityTransaction transaction = em.getTransaction();
 
     public static User getDefaultUser() {
         User user = new User();
@@ -37,6 +40,7 @@ public class UserService {
     }
 
     public static void addUser(User user) {
+        transaction.begin();
         User userToDb = new User(user.getName(), user.getRole());
         List<UserGroup> groups = new ArrayList<>();
         for (UserGroup userGroup : user.getGroups()) {
@@ -45,16 +49,21 @@ public class UserService {
         }
         userToDb.setGroups(groups);
         em.merge(userToDb);
+        transaction.commit();
     }
 
     public static void deleteUser(String userId) {
+        transaction.begin();
         String query = "delete from User u where u.id=:id";
         em.createQuery(query).setParameter("id", userId).executeUpdate();
+        transaction.commit();
     }
 
     public static void deleteAll() {
+        transaction.begin();
         String query = "delete from User";
         em.createQuery(query).executeUpdate();
+        transaction.commit();
     }
 
     public static void closeAll() {

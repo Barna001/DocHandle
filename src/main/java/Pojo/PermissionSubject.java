@@ -8,8 +8,9 @@ import javax.persistence.*;
 public abstract class PermissionSubject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected String id;
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int id;
     protected String name;
 
     public PermissionSubject() {
@@ -19,11 +20,11 @@ public abstract class PermissionSubject {
         this.name = name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

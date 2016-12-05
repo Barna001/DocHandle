@@ -1,9 +1,11 @@
+import application.Util;
 import org.junit.*;
 import pojo.*;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
@@ -13,20 +15,25 @@ public class GroupAccessTest {
 
     private static EntityManagerFactory emf;
     private EntityManager em;
+    EntityTransaction transaction;
+
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory("test_pu");
+        emf = Util.getTestFactory();
     }
 
     @Before
     public void deleteAll() {
         em = emf.createEntityManager();
+        transaction = em.getTransaction();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
         em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup").executeUpdate();
         em.createQuery("delete from GroupAccess ").executeUpdate();
+        transaction.commit();
+        transaction.begin();
     }
 
     @Test
@@ -90,6 +97,7 @@ public class GroupAccessTest {
 
     @After
     public void tearDown() throws Exception {
+        transaction.commit();
         em.close();
     }
 

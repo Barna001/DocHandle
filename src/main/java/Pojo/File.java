@@ -9,8 +9,9 @@ import javax.persistence.*;
 public class File {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private String name;
 
@@ -24,7 +25,7 @@ public class File {
     private String rootDocumentName;
 
     private int latestVersionNumber;
-    private String latestVersionId;
+    private int latestVersionId;
 
 
     public File() {
@@ -36,11 +37,11 @@ public class File {
         this.rootDocumentName = root.getName();
     }
 
-    public String getLatestVersionId() {
+    public int getLatestVersionId() {
         return latestVersionId;
     }
 
-    public void setLatestVersionId(String latestVersionId) {
+    public void setLatestVersionId(int latestVersionId) {
         this.latestVersionId = latestVersionId;
     }
 
@@ -52,11 +53,11 @@ public class File {
         this.latestVersionNumber = latestVersionNumber;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

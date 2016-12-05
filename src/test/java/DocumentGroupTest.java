@@ -19,6 +19,7 @@ public class DocumentGroupTest {
 
     private static EntityManagerFactory emf;
     private EntityManager em;
+    EntityTransaction transaction;
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
@@ -28,12 +29,13 @@ public class DocumentGroupTest {
     @Before
     public void deleteAll() {
         em = emf.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
+        transaction = em.getTransaction();
         transaction.begin();
-//        em.createQuery("delete from Document ").executeUpdate();
-//        em.createQuery("delete from PermissionSubject").executeUpdate();
+        em.createQuery("delete from Document ").executeUpdate();
+        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup ").executeUpdate();
         transaction.commit();
+        transaction.begin();
     }
 
     @Test
@@ -51,9 +53,7 @@ public class DocumentGroupTest {
     public void TestPersist() {
         DocumentGroup docGroup = new DocumentGroup("groupPersist", "descPersist");
         EntityTransaction tr = em.getTransaction();
-        tr.begin();
         em.merge(docGroup);
-        tr.commit();
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals("groupPersist", dbDocGroup.getName());
         Assert.assertEquals("descPersist", dbDocGroup.getDescription());
@@ -100,7 +100,6 @@ public class DocumentGroupTest {
         group.getDocuments().add(doc);
         em.merge(group);
 
-
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Document dbDoc = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals("docName", dbDocGroup.getDocuments().get(0).getName());
@@ -109,6 +108,7 @@ public class DocumentGroupTest {
 
     @After
     public void tearDown() throws Exception {
+        transaction.commit();
         em.close();
     }
 

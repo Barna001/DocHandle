@@ -1,13 +1,11 @@
+import application.Util;
 import org.junit.*;
 import pojo.Document;
 import pojo.DocumentGroup;
 import pojo.User;
 import pojo.UserRoleEnum;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,19 +16,24 @@ public class DocumentTest {
 
     private static EntityManagerFactory emf;
     private EntityManager em;
+    EntityTransaction transaction;
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory("test_pu");
+        emf = Util.getTestFactory();
     }
 
     @Before
     public void deleteAll() {
         em = emf.createEntityManager();
+        transaction = em.getTransaction();
+        transaction.begin();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup Group").executeUpdate();
+        transaction.commit();
+        transaction.begin();
     }
 
     @Test
@@ -202,6 +205,7 @@ public class DocumentTest {
 
     @After
     public void tearDown() throws Exception {
+        transaction.commit();
         em.close();
     }
 
