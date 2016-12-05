@@ -5,6 +5,7 @@ import pojo.Access;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.*;
+import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,9 +15,15 @@ import java.util.List;
 public class main {
     public static void main(String[] args) throws IOException, InvalidAttributeValueException {
 
-        EntityManagerFactory emf= Util.getFactory();
+        EntityManagerFactory emf= Util.getTestFactory();
         EntityManager em = emf.createEntityManager();
         System.out.println(em.getClass());
+        System.out.println(em.find(DocumentGroup.class,1).getName());
+        DocumentGroup dg = new DocumentGroup("insert","descInsert");
+        EntityTransaction tr = em.getTransaction();
+        tr.begin();
+        em.merge(dg);
+        tr.commit();
 
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
 //        EntityManager em = emf.createEntityManager();

@@ -23,7 +23,8 @@ public class Document {
     @JsonIgnore
     private User owner;
 
-    private String ownerName;
+    @Transient
+    private String ownerName = "";
 
     @JoinTable(name = "group_contains_document",
             joinColumns = @JoinColumn(name = "document_id", referencedColumnName = "id"),
@@ -32,6 +33,7 @@ public class Document {
     @JsonIgnore
     private List<DocumentGroup> containingGroups = new ArrayList<DocumentGroup>();
 
+    @Transient
     private String groupNames = "";
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootDocument", fetch = FetchType.EAGER)
@@ -133,10 +135,12 @@ public class Document {
     }
 
     public String getGroupNames() {
+        groupNames = "";
+        createGroupNames(containingGroups);
         return groupNames;
     }
 
-    public String getOwnerName() { return ownerName; }
+    public String getOwnerName() { return owner.getName(); }
 
     @Override
     public String toString() {

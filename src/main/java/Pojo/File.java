@@ -20,6 +20,7 @@ public class File {
     //todo xml transient
     private Document rootDocument;
 
+    @Transient
     private String rootDocumentName;
 
     private int latestVersionNumber;
@@ -76,7 +77,7 @@ public class File {
         this.rootDocumentName = rootDocument.getName();
     }
     public String getRootDocumentName() {
-        return rootDocumentName;
+        return rootDocument.getName();
     }
 
     public void setRootDocumentName(String rootDocumentName) {

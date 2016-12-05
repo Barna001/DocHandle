@@ -24,6 +24,7 @@ public class User extends PermissionSubject {
     @JsonIgnore
     private List<UserGroup> groups = new ArrayList<UserGroup>();
 
+    @Transient
     private String groupNames = "";
 
     public User() {
@@ -65,40 +66,17 @@ public class User extends PermissionSubject {
         this.ownDocuments = ownDocuments;
     }
 
+    //To prevent unnecessary duplicated information storage in db, calculated on Object level
     public String getGroupNames() {
+        groupNames = "";
+        for (UserGroup group : groups) {
+            if (this.groupNames.isEmpty()) {
+                this.groupNames = group.getName();
+            } else {
+                this.groupNames += "," + group.getName();
+            }
+        }
         return groupNames;
     }
 
-    //    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("{");
-//        sb.append("id:" + this.id + ",");
-//        sb.append("name:" + this.name + ",");
-//        sb.append("[");
-//        boolean first = true;
-//        for (Document ownDocument : ownDocuments) {
-//            if (first) {
-//                sb.append("{name:" + ownDocument.getName() + "}");
-//                first = false;
-//            } else {
-//                sb.append(",{name:" + ownDocument.getName() + "}");
-//            }
-//        }
-//        sb.append("],");
-//        sb.append("role:" + this.role + ",");
-//        sb.append("[");
-//        first = true;
-//        for (UserGroup group : this.groups) {
-//            if (first) {
-//                sb.append("{name:" + group.getName() + "}");
-//                first = false;
-//            } else {
-//                sb.append(",{name:" + group.getName() + "}");
-//            }
-//        }
-//        sb.append("]");
-//        sb.append("}");
-//        return sb.toString();
-//    }
 }

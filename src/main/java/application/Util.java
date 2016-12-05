@@ -31,4 +31,18 @@ public class Util {
         return null;
     }
 
+    public static EntityManagerFactory getTestFactory() {
+        try {
+            Config config = readConfig();
+            if (config.isModeInMongo) {
+                return Persistence.createEntityManagerFactory("test_pu");
+            } else {
+                return Persistence.createEntityManagerFactory("mssql_pu_test");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

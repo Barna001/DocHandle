@@ -1,0 +1,27 @@
+create table [DocumentGroup] (
+	id int identity primary key,
+	name nvarchar(20),
+	description nvarchar(100)
+)
+create table [Document] (
+	id int identity primary key,
+	name nvarchar(20),
+	content nvarchar(100),
+	creationDate date,
+	modificationDate date,
+	owner int
+)
+create table [group_contains_document](
+	group_id int,
+	document_id int
+)
+alter table [group_contains_document] add constraint docgroup_join foreign key (group_id) references [DocumentGroup](id)
+alter table [group_contains_document] add constraint document_join foreign key (document_id) references [Document](id)
+
+create table [PermissionSubject] (
+	id int identity primary key,
+	name nvarchar(20),
+	subject_type nvarchar(20),
+	role nvarchar(20),
+
+)

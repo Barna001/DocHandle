@@ -1,3 +1,4 @@
+import application.Util;
 import org.junit.*;
 import pojo.Document;
 import pojo.DocumentGroup;
@@ -6,6 +7,7 @@ import pojo.UserRoleEnum;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +22,18 @@ public class DocumentGroupTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory("test_pu");
+        emf = Util.getTestFactory();
     }
 
     @Before
     public void deleteAll() {
         em = emf.createEntityManager();
-        em.createQuery("delete from Document ").executeUpdate();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+//        em.createQuery("delete from Document ").executeUpdate();
 //        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup ").executeUpdate();
+        transaction.commit();
     }
 
     @Test
@@ -45,8 +50,10 @@ public class DocumentGroupTest {
     @Test
     public void TestPersist() {
         DocumentGroup docGroup = new DocumentGroup("groupPersist", "descPersist");
+        EntityTransaction tr = em.getTransaction();
+        tr.begin();
         em.merge(docGroup);
-
+        tr.commit();
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals("groupPersist", dbDocGroup.getName());
         Assert.assertEquals("descPersist", dbDocGroup.getDescription());
