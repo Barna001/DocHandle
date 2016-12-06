@@ -26,14 +26,14 @@ public class AccessTest {
     public void deleteAll() {
         em = emf.createEntityManager();
         transaction = em.getTransaction();
-        transaction.begin();
+        Util.begin(transaction);
         em.createQuery("delete from Access ").executeUpdate();
         em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
     }
 
     @Test
@@ -53,11 +53,11 @@ public class AccessTest {
         em.persist(user);
         em.persist(doc);
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
         Access access = new Access(user, doc, AccessTypeEnum.DELETE, 1000);
         em.persist(access);
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
         Access dbAccess = em.createQuery("select a from Access a", Access.class).getSingleResult();
         Assert.assertEquals("Barna", dbAccess.getWho().getName());
         Assert.assertEquals("Doc", dbAccess.getWhat().getName());
@@ -74,11 +74,11 @@ public class AccessTest {
         em.persist(user);
         em.persist(doc);
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
         Access access = new Access(group, doc, AccessTypeEnum.DENY, 1);
         em.persist(access);
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
         Access dbAccess = em.createQuery("select a from Access a", Access.class).getSingleResult();
         Assert.assertEquals("group", dbAccess.getWho().getName());
         Assert.assertEquals("Doc", dbAccess.getWhat().getName());

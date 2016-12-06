@@ -35,7 +35,7 @@ public class DocumentService {
     }
 
     public static void addDocument(Document document) {
-        transaction.begin();
+        Util.begin(transaction);
         Document docToDb = new Document(document.getName(),document.getContent(),document.getOwner());
         List<DocumentGroup> groups = new ArrayList<>();
         for (DocumentGroup documentGroup : document.getContainingGroups()) {
@@ -50,14 +50,18 @@ public class DocumentService {
     }
 
     public void deleteDocumentById(String id) {
-        transaction.begin();
+        Util.begin(transaction);
         String query = "delete from Document d where d.id=:id";
-        em.createQuery(query).setParameter("id", id).executeUpdate();
+        if(Util.isMongo()) {
+            em.createQuery(query).setParameter("id", id).executeUpdate();
+        }else {
+            em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
+        }
         transaction.commit();
     }
 
     public static void deleteAll() {
-        transaction.begin();
+        Util.begin(transaction);
         String query = "delete from Document";
         em.createQuery(query).executeUpdate();
         transaction.commit();

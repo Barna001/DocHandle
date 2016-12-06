@@ -34,20 +34,26 @@ public class UserGroupService {
     }
 
     public static void addGroup(UserGroup group) {
-        transaction.begin();
+        Util.begin(transaction);
+        Util.begin(transaction);
         em.persist(group);
         transaction.commit();
     }
 
     public static void deleteGroup(String id) {
-        transaction.begin();
+        Util.begin(transaction);
         String query = "delete from UserGroup ug where ug.id=:id";
-        em.createQuery(query).setParameter("id", id).executeUpdate();
+        if (Util.isMongo()) {
+            em.createQuery(query).setParameter("id", id).executeUpdate();
+        }else {
+            em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
+        }
+
         transaction.commit();
     }
 
     public static void deleteAll() {
-        transaction.begin();
+        Util.begin(transaction);
         String query = "delete from UserGroup";
         em.createQuery(query).executeUpdate();
         transaction.commit();

@@ -28,13 +28,13 @@ public class UserTest {
     public void deleteAll() {
         em = emf.createEntityManager();
         transaction = em.getTransaction();
-        transaction.begin();
+        Util.begin(transaction);
+        em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
-        em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from PermissionSubject").executeUpdate();
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
     }
 
     @Test
@@ -80,12 +80,17 @@ public class UserTest {
     public void testPersistCascadeGroupBidirectionally() {
         User user = new User("Barna", UserRoleEnum.SUPER_ADMIN);
         UserGroup userGroup = new UserGroup("New Group Cascade");
+        em.persist(user);
         em.persist(userGroup);
         List<UserGroup> groups = new ArrayList<>();
         groups.add(userGroup);
         user.setGroups(groups);
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        userGroup.setUsers(users);
         em.merge(user);
-
+        transaction.commit();
+        Util.begin(transaction);
         User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
         UserGroup dbGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
         Assert.assertEquals(1, dbUser.getGroups().size());

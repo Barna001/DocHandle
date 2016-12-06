@@ -44,7 +44,7 @@ public class UserService {
         User userToDb = new User(user.getName(), user.getRole());
         List<UserGroup> groups = new ArrayList<>();
         for (UserGroup userGroup : user.getGroups()) {
-            UserGroup udb=em.find(UserGroup.class, userGroup.getId());
+            UserGroup udb = em.find(UserGroup.class, userGroup.getId());
             groups.add(udb);
         }
         userToDb.setGroups(groups);
@@ -55,7 +55,11 @@ public class UserService {
     public static void deleteUser(String userId) {
         transaction.begin();
         String query = "delete from User u where u.id=:id";
-        em.createQuery(query).setParameter("id", userId).executeUpdate();
+        if (Util.isMongo()) {
+            em.createQuery(query).setParameter("id", userId).executeUpdate();
+        } else {
+            em.createQuery(query).setParameter("id", Integer.valueOf(userId)).executeUpdate();
+        }
         transaction.commit();
     }
 

@@ -28,12 +28,12 @@ public class FileAndFileVersionTest {
     public void deleteAll() {
         em = emf.createEntityManager();
         transaction = em.getTransaction();
-        transaction.begin();
+        Util.begin(transaction);
         em.createQuery("delete from File").executeUpdate();
         em.createQuery("delete from Document").executeUpdate();
         em.createQuery("delete from FileVersion").executeUpdate();
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
     }
 
     @Test

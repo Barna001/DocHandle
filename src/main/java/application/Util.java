@@ -3,6 +3,7 @@ package application;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +51,22 @@ public class Util {
         }
         System.out.println("Error with EntityManagerFactory loading, return null");
         return null;
+    }
+
+    public static void begin(EntityTransaction transaction){
+        if(!transaction.isActive()){
+            transaction.begin();
+        }
+    }
+
+    public static boolean isMongo() {
+        Config config= null;
+        try {
+            config = readConfig();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return config.isModeInMongo;
     }
 
 }

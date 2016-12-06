@@ -33,7 +33,7 @@ public class GroupAccessTest {
         em.createQuery("delete from DocumentGroup").executeUpdate();
         em.createQuery("delete from GroupAccess ").executeUpdate();
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
     }
 
     @Test

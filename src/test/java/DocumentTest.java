@@ -27,13 +27,13 @@ public class DocumentTest {
     public void deleteAll() {
         em = emf.createEntityManager();
         transaction = em.getTransaction();
-        transaction.begin();
-        em.createQuery("delete from User").executeUpdate();
+        Util.begin(transaction);
         em.createQuery("delete from Document ").executeUpdate();
+        em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from PermissionSubject").executeUpdate();
-        em.createQuery("delete from DocumentGroup Group").executeUpdate();
+        em.createQuery("delete from DocumentGroup").executeUpdate();
         transaction.commit();
-        transaction.begin();
+        Util.begin(transaction);
     }
 
     @Test
