@@ -20,7 +20,11 @@ public class UserGroupService {
     private static EntityTransaction transaction = em.getTransaction();
 
     public static UserGroup getUserGroupById(String id) {
-        return em.find(UserGroup.class, id);
+        if (Util.isMongo()) {
+            return em.find(UserGroup.class, id);
+        } else {
+            return em.find(UserGroup.class, Integer.valueOf(id));
+        }
     }
 
     public static List<UserGroup> getUserGroupByName(String name) {
@@ -45,7 +49,7 @@ public class UserGroupService {
         String query = "delete from UserGroup ug where ug.id=:id";
         if (Util.isMongo()) {
             em.createQuery(query).setParameter("id", id).executeUpdate();
-        }else {
+        } else {
             em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
         }
 

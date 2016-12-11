@@ -18,7 +18,11 @@ public class FileService {
     private static EntityManager em = emf.createEntityManager();
 
     public static File getFileById(String id) {
-        return em.find(File.class, id);
+        if (Util.isMongo()) {
+            return em.find(File.class, id);
+        } else {
+            return em.find(File.class, Integer.valueOf(id));
+        }
     }
 
     public static List<File> getFilesByName(String name) {
@@ -46,21 +50,36 @@ public class FileService {
     }
 
     public static FileVersion getLatestVersion(String fileId) {
-        File file = em.find(File.class, fileId);
+        File file;
+        if (Util.isMongo()) {
+            file = em.find(File.class, fileId);
+        } else {
+            file = em.find(File.class, Integer.valueOf(fileId));
+        }
         int versionId = file.getLatestVersionId();
         return em.find(FileVersion.class, versionId);
     }
 
     public static List<FileVersion> getAllVersionsForFileId(String fileId) {
-        return em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class)
-                .setParameter("id", fileId).getResultList();
+        if (Util.isMongo()) {
+            return em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class)
+                    .setParameter("id", fileId).getResultList();
+        } else {
+            return em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class)
+                    .setParameter("id", Integer.valueOf(fileId)).getResultList();
+        }
     }
 
     public void delete(String id) {
         String query = "delete from File f where f.id=:id";
         String queryVersion = "delete from FileVersion fv where fv.rootFileId=:rootId";
-        em.createQuery(query).setParameter("id",id).executeUpdate();
-        em.createQuery(queryVersion).setParameter("rootId",id).executeUpdate();
+        if (Util.isMongo()) {
+            em.createQuery(query).setParameter("id", id).executeUpdate();
+            em.createQuery(queryVersion).setParameter("rootId", id).executeUpdate();
+        } else {
+            em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
+            em.createQuery(queryVersion).setParameter("rootId", Integer.valueOf(id)).executeUpdate();
+        }
     }
 
     public static void deleteAll() {

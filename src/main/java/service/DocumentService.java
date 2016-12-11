@@ -21,7 +21,11 @@ public class DocumentService {
     private static EntityTransaction transaction = em.getTransaction();
 
     public static Document getDocumentById(String id) {
-        return em.find(Document.class, id);
+        if (Util.isMongo()) {
+            return em.find(Document.class, id);
+        } else {
+            return em.find(Document.class, Integer.valueOf(id));
+        }
     }
 
     public static List<Document> getDocumentByName(String name) {
@@ -36,10 +40,10 @@ public class DocumentService {
 
     public static void addDocument(Document document) {
         Util.begin(transaction);
-        Document docToDb = new Document(document.getName(),document.getContent(),document.getOwner());
+        Document docToDb = new Document(document.getName(), document.getContent(), document.getOwner());
         List<DocumentGroup> groups = new ArrayList<>();
         for (DocumentGroup documentGroup : document.getContainingGroups()) {
-            DocumentGroup ddb=em.find(DocumentGroup.class, documentGroup.getId());
+            DocumentGroup ddb = em.find(DocumentGroup.class, documentGroup.getId());
             groups.add(ddb);
         }
         docToDb.setContainingGroups(groups);
@@ -52,9 +56,9 @@ public class DocumentService {
     public void deleteDocumentById(String id) {
         Util.begin(transaction);
         String query = "delete from Document d where d.id=:id";
-        if(Util.isMongo()) {
+        if (Util.isMongo()) {
             em.createQuery(query).setParameter("id", id).executeUpdate();
-        }else {
+        } else {
             em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
         }
         transaction.commit();
