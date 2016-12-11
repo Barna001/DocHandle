@@ -1,6 +1,7 @@
 package application;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;

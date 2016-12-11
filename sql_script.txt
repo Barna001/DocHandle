@@ -66,7 +66,9 @@ alter table [File] add constraint root_doc_join foreign key (rootDocument) refer
 create table [FileVersion](
 	id int identity primary key,
 	rootFileId int,
-	versionNumber int
+	versionNumber int,
+	data varbinary(max) filestream null,
+    rowGuidColumn uniqueidentifier not null rowguidcol unique default newid()
 )
 alter table [FileVersion] add constraint root_file_join foreign key (rootFileId) references [File](id)
 alter table [File] add constraint latest_version_join foreign key (latestVersionId) references [Fileversion](id)
