@@ -49,6 +49,7 @@
             <property name="javax.persistence.jdbc.user" value="Doc"/>
             <property name="javax.persistence.jdbc.password" value="qwe123"/>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="hibernate.globally_quoted_identifiers" value="true"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="mssql_pu_test" transaction-type="RESOURCE_LOCAL">
@@ -70,6 +71,7 @@
             <property name="javax.persistence.jdbc.user" value="Doc"/>
             <property name="javax.persistence.jdbc.password" value="qwe123"/>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="hibernate.globally_quoted_identifiers" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

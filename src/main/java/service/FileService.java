@@ -5,9 +5,7 @@ import databaseQuerries.FileVersionUtil;
 import pojo.File;
 import pojo.FileVersion;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -16,6 +14,7 @@ import java.util.List;
 public class FileService {
     private static EntityManagerFactory emf = Util.getFactory();
     private static EntityManager em = emf.createEntityManager();
+    private static EntityTransaction transaction = em.getTransaction();
 
     public static File getFileById(String id) {
         if (Util.isMongo()) {
@@ -36,17 +35,23 @@ public class FileService {
     }
 
     public static void addFile(File file) {
+        Util.begin(transaction);
         em.persist(file);
+        transaction.commit();
     }
 
     public static void addFileWithVersion(File file, FileVersion version) {
+        Util.begin(transaction);
         em.persist(file);
         version.setRootFileId(file.getId());
         FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
+        transaction.commit();
     }
 
     public static void addVersionToFile(FileVersion version) {
+        Util.begin(transaction);
         FileVersionUtil.addVersionToFileAndPersistMerge(version, em);
+        transaction.commit();
     }
 
     public static FileVersion getLatestVersion(String fileId) {
@@ -71,6 +76,7 @@ public class FileService {
     }
 
     public void delete(String id) {
+        Util.begin(transaction);
         String query = "delete from File f where f.id=:id";
         String queryVersion = "delete from FileVersion fv where fv.rootFileId=:rootId";
         if (Util.isMongo()) {
@@ -80,13 +86,16 @@ public class FileService {
             em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
             em.createQuery(queryVersion).setParameter("rootId", Integer.valueOf(id)).executeUpdate();
         }
+        transaction.commit();
     }
 
     public static void deleteAll() {
+        Util.begin(transaction);
         String query = "delete from File";
         String queryVersion = "delete from FileVersion";
         em.createQuery(query).executeUpdate();
         em.createQuery(queryVersion).executeUpdate();
+        transaction.commit();
     }
 
     public static void closeAll() {

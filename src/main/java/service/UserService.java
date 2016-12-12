@@ -44,7 +44,7 @@ public class UserService {
     }
 
     public static void addUser(User user) {
-        transaction.begin();
+        Util.begin(transaction);
         User userToDb = new User(user.getName(), user.getRole());
         List<UserGroup> groups = new ArrayList<>();
         for (UserGroup userGroup : user.getGroups()) {
@@ -57,7 +57,7 @@ public class UserService {
     }
 
     public static void deleteUser(String userId) {
-        transaction.begin();
+        Util.begin(transaction);
         String query = "delete from User u where u.id=:id";
         if (Util.isMongo()) {
             em.createQuery(query).setParameter("id", userId).executeUpdate();
@@ -68,7 +68,7 @@ public class UserService {
     }
 
     public static void deleteAll() {
-        transaction.begin();
+        Util.begin(transaction);
         String query = "delete from User";
         em.createQuery(query).executeUpdate();
         transaction.commit();
