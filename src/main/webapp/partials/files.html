@@ -24,21 +24,6 @@
     </tbody>
 </table>
 <div ng-init="initDocs()" align="center">
-    <div class="title"><h1>Name</h1></div>
-    <input type="text" ng-model="new.name">
-    <div class="title"><h1>RootDocument</h1></div>
-    <select ng-model="new.rootDocument" ng-options="doc.name for doc in docs"></select>
-    <div>
-        <p></p>
-        <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
-    </div>
-    <div class="title"><h1>FileVersion</h1></div>
-    <input type="file" file-model="myFile"/>
-    <div class="title"><h1>RootFile_Of_Version</h1></div>
-    <select ng-model="newVersion.rootFileId" ng-options="file.id as file.name for file in files"></select>
-    <div>
-        <p></p>
-        <input type="submit" class="saveButton" value="SaveVersionUpload" ng-click="uploadFile()"/>
-        <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
-    </div>
+    <a href="#/createFile" class="button" style="margin-top: 30px">Create New File<img src="/img/plus.png"/></a>
+    <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
 </div>

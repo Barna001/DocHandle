@@ -8,6 +8,7 @@ angular.module('docHandler', ['docHandler.filters', 'docHandler.services', 'docH
         .when('/documents', {templateUrl: 'partials/documents.html', controller: 'DocumentController'})
         .when('/createDocument', {templateUrl: 'partials/createDocument.html', controller: 'DocumentController'})
         .when('/files', {templateUrl: 'partials/files.html', controller: 'FileController'})
+        .when('/createFile', {templateUrl: 'partials/createFile.html', controller: 'FileController'})
         .when('/userGroups', {templateUrl: 'partials/userGroups.html', controller: 'UserGroupController'})
         .when('/createUserGroup', {templateUrl: 'partials/createUserGroup.html', controller: 'UserGroupController'})
         .when('/documentGroups', {templateUrl: 'partials/documentGroups.html', controller: 'DocumentGroupController'})
