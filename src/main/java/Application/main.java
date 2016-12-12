@@ -1,11 +1,13 @@
 package application;
 
+import databaseQuerries.FileVersionUtil;
 import pojo.*;
 import pojo.Access;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.*;
 import javax.sound.midi.Soundbank;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,15 +17,34 @@ import java.util.List;
 public class main {
     public static void main(String[] args) throws IOException, InvalidAttributeValueException {
 
-        EntityManagerFactory emf= Util.getTestFactory();
+        EntityManagerFactory emf = Util.getFactory();
         EntityManager em = emf.createEntityManager();
-        System.out.println(em.getClass());
-        System.out.println(em.find(DocumentGroup.class,1).getName());
-        DocumentGroup dg = new DocumentGroup("insert","descInsert");
-        EntityTransaction tr = em.getTransaction();
-        tr.begin();
-        em.merge(dg);
-        tr.commit();
+        EntityTransaction transaction = em.getTransaction();
+//        byte[] data = FileVersionUtil.createBinaryData("src/test/files/Kundera_GridFSTest.pdf");
+//        FileVersion fileVersion = new FileVersion(1, data);
+//        transaction.begin();
+//        em.persist(fileVersion);
+//        transaction.commit();
+        FileVersion fv = em.find(FileVersion.class,2);
+        FileOutputStream fos = new FileOutputStream("proba.pdf");
+        fos.write(fv.getData());
+        fos.close();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
 //        EntityManager em = emf.createEntityManager();
@@ -78,13 +99,13 @@ public class main {
         delete.executeUpdate();
         Query delete1 = em.createNamedQuery("delete from UserGroup");
         delete1.executeUpdate();
-        Query delete2=em.createNamedQuery("delete from PermissionSubject");
+        Query delete2 = em.createNamedQuery("delete from PermissionSubject");
         delete2.executeUpdate();
-        Query delete3=em.createNamedQuery("delete from Document");
+        Query delete3 = em.createNamedQuery("delete from Document");
         delete3.executeUpdate();
-        Query delete4=em.createNamedQuery("delete from DocumentGroup");
+        Query delete4 = em.createNamedQuery("delete from DocumentGroup");
         delete4.executeUpdate();
-        Query delete5=em.createNamedQuery("delete from Access");
+        Query delete5 = em.createNamedQuery("delete from Access");
         delete5.executeUpdate();
         System.out.println("Deleted successfully");
     }

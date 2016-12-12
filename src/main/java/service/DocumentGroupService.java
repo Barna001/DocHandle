@@ -19,7 +19,11 @@ public class DocumentGroupService {
     private static EntityTransaction transaction = em.getTransaction();
 
     public static DocumentGroup getDocumentGroupById(String id) {
-        return em.find(DocumentGroup.class, id);
+        if (Util.isMongo()) {
+            return em.find(DocumentGroup.class, id);
+        } else {
+            return em.find(DocumentGroup.class, Integer.valueOf(id));
+        }
     }
 
     public static List<DocumentGroup> getDocumentGroupByName(String name) {
@@ -41,9 +45,9 @@ public class DocumentGroupService {
     public static void deleteGroup(String id) {
         Util.begin(transaction);
         String query = "delete from DocumentGroup dg where dg.id=:id";
-        if(Util.isMongo()) {
+        if (Util.isMongo()) {
             em.createQuery(query).setParameter("id", id).executeUpdate();
-        }else {
+        } else {
             em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
         }
         transaction.commit();

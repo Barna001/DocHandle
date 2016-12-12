@@ -26,7 +26,11 @@ public class UserService {
     }
 
     public static User getUserById(String id) {
-        return em.find(User.class, id);
+        if (Util.isMongo()) {
+            return em.find(User.class, id);
+        } else {
+            return em.find(User.class, Integer.valueOf(id));
+        }
     }
 
     public static List<User> getUserByName(String name) {
