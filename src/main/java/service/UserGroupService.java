@@ -35,7 +35,6 @@ public class UserGroupService {
 
     public static void addGroup(UserGroup group) {
         Util.begin(transaction);
-        Util.begin(transaction);
         em.persist(group);
         transaction.commit();
     }
