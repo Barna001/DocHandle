@@ -22,16 +22,6 @@
     </table>
 </div>
 <div ng-init="initUsers()" align="center">
-    <div class="title"><h1>Name</h1></div>
-    <input type="text" ng-model="new.name">
-    <div class="title"><h1>Role</h1></div>
-    <select id="roleSelection" ng-model="new.role" ng-options="role for role in roles"></select>
-    <div class="title"><h1>Groups(CTRL+click for multiple selection)</h1></div>
-    <select id="groupSelection" multiple="true" ng-model="new.groups"
-            ng-options="group.name for group in groups"></select>
-    <div>
-        <p></p>
-        <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
-        <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
-    </div>
+    <a href="#/createUser" class="button" style="margin-top: 30px">Create New User<img src="/img/plus.png"/></a>
+    <input type="submit" class="deleteButton" style="margin-top: 30px" value="Delete All" ng-click="deleteAll()"/>
 </div>

@@ -1,0 +1,18 @@
+<div class="table-title">
+    <h3>Create Document</h3>
+</div>
+<div ng-init="initGroupsAndUsers()" align="center">
+    <div class="title"><h1>Name</h1></div>
+    <input type="text" ng-model="new.name">
+    <div class="title"><h1>Content</h1></div>
+    <input type="text" ng-model="new.content">
+    <div class="title"><h1>Owner</h1></div>
+    <select ng-model="new.owner" ng-options="user.name for user in users"></select>
+    <div class="title"><h1>Groups(CTRL+click for multiple selection)</h1></div>
+    <select id="groupSelection" multiple="true" ng-model="new.containingGroups"
+            ng-options="group.name for group in groups"></select>
+    <div>
+        <a href="#/documents" class="button" style="margin-top: 30px">Back<span>«</span></a>
+        <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
+    </div>
+</div>

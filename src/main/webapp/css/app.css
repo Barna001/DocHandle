@@ -153,7 +153,6 @@ td.text-right {
 }
 
 .container {
-    width: 500px;
     text-align: center;
     margin: auto;
 }
@@ -305,6 +304,26 @@ td.text-right {
 }
 
 .button:hover span, .button.active span {
+    background-color: rgb(0, 102, 26);
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.button img {
+    position: absolute;
+    right: 0;
+    width: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.button:hover img, .button.active img {
     background-color: rgb(0, 102, 26);
     border-right: 1px solid rgba(0, 0, 0, 0.3);
 }

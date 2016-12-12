@@ -20,12 +20,6 @@
     </tbody>
 </table>
 <div ng-init="init()" align="center">
-    <div class="title"><h1>Name</h1></div>
-    <input type="text" ng-model="new.name">
-    <div class="title"><h1>Description</h1></div>
-    <input type="text" ng-model="new.description">
-    <div style="padding-top: 20px;">
-        <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
-        <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
-    </div>
+    <a href="#/createDocumentGroup" class="button" style="margin-top: 30px">Create New DocumentGroup<img src="/img/plus.png"/></a>
+    <input type="submit" class="deleteButton" value="Delete All" ng-click="deleteAll()"/>
 </div>
