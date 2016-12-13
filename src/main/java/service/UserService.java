@@ -67,13 +67,6 @@ public class UserService {
         transaction.commit();
     }
 
-    public static void deleteAll() {
-        Util.begin(transaction);
-        String query = "delete from User";
-        em.createQuery(query).executeUpdate();
-        transaction.commit();
-    }
-
     public static void closeAll() {
         em.close();
         emf.close();

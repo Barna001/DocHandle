@@ -62,12 +62,4 @@ angular.module('docHandler.controllers').controller('UserController', ['$scope',
             $scope.error = response;
         });
     }
-
-    $scope.deleteAll = function () {
-        UserService.deleteAll().then(function () {
-            $scope.initUsers();
-        }, function (response) {
-            $scope.error = response;
-        });
-    }
 }]);

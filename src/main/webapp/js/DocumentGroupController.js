@@ -38,12 +38,4 @@ angular.module('docHandler.controllers').controller('DocumentGroupController', [
             $scope.error = response;
         });
     }
-
-    $scope.deleteAll = function () {
-        DocumentGroupService.deleteAll().then(function () {
-            $scope.init();
-        }, function (response) {
-            $scope.error = response;
-        });
-    }
 }]);

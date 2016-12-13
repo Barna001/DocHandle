@@ -53,13 +53,6 @@ public class DocumentGroupService {
         transaction.commit();
     }
 
-    public static void deleteAll() {
-        Util.begin(transaction);
-        String query = "delete from DocumentGroup";
-        em.createQuery(query).executeUpdate();
-        transaction.commit();
-    }
-
     public static void closeAll() {
         em.close();
         emf.close();

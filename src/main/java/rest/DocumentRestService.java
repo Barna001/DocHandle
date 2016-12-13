@@ -21,23 +21,21 @@ public class DocumentRestService {
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @GET
-    @Path("/docById")
-    public String getDocById(@QueryParam("id") String id) throws IOException {
+    @Path("/{id}")
+    public String getDocById(@PathParam("id") String id) throws IOException {
         Object doc = service.getDocumentById(id);
         return ow.writeValueAsString(doc);
     }
 
     @GET
-    @Path("/docByName")
     public String getDocByName(@QueryParam("name") String name) throws IOException {
-        Object docs = service.getDocumentByName(name);
-        return ow.writeValueAsString(docs);
-    }
-
-    @GET
-    public String getAllDocs() throws IOException {
-        Object docs = service.getAllDocuments();
-        return ow.writeValueAsString(docs);
+        if (name != null) {
+            Object docs = service.getDocumentByName(name);
+            return ow.writeValueAsString(docs);
+        } else {
+            Object docs = service.getAllDocuments();
+            return ow.writeValueAsString(docs);
+        }
     }
 
     @POST
@@ -48,11 +46,7 @@ public class DocumentRestService {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     public void delete(@QueryParam("id") String id) {
-        if (id.equals("*")) {
-            service.deleteAll();
-        } else {
-            service.deleteDocumentById(id);
-        }
+        service.deleteDocumentById(id);
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

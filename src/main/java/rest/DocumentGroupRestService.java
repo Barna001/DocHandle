@@ -20,23 +20,21 @@ public class DocumentGroupRestService {
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @GET
-    @Path("/documentGroupById")
-    public String getDocumentGroupById(@QueryParam("id") String id) throws IOException {
+    @Path("/{id}")
+    public String getDocumentGroupById(@PathParam("id") String id) throws IOException {
         Object documentGroup = service.getDocumentGroupById(id);
         return ow.writeValueAsString(documentGroup);
     }
 
     @GET
-    @Path("/documentGroupByName")
     public String getDocumentGroupsByName(@QueryParam("name") String name) throws IOException {
-        Object groups = service.getDocumentGroupByName(name);
-        return ow.writeValueAsString(groups);
-    }
-
-    @GET
-    public String getAllDocumentGroups() throws IOException {
-        Object groups = service.getAllDocumentGroups();
-        return ow.writeValueAsString(groups);
+        if (name != null) {
+            Object groups = service.getDocumentGroupByName(name);
+            return ow.writeValueAsString(groups);
+        } else {
+            Object groups = service.getAllDocumentGroups();
+            return ow.writeValueAsString(groups);
+        }
     }
 
     @GET
@@ -55,11 +53,7 @@ public class DocumentGroupRestService {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     public void deleteDocGroup(@QueryParam("id") String docGroupId) {
-        if (docGroupId.equals("*")) {
-            service.deleteAll();
-        } else {
-            service.deleteGroup(docGroupId);
-        }
+        service.deleteGroup(docGroupId);
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

@@ -1,5 +1,6 @@
 package rest;
 
+import application.Util;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
@@ -11,10 +12,8 @@ import service.FileService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by BB on 2016.05.22..
@@ -26,31 +25,25 @@ public class FileRestService {
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @GET
-    @Path("/fileById")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String getFileById(@QueryParam("id") String id) throws IOException {
+    public String getFileById(@PathParam("id") String id) throws IOException {
         Object file = service.getFileById(id);
         return ow.writeValueAsString(file);
     }
 
     @GET
-    @Path("/fileByName")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String getFilesByName(@QueryParam("name") String name) throws IOException {
-        Object files = service.getFilesByName(name);
-        return ow.writeValueAsString(files);
-    }
-
-    //// TODO: 2016.05.24. kézzel össze kellene fűzni a json-t, és azt visszaadni, abba bele lehet tenni a rootdoc nevét és id-ját,
-    //// egyenlőre csak ki van kapcsolva a jsonösítés a rootDocument változóra
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String getAllFiles() throws IOException {
-        Object files = service.getAllFiles();
-        return ow.writeValueAsString(files);
+        if (name != null) {
+            Object files = service.getFilesByName(name);
+            return ow.writeValueAsString(files);
+        } else {
+            Object files = service.getAllFiles();
+            return ow.writeValueAsString(files);
+        }
     }
 
     @GET
@@ -111,6 +104,7 @@ public class FileRestService {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @QueryParam("fileId") int rootId) throws IOException {
         FileVersion version = new FileVersion(rootId, null);
+        version.setFileType(Util.getExtension(fileDetails.getFileName()));
         try {
             byte[] byteData = IOUtils.toByteArray(fileData);
             version.setData(byteData);
@@ -124,11 +118,7 @@ public class FileRestService {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     public void delete(@QueryParam("id") String id) {
-        if (id.equals("*")) {
-            service.deleteAll();
-        } else {
-            service.delete(id);
-        }
+        service.delete(id);
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

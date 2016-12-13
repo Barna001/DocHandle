@@ -70,4 +70,8 @@ public class Util {
         return config.isModeInMongo;
     }
 
+    public static String getExtension(String fileName) {
+        String extension = fileName.substring(fileName.indexOf('.')+1,fileName.length());
+        return extension;
+    }
 }

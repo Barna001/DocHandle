@@ -21,23 +21,21 @@ public class UserGroupRestService {
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @GET
-    @Path("/userGroupById")
-    public String getUserGroupById(@QueryParam("id") String id) throws IOException {
+    @Path("/{id}")
+    public String getUserGroupById(@PathParam("id") String id) throws IOException {
         Object userGroup = service.getUserGroupById(id);
         return ow.writeValueAsString(userGroup);
     }
 
     @GET
-    @Path("/userGroupByName")
     public String getUserGroupsByName(@QueryParam("name") String name) throws IOException {
-        Object groups = service.getUserGroupByName(name);
-        return ow.writeValueAsString(groups);
-    }
-
-    @GET
-    public String getAllUserGroups() throws IOException {
-        Object groups = service.getAllUserGroups();
-        return ow.writeValueAsString(groups);
+        if (name != null) {
+            Object groups = service.getUserGroupByName(name);
+            return ow.writeValueAsString(groups);
+        } else {
+            Object groups = service.getAllUserGroups();
+            return ow.writeValueAsString(groups);
+        }
     }
 
     @GET
@@ -56,11 +54,7 @@ public class UserGroupRestService {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     public void deleteAll(@QueryParam("id") String userGroupId) {
-        if (userGroupId.equals("*")) {
-            service.deleteAll();
-        } else {
-            service.deleteGroup(userGroupId);
-        }
+        service.deleteGroup(userGroupId);
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

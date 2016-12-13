@@ -89,15 +89,6 @@ public class FileService {
         transaction.commit();
     }
 
-    public static void deleteAll() {
-        Util.begin(transaction);
-        String query = "delete from File";
-        String queryVersion = "delete from FileVersion";
-        em.createQuery(query).executeUpdate();
-        em.createQuery(queryVersion).executeUpdate();
-        transaction.commit();
-    }
-
     public static void closeAll() {
         em.close();
         emf.close();

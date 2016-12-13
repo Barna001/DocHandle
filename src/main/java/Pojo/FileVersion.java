@@ -16,6 +16,8 @@ public class FileVersion {
 
     private int versionNumber;
 
+    private String fileType;
+
     public FileVersion() {
     }
 
@@ -54,5 +56,13 @@ public class FileVersion {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

@@ -27,7 +27,6 @@ function UserService($http, $q) {
         getUser: getUser,
         getUsers: getUsers,
         getRoles: getRoles,
-        deleteAll: deleteAll,
         deleteUser: deleteUser
         //updateUser : updateUser,
         //getCurrentUser : getCurrentUser
@@ -84,16 +83,6 @@ function UserService($http, $q) {
         });
         return deferred.promise;
     }
-
-    function deleteAll() {
-        var deferred = $q.defer();
-        $http.delete("rest/users?id=*", null).success(function (data, status) {
-            deferred.resolve(data);
-        }).error(function (status) {
-            deferred.reject(status);
-        });
-        return deferred.promise;
-    }
 };
 
 function DocService($http, $q) {
@@ -102,7 +91,6 @@ function DocService($http, $q) {
         saveDoc: saveDoc,
         getDoc: getDoc,
         getDocs: getDocs,
-        deleteAll: deleteAll,
         deleteDoc: deleteDoc
     };
 
@@ -147,16 +135,6 @@ function DocService($http, $q) {
         });
         return deferred.promise;
     }
-
-    function deleteAll() {
-        var deferred = $q.defer();
-        $http.delete("rest/documents?id=*", null).success(function (data, status) {
-            deferred.resolve(data);
-        }).error(function (status) {
-            deferred.reject(status);
-        });
-        return deferred.promise;
-    }
 };
 
 function DocumentGroupService($http, $q) {
@@ -164,8 +142,7 @@ function DocumentGroupService($http, $q) {
     var service = {
         getDocumentGroups: getDGroups,
         saveGroup: saveGroup,
-        deleteGroup: deleteGroup,
-        deleteAll: deleteAll
+        deleteGroup: deleteGroup
     };
 
     return service;
@@ -218,7 +195,6 @@ function FileService($http, $q) {
         saveFile: saveFile,
         downloadLatestVersion: downloadLatestVersion,
         deleteFile: deleteFile,
-        deleteAll: deleteAll,
         uploadFileToUrl: uploadFileToUrl
     };
 
@@ -264,16 +240,6 @@ function FileService($http, $q) {
         return deferred.promise;
     }
 
-    function deleteAll() {
-        var deferred = $q.defer();
-        $http.delete("rest/files?id=*", null).success(function (data, status) {
-            deferred.resolve(data);
-        }).error(function (status) {
-            deferred.reject(status);
-        });
-        return deferred.promise;
-    }
-
     function uploadFileToUrl(fileVersion, fileId) {
         var deferred = $q.defer();
         var fd = new FormData();
@@ -298,7 +264,6 @@ function UserGroupService($http, $q) {
     var service = {
         getUserGroups: getUGroups,
         saveGroup: saveGroup,
-        deleteAll: deleteAll,
         deleteGroup: deleteGroup
     };
 
@@ -327,16 +292,6 @@ function UserGroupService($http, $q) {
     function deleteGroup(id) {
         var deferred = $q.defer();
         $http.delete("rest/userGroups?id="+id, null).success(function (data, status) {
-            deferred.resolve(data);
-        }).error(function (status) {
-            deferred.reject(status);
-        });
-        return deferred.promise;
-    }
-
-    function deleteAll() {
-        var deferred = $q.defer();
-        $http.delete("rest/userGroups?id=*", null).success(function (data, status) {
             deferred.resolve(data);
         }).error(function (status) {
             deferred.reject(status);

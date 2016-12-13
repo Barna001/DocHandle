@@ -22,23 +22,21 @@ public class UserRestService {
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @GET
-    @Path("/id")
-    public String getUserById(@QueryParam("id") String id) throws IOException {
+    @Path("/{id}")
+    public String getUserById(@PathParam("id") String id) throws IOException {
         Object user = service.getUserById(id);
         return ow.writeValueAsString(user);
     }
 
     @GET
-    @Path("/name")
     public String getUserByName(@QueryParam("name") String name) throws IOException {
-        Object user = service.getUserByName(name);
-        return ow.writeValueAsString(user);
-    }
-
-    @GET
-    public String getAllUsers() throws IOException {
-        Object users = service.getAllUsers();
-        return ow.writeValueAsString(users);
+        if (name != null) {
+            Object user = service.getUserByName(name);
+            return ow.writeValueAsString(user);
+        } else {
+            Object users = service.getAllUsers();
+            return ow.writeValueAsString(users);
+        }
     }
 
     @GET
@@ -72,11 +70,7 @@ public class UserRestService {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     public void deleteUser(@QueryParam("id") String userId) {
-        if (userId.equals("*")) {
-            service.deleteAll();
-        } else {
-            service.deleteUser(userId);
-        }
+        service.deleteUser(userId);
     }
 
     //If you call this before shutting down the server, you get less warning info because threads started but not stopped

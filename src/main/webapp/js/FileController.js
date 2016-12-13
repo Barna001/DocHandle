@@ -12,7 +12,8 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
         id: "",
         data: null,
         rootFileId: null,
-        versionNumber: 0
+        versionNumber: 0,
+        fileType: ""
     }
     $scope.new = {
         id: null,
@@ -58,11 +59,11 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
         console.log("A fájl id-ja:"+fileId);
         FileService.downloadLatestVersion(fileId).then(function(data){
             console.log("size:"+data.length);
-            var bytes = [];
-            for(var i=0;i<data.length;++i){
-                var code = data.charCodeAt(i);
-                bytes = bytes.concat([code & 0xff, code / 256 >>>0]);
-            }
+            //var bytes = [];
+            //for(var i=0;i<data.length;++i){
+            //    var code = data.charCodeAt(i);
+            //    bytes = bytes.concat([code & 0xff, code / 256 >>>0]);
+            //}
             //console.log(data);
             var blob = new Blob([bytes], {type: "application/msword"});
             //FileSaver.saveAs(data, "name");
@@ -85,14 +86,6 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
         FileService.deleteFile(id).then(function () {
             $scope.init();
         },function (response) {
-            $scope.error = response;
-        });
-    }
-
-    $scope.deleteAll = function () {
-        FileService.deleteAll().then(function () {
-            $scope.init();
-        }, function (response) {
             $scope.error = response;
         });
     }

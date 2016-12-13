@@ -64,13 +64,6 @@ public class DocumentService {
         transaction.commit();
     }
 
-    public static void deleteAll() {
-        Util.begin(transaction);
-        String query = "delete from Document";
-        em.createQuery(query).executeUpdate();
-        transaction.commit();
-    }
-
     public static void closeAll() {
         em.close();
         emf.close();
