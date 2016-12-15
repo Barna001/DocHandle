@@ -99,7 +99,7 @@ public class FileRestService {
         service.addVersionToFile(version);
     }
 
-    @POST
+    @PUT
     @Path("/addNewVersionFile")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @QueryParam("fileId") int rootId) throws IOException {

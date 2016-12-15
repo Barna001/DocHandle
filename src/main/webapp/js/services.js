@@ -245,7 +245,7 @@ function FileService($http, $q) {
         var fd = new FormData();
         fd.append('file', fileVersion);
 
-        $http.post('http://localhost:8080/rest/files/addNewVersionFile?fileId=' + fileId, fd, {
+        $http.put('http://localhost:8080/rest/files/addNewVersionFile?fileId=' + fileId, fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
