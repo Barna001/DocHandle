@@ -100,9 +100,9 @@ public class FileRestService {
     }
 
     @PUT
-    @Path("/addNewVersionFile")
+    @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @QueryParam("fileId") int rootId) throws IOException {
+    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @PathParam("id") int rootId) throws IOException {
         FileVersion version = new FileVersion(rootId, null);
         version.setFileType(Util.getExtension(fileDetails.getFileName()));
         try {
