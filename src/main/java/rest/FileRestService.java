@@ -107,17 +107,8 @@ public class FileRestService {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @FormDataParam("file") FormDataBodyPart args, @PathParam("id")int rootId) throws IOException {
-        FileVersion version = new FileVersion(rootId, null);
-        version.setFileType(args.getMediaType().toString());
-        try {
-            byte[] byteData = IOUtils.toByteArray(fileData);
-            version.setData(byteData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        service.addVersionToFile(version);
-        fileData.close();
+    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @FormDataParam("file") FormDataBodyPart args, @PathParam("id")String rootId) throws IOException {
+        service.addNewVersionToFile(fileData,fileDetails,args,rootId);
     }
 
     @DELETE

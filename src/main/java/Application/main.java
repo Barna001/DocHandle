@@ -25,9 +25,9 @@ public class main {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 ////      Upload
-//        Util.begin(transaction);
-//        em.createQuery("delete from FileVersion").executeUpdate();
-//        transaction.commit();
+        Util.begin(transaction);
+        em.createQuery("delete from FileVersion").executeUpdate();
+        transaction.commit();
 //
 //        byte[] data;
 //        //The names are in KB
@@ -38,7 +38,7 @@ public class main {
 //        testList.add("d:/Munka/7_felev/szakdoga/teszt/259227.mkv");
 //        for (String testFile : testList) {
 //            data = FileVersionUtil.createBinaryData(testFile);
-//            FileVersion fileVersion = new FileVersion(1, data);
+//            FileVersion fileVersion = new FileVersion("fileId", data);
 //
 //            Stopwatch stopwatch = Stopwatch.createStarted();
 //            Util.begin(transaction);
@@ -46,7 +46,7 @@ public class main {
 //            transaction.commit();
 //            stopwatch.stop();
 //
-//            System.out.println("Time for saving " + data.length + " byte took: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
+//            System.out.println("Time for saving " + fileVersion.getId() + " byte took: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
 //            System.gc();
 //        }
 
@@ -54,20 +54,20 @@ public class main {
         //Download
 
 
-        ArrayList<Integer> ids = new ArrayList<>();
-        ids.add(89);
-        ids.add(90);
-        ids.add(91);
-        ids.add(92);
-        for (Integer id : ids) {
-            Stopwatch stopwatch = Stopwatch.createStarted();
-            byte[] data = em.find(FileVersion.class,id).getData();
-            System.out.println("Time for downloading " + data.length + " byte took: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
-            System.gc();
-        }
-
-        em.close();
-        emf.close();
+//        ArrayList<String> ids = new ArrayList<>();
+//        ids.add("58542b459bae031e2a3f29d0");
+//        ids.add("58542b459bae031e2a3f29d3");
+//        ids.add("58542b459bae031e2a3f29d6");
+//        ids.add("58542b479bae031e2a3f29de");
+//        for (String id : ids) {
+//            Stopwatch stopwatch = Stopwatch.createStarted();
+//            byte[] data = em.find(FileVersion.class,id).getData();
+//            System.out.println("Time for downloading " + data.length + " byte took: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
+//            System.gc();
+//        }
+//
+//        em.close();
+//        emf.close();
     }
 
     private static void deleteAll(EntityManager em) {

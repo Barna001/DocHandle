@@ -20,7 +20,7 @@ public class Util {
 //        ObjectMapper mapper = new ObjectMapper();
 //        Config config = mapper.readValue(new File("config.json"), Config.class);
 //        return config;
-        config.isModeInMongo=false;
+        config.isModeInMongo=true;
         return config;
     }
 

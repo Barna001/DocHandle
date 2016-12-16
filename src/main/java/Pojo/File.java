@@ -9,9 +9,9 @@ import javax.persistence.*;
 public class File {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
 
     private String name;
 
@@ -25,7 +25,7 @@ public class File {
     private String rootDocumentName;
 
     private int latestVersionNumber;
-    private int latestVersionId;
+    private String latestVersionId;
 
 
     public File() {
@@ -37,11 +37,11 @@ public class File {
         this.rootDocumentName = root.getName();
     }
 
-    public int getLatestVersionId() {
+    public String getLatestVersionId() {
         return latestVersionId;
     }
 
-    public void setLatestVersionId(int latestVersionId) {
+    public void setLatestVersionId(String latestVersionId) {
         this.latestVersionId = latestVersionId;
     }
 
@@ -53,11 +53,11 @@ public class File {
         this.latestVersionNumber = latestVersionNumber;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -77,11 +77,17 @@ public class File {
         this.rootDocument = rootDocument;
         this.rootDocumentName = rootDocument.getName();
     }
+
     public String getRootDocumentName() {
-        return rootDocument.getName();
+        if (rootDocument != null) {
+            return rootDocument.getName();
+        } else {
+            return "";
+        }
     }
 
     public void setRootDocumentName(String rootDocumentName) {
-        this.rootDocumentName = rootDocumentName; this.rootDocument.setName(rootDocumentName);
+        this.rootDocumentName = rootDocumentName;
+        this.rootDocument.setName(rootDocumentName);
     }
 }

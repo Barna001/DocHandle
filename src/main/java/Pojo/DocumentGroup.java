@@ -9,9 +9,9 @@ import java.util.List;
 public class DocumentGroup {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
     private String name;
     private String description;
 
@@ -31,11 +31,11 @@ public class DocumentGroup {
         this.documents = new ArrayList<Document>();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -9,9 +9,9 @@ import java.util.*;
 public class Document {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
     private String name;
     private String content;
     @Temporal(TemporalType.TIMESTAMP)
@@ -54,11 +54,11 @@ public class Document {
         this.modificationDate = this.creationDate;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
         this.modificationDate = new Date();
     }

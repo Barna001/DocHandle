@@ -2,10 +2,15 @@ package service;
 
 import application.Util;
 import databaseQuerries.FileVersionUtil;
+import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import pojo.File;
 import pojo.FileVersion;
 
 import javax.persistence.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -61,8 +66,7 @@ public class FileService {
         } else {
             file = em.find(File.class, Integer.valueOf(fileId));
         }
-        int versionId = file.getLatestVersionId();
-        return em.find(FileVersion.class, versionId);
+        return em.find(FileVersion.class, file.getLatestVersionId());
     }
 
     public static List<FileVersion> getAllVersionsForFileId(String fileId) {
@@ -95,4 +99,20 @@ public class FileService {
     }
 
 
+    public static void addNewVersionToFile(InputStream fileData, FormDataContentDisposition fileDetails, FormDataBodyPart args, String rootId) {
+        FileVersion version = new FileVersion(rootId, null);
+        version.setFileType(args.getMediaType().toString());
+        try {
+            byte[] byteData = IOUtils.toByteArray(fileData);
+            version.setData(byteData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        addVersionToFile(version);
+        try {
+            fileData.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
