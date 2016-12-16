@@ -61,7 +61,7 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
             console.log("headers:"+response.headers('type'));
             //var bytes = new Uint8Array(data.data);
             var bytes = response.data;
-            console.log(bytes);
+            //console.log(bytes);
             //var blob = new Blob([bytes], {encoding:"ISO-8859-2",type: response.headers('type')});
             var blob = new Blob([bytes], {type: response.headers('type')});
             //FileSaver.saveAs(data, "name");

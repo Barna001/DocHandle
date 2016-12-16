@@ -14,24 +14,24 @@ http://maven.apache.org/POM/4.0.0 ">
     <dependencies>
 
         <!-- Reach MongoDB with JPA-->
+        <dependency>
+        <groupId>com.impetus.kundera.client</groupId>
+        <artifactId>kundera-mongo</artifactId>
+        <version>3.6</version>
+        </dependency>
+
         <!--<dependency>-->
-        <!--<groupId>com.impetus.kundera.client</groupId>-->
-        <!--<artifactId>kundera-mongo</artifactId>-->
-        <!--<version>3.6</version>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-core</artifactId>-->
+            <!--<version>5.2.5.Final</version>-->
         <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.2.5.Final</version>
-        </dependency>
-
         <!-- mvn install:install-file -Dfile=sqljdbc4-4.0.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar -->
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>sqljdbc4</artifactId>
-            <version>4.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.microsoft.sqlserver</groupId>-->
+            <!--<artifactId>sqljdbc4</artifactId>-->
+            <!--<version>4.0</version>-->
+        <!--</dependency>-->
 
         <!-- For testing -->
         <dependency>
