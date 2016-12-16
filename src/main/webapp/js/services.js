@@ -222,8 +222,8 @@ function FileService($http, $q) {
 
     function downloadLatestVersion(fileId) {
         var deferred = $q.defer();
-        $http.get("rest/files/latestVersion?fileId=" + fileId).success(function (data, status) {
-            deferred.resolve(data);
+        $http.get("rest/files/latestVersion?fileId=" + fileId).success(function (data, status, headers) {
+            deferred.resolve({'data':data,'headers':headers});
         }).error(function (data, status) {
             deferred.reject(status);
         });

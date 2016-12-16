@@ -1,9 +1,11 @@
 package rest;
 
 import application.Util;
+import com.oracle.webservices.internal.api.message.ContentType;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import pojo.File;
@@ -12,6 +14,8 @@ import service.FileService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -50,19 +54,20 @@ public class FileRestService {
     @Path("/latestVersion")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @Consumes(MediaType.APPLICATION_JSON)
-    public byte[] getLatestVersion(@QueryParam("fileId") String fileId) throws IOException {
+    public Response getLatestVersion(@QueryParam("fileId") String fileId) throws IOException {
         FileVersion version = service.getLatestVersion(fileId);
         byte[] data = version.getData();
-//        java.io.File file = new java.io.File("d:/Munka/proba2.docx");
-//        if (!file.exists()) {
-//            file.createNewFile();
-//        }
-//        FileOutputStream fos = new FileOutputStream(file);
-//        fos.write(data);
-//        fos.flush();
-//        fos.close();
+        String dataS = new String(data);
+        java.io.File file = new java.io.File("d:/Munka/7_felev/szakdoga/teszt/f.docx");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(data);
+        fos.flush();
+        fos.close();
 //        return new String(data,"ISO-8859-1");
-        return data;
+        return Response.ok(data).header("type",version.getFileType()).build();
     }
 
     @GET
@@ -102,9 +107,9 @@ public class FileRestService {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @PathParam("id") int rootId) throws IOException {
+    public void addNewVersionToFileFile(@FormDataParam("file") InputStream fileData, @FormDataParam("file") FormDataContentDisposition fileDetails, @FormDataParam("file") FormDataBodyPart args, @PathParam("id")int rootId) throws IOException {
         FileVersion version = new FileVersion(rootId, null);
-        version.setFileType(Util.getExtension(fileDetails.getFileName()));
+        version.setFileType(args.getMediaType().toString());
         try {
             byte[] byteData = IOUtils.toByteArray(fileData);
             version.setData(byteData);

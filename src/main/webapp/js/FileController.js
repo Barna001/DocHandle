@@ -57,15 +57,13 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
 
     $scope.downloadLatestVersion = function (fileId, fileName) {
         console.log("A fájl id-ja:"+fileId);
-        FileService.downloadLatestVersion(fileId).then(function(data){
-            console.log("size:"+data.length);
-            //var bytes = [];
-            //for(var i=0;i<data.length;++i){
-            //    var code = data.charCodeAt(i);
-            //    bytes = bytes.concat([code & 0xff, code / 256 >>>0]);
-            //}
-            //console.log(data);
-            var blob = new Blob([bytes], {type: "application/msword"});
+        FileService.downloadLatestVersion(fileId).then(function(response){
+            console.log("headers:"+response.headers('type'));
+            //var bytes = new Uint8Array(data.data);
+            var bytes = response.data;
+            console.log(bytes);
+            //var blob = new Blob([bytes], {encoding:"ISO-8859-2",type: response.headers('type')});
+            var blob = new Blob([bytes], {type: response.headers('type')});
             //FileSaver.saveAs(data, "name");
             var hiddenElement = document.createElement('a');
             hiddenElement.href = window.URL.createObjectURL(blob);
