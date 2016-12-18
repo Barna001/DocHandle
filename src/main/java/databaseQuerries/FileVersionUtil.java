@@ -18,7 +18,6 @@ public class FileVersionUtil {
 
     // FileVersion must have
     public synchronized static File addVersionToFileAndPersistMerge(FileVersion fileVersion, EntityManager em) {
-        if (fileVersion.getRootFileId() != null) {
             File dbFile = em.find(File.class, fileVersion.getRootFileId());
             int calculatedVersion = dbFile.getLatestVersionNumber() + 1;
             fileVersion.setVersionNumber(calculatedVersion);
@@ -28,9 +27,6 @@ public class FileVersionUtil {
             dbFile.setLatestVersionNumber(calculatedVersion);
             em.merge(dbFile);//Here, this way the db remains in a consistent state
             return dbFile;
-        } else {// We could throw exception too, to fill up fileId
-            return null;
-        }
     }
 
     public static byte[] createBinaryData(String locationPath) {

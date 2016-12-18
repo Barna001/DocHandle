@@ -8,10 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.resource.spi.work.TransactionContext;
-import java.lang.annotation.Target;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Barna on 2016.04.30..

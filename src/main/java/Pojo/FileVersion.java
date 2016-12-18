@@ -5,13 +5,13 @@ import javax.persistence.*;
 @Entity
 public class FileVersion {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Lob
     private byte[] data;
 
-    private String rootFileId;
+    private int rootFileId;
 
     private int versionNumber;
 
@@ -20,16 +20,16 @@ public class FileVersion {
     public FileVersion() {
     }
 
-    public FileVersion(String rootFileId, byte[] data) {
+    public FileVersion(int rootFileId, byte[] data) {
         this.data = data;
         this.rootFileId = rootFileId;
     }
 
-    public String getRootFileId() {
+    public int getRootFileId() {
         return rootFileId;
     }
 
-    public void setRootFileId(String rootFileId) {
+    public void setRootFileId(int rootFileId) {
         this.rootFileId = rootFileId;
     }
 
@@ -41,11 +41,11 @@ public class FileVersion {
         this.versionNumber = versionNumber;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

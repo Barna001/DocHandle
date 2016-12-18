@@ -67,7 +67,7 @@ public class FileAndFileVersionTest {
 
     @Test
     public void testPersistFileVersion() {
-        FileVersion version = new FileVersion("", new byte[]{2, 3, 4});
+        FileVersion version = new FileVersion(0, new byte[]{2, 3, 4});
         em.persist(version);
         transaction.commit();
         FileVersion dbVersion = em.createQuery("select v from FileVersion v", FileVersion.class).getSingleResult();
@@ -125,7 +125,7 @@ public class FileAndFileVersionTest {
     @Test
     public void testFileSerializationToDb() {
         byte[] data = FileVersionUtil.createBinaryData("src/test/files/Kundera_GridFSTest.pdf");
-        FileVersion version = new FileVersion("", data);
+        FileVersion version = new FileVersion(0, data);
         em.persist(version);
         transaction.commit();
         FileVersion dbVersion = em.createQuery("select v from FileVersion v", FileVersion.class).getSingleResult();

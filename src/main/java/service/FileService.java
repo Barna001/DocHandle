@@ -17,7 +17,7 @@ import java.util.List;
  * Created by BB on 2016.05.22..
  */
 public class FileService {
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mssql_pu");
     private static EntityManager em = emf.createEntityManager();
     private static EntityTransaction transaction = em.getTransaction();
 
@@ -57,7 +57,7 @@ public class FileService {
 
     public static FileVersion getLatestVersion(String fileId) {
         File file;
-        file = em.find(File.class, fileId);
+        file = em.find(File.class, Integer.valueOf(fileId));
         return em.find(FileVersion.class, file.getLatestVersionId());
     }
 
@@ -72,8 +72,8 @@ public class FileService {
         Util.begin(transaction);
         String query = "delete from File f where f.id=:id";
         String queryVersion = "delete from FileVersion fv where fv.rootFileId=:rootId";
-        em.createQuery(query).setParameter("id", id).executeUpdate();
-        em.createQuery(queryVersion).setParameter("rootId", id).executeUpdate();
+        em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
+        em.createQuery(queryVersion).setParameter("rootId", Integer.valueOf(id)).executeUpdate();
         transaction.commit();
     }
 
@@ -84,7 +84,7 @@ public class FileService {
 
 
     public static void addNewVersionToFile(InputStream fileData, FormDataContentDisposition fileDetails, FormDataBodyPart args, String rootId) {
-        FileVersion version = new FileVersion(rootId, null);
+        FileVersion version = new FileVersion(Integer.valueOf(rootId), null);
         version.setFileType(args.getMediaType().toString());
         try {
             byte[] byteData = IOUtils.toByteArray(fileData);

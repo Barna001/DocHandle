@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UserService {
 
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mssql_pu");
     private static EntityManager em = emf.createEntityManager();
     private static EntityTransaction transaction = em.getTransaction();
 
@@ -55,7 +55,7 @@ public class UserService {
     public static void deleteUser(String userId) {
         Util.begin(transaction);
         String query = "delete from User u where u.id=:id";
-        em.createQuery(query).setParameter("id", userId).executeUpdate();
+        em.createQuery(query).setParameter("id", Integer.valueOf(userId)).executeUpdate();
         transaction.commit();
     }
 

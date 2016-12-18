@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class DocumentGroupService {
 
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mssql_pu");
     private static EntityManager em = emf.createEntityManager();
     private static EntityTransaction transaction = em.getTransaction();
 
@@ -41,7 +41,7 @@ public class DocumentGroupService {
     public static void deleteGroup(String id) {
         Util.begin(transaction);
         String query = "delete from DocumentGroup dg where dg.id=:id";
-        em.createQuery(query).setParameter("id", id).executeUpdate();
+        em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
         transaction.commit();
     }
 
