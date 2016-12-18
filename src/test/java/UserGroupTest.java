@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.resource.spi.work.TransactionContext;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class UserGroupTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Util.getTestFactory();
+        emf = Persistence.createEntityManagerFactory("test_pu");
     }
 
     @Before
@@ -32,7 +34,6 @@ public class UserGroupTest {
         transaction = em.getTransaction();
         Util.begin(transaction);
         em.createQuery("delete from User").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
         transaction.commit();
         Util.begin(transaction);
@@ -53,48 +54,21 @@ public class UserGroupTest {
     public void testPersist() {
         UserGroup userGroup = new UserGroup("group");
         em.persist(userGroup);
-
+        transaction.commit();
         UserGroup dbUserGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
         Assert.assertEquals("group", dbUserGroup.getName());
     }
-
-//    @Test
-//    public void testPersistCascadeUser() {
-//        UserGroup userGroup = new UserGroup("groupPersist");
-//        List<User> list = new ArrayList<>();
-//        list.add(new User("Barna", UserRoleEnum.SUPER_ADMIN));
-//        userGroup.setUsers(list);
-//        em.persist(userGroup);
-//
-//        UserGroup dbUserGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
-//        Assert.assertEquals(1, dbUserGroup.getUsers().size());
-//        Assert.assertEquals("Barna", dbUserGroup.getUsers().get(0).getName());
-//        Assert.assertEquals(UserRoleEnum.SUPER_ADMIN, dbUserGroup.getUsers().get(0).getRole());
-//    }
-
-//    @Test
-//    public void testPersistCascadeUserBidirectionally() {
-//        UserGroup userGroup = new UserGroup("groupPersist");
-//        List<User> userList = new ArrayList<>();
-//        userList.add(new User("Barna", UserRoleEnum.SUPER_ADMIN));
-//        userGroup.setUsers(userList);
-//        em.persist(userGroup);
-//
-//        UserGroup dbUserGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
-//        List<UserGroup> usersGroups = dbUserGroup.getUsers().get(0).getGroups();
-//        Assert.assertEquals(1, usersGroups.size());
-//        Assert.assertEquals("groupPersist", usersGroups.get(0).getName());
-//    }
 
     @Test
     public void testUserAlreadyPersistedAndItIsPutInNewGroup() {
         User user = new User("userName", UserRoleEnum.GUEST);
         em.persist(user);
-
+        transaction.commit();
+        Util.begin(transaction);
         UserGroup group = new UserGroup("groupName");
         group.getUsers().add(user);
         em.merge(group);
-
+        transaction.commit();
         UserGroup dbUserGroup = em.createQuery("select g from UserGroup g", UserGroup.class).getSingleResult();
         User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
         Assert.assertEquals("userName", dbUserGroup.getUsers().get(0).getName());
@@ -103,7 +77,6 @@ public class UserGroupTest {
 
     @After
     public void tearDown() throws Exception {
-        transaction.commit();
         em.close();
     }
 

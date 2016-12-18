@@ -18,19 +18,19 @@ public class FileVersionUtil {
 
     // FileVersion must have
     public synchronized static File addVersionToFileAndPersistMerge(FileVersion fileVersion, EntityManager em) {
-//        if (fileVersion.getRootFileId() != null) {
+        if (fileVersion.getRootFileId() != null) {
             File dbFile = em.find(File.class, fileVersion.getRootFileId());
             int calculatedVersion = dbFile.getLatestVersionNumber() + 1;
             fileVersion.setVersionNumber(calculatedVersion);
-            em.persist(fileVersion);//todo lehet hogy már egy előre lemergelt-et kellene átadni, de az meg csak lógna magában
+            em.persist(fileVersion);
 
             dbFile.setLatestVersionId(fileVersion.getId());
             dbFile.setLatestVersionNumber(calculatedVersion);
             em.merge(dbFile);//Here, this way the db remains in a consistent state
             return dbFile;
-//        } else {// We could throw exception too, to fill up fileId
-//            return null;
-//        }
+        } else {// We could throw exception too, to fill up fileId
+            return null;
+        }
     }
 
     public static byte[] createBinaryData(String locationPath) {
@@ -41,7 +41,6 @@ public class FileVersionUtil {
         } catch (IOException e) {
             System.out.println("Can not read the file");
         }
-
         return data;
     }
 }

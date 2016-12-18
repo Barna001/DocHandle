@@ -10,7 +10,6 @@ public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     private String name;

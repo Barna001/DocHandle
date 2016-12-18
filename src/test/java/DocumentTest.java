@@ -20,7 +20,7 @@ public class DocumentTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Util.getTestFactory();
+        emf = Persistence.createEntityManagerFactory("test_pu");
     }
 
     @Before
@@ -30,7 +30,6 @@ public class DocumentTest {
         Util.begin(transaction);
         em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from User").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup").executeUpdate();
         transaction.commit();
         Util.begin(transaction);
@@ -58,7 +57,7 @@ public class DocumentTest {
         document.setContainingGroups(groups);
         document.setOwner(new User("userName", UserRoleEnum.GUEST));
         em.persist(document);
-
+        transaction.commit();
         Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals("document", dbDocument.getName());
         Assert.assertEquals("content", dbDocument.getContent());
@@ -77,7 +76,7 @@ public class DocumentTest {
         em.persist(user);
         document.setOwner(user);
         em.merge(document);
-
+        transaction.commit();
         Document dbDocument = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals(1, dbDocument.getContainingGroups().size());
         Assert.assertEquals("newGroup", dbDocument.getContainingGroups().get(0).getName());
@@ -154,17 +153,23 @@ public class DocumentTest {
     public void deleteDocumentButOwnerAndDocumentGroupExists() {
         Document document = new Document("document", "content", new User("Barna", UserRoleEnum.ADMIN));
         ArrayList<DocumentGroup> groups = new ArrayList<>();
-        DocumentGroup dg=new DocumentGroup("deleteDocumentButOwnerAndDocumentGroupExists", "desc");
+        DocumentGroup dg = new DocumentGroup("deleteDocumentButOwnerAndDocumentGroupExists", "desc");
         em.persist(dg);
+        transaction.commit();
+        Util.begin(transaction);
         groups.add(dg);
         document.setContainingGroups(groups);
         em.persist(document);
+        transaction.commit();
+        Util.begin(transaction);
         User user = new User("deleteDocumentButOwnerAndDocumentGroupExists", UserRoleEnum.GUEST);
         em.persist(user);
+        transaction.commit();
+        Util.begin(transaction);
         document.setOwner(user);
         em.flush();
         em.remove(document);
-
+        transaction.commit();
         User dbOwner = em.createQuery("select u from User u", User.class).getSingleResult();
         DocumentGroup dbGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals("deleteDocumentButOwnerAndDocumentGroupExists", dbOwner.getName());
@@ -205,7 +210,6 @@ public class DocumentTest {
 
     @After
     public void tearDown() throws Exception {
-        transaction.commit();
         em.close();
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UserService {
 
-    private static EntityManagerFactory emf = Util.getFactory();
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
     private static EntityManager em = emf.createEntityManager();
     private static EntityTransaction transaction = em.getTransaction();
 
@@ -26,11 +26,7 @@ public class UserService {
     }
 
     public static User getUserById(String id) {
-        if (Util.isMongo()) {
-            return em.find(User.class, id);
-        } else {
-            return em.find(User.class, Integer.valueOf(id));
-        }
+        return em.find(User.class, id);
     }
 
     public static List<User> getUserByName(String name) {
@@ -59,11 +55,7 @@ public class UserService {
     public static void deleteUser(String userId) {
         Util.begin(transaction);
         String query = "delete from User u where u.id=:id";
-        if (Util.isMongo()) {
-            em.createQuery(query).setParameter("id", userId).executeUpdate();
-        } else {
-            em.createQuery(query).setParameter("id", Integer.valueOf(userId)).executeUpdate();
-        }
+        em.createQuery(query).setParameter("id", userId).executeUpdate();
         transaction.commit();
     }
 

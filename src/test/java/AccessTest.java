@@ -19,7 +19,7 @@ public class AccessTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Util.getTestFactory();
+        emf = Persistence.createEntityManagerFactory("test_pu");
     }
 
     @Before
@@ -29,7 +29,6 @@ public class AccessTest {
         Util.begin(transaction);
         em.createQuery("delete from Access ").executeUpdate();
         em.createQuery("delete from Document ").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
         transaction.commit();
@@ -68,7 +67,7 @@ public class AccessTest {
     @Test
     public void testPersistWithUserGroup() throws InvalidAttributeValueException {
         UserGroup group = new UserGroup("group");
-        User user = new User("username",UserRoleEnum.ADMIN);
+        User user = new User("username", UserRoleEnum.ADMIN);
         Document doc = new Document("Doc", "content", user);
         em.persist(group);
         em.persist(user);

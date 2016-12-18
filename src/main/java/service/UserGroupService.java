@@ -15,16 +15,12 @@ import java.util.List;
  */
 public class UserGroupService {
 
-    private static EntityManagerFactory emf = Util.getFactory();
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
     private static EntityManager em = emf.createEntityManager();
     private static EntityTransaction transaction = em.getTransaction();
 
     public static UserGroup getUserGroupById(String id) {
-        if (Util.isMongo()) {
-            return em.find(UserGroup.class, id);
-        } else {
-            return em.find(UserGroup.class, Integer.valueOf(id));
-        }
+        return em.find(UserGroup.class, id);
     }
 
     public static List<UserGroup> getUserGroupByName(String name) {
@@ -46,12 +42,7 @@ public class UserGroupService {
     public static void deleteGroup(String id) {
         Util.begin(transaction);
         String query = "delete from UserGroup ug where ug.id=:id";
-        if (Util.isMongo()) {
-            em.createQuery(query).setParameter("id", id).executeUpdate();
-        } else {
-            em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
-        }
-
+        em.createQuery(query).setParameter("id", id).executeUpdate();
         transaction.commit();
     }
 

@@ -23,7 +23,7 @@ public class DocumentGroupTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Util.getTestFactory();
+        emf = Persistence.createEntityManagerFactory("test_pu");
     }
 
     @Before
@@ -32,7 +32,6 @@ public class DocumentGroupTest {
         transaction = em.getTransaction();
         Util.begin(transaction);
         em.createQuery("delete from Document ").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup ").executeUpdate();
         transaction.commit();
         Util.begin(transaction);
@@ -52,8 +51,8 @@ public class DocumentGroupTest {
     @Test
     public void TestPersist() {
         DocumentGroup docGroup = new DocumentGroup("groupPersist", "descPersist");
-        EntityTransaction tr = em.getTransaction();
         em.merge(docGroup);
+        transaction.commit();
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals("groupPersist", dbDocGroup.getName());
         Assert.assertEquals("descPersist", dbDocGroup.getDescription());
@@ -66,13 +65,13 @@ public class DocumentGroupTest {
         list.add(new Document("doc", "cont", new User("Barna", UserRoleEnum.ADMIN)));
         docGroup.setDocuments(list);
         em.merge(docGroup);
-
+        transaction.commit();
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Assert.assertEquals(1, dbDocGroup.getDocuments().size());
         Document dbDocument = dbDocGroup.getDocuments().get(0);
         Assert.assertEquals("doc", dbDocument.getName());
         Assert.assertEquals("cont", dbDocument.getContent());
-        Assert.assertEquals("Barna",dbDocument.getOwner().getName());
+        Assert.assertEquals("Barna", dbDocument.getOwner().getName());
     }
 
 
@@ -83,7 +82,7 @@ public class DocumentGroupTest {
         list.add(new Document("doc", "cont", new User("Barna", UserRoleEnum.ADMIN)));
         docGroup.setDocuments(list);
         em.merge(docGroup);
-
+        transaction.commit();
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         DocumentGroup documentContainingGroup = dbDocGroup.getDocuments().get(0).getContainingGroups().get(0);
         Assert.assertEquals(1, documentContainingGroup.getDocuments().size());
@@ -94,12 +93,12 @@ public class DocumentGroupTest {
     public void testDocumentAlreadyPersistedAndItIsPutInNewGroup() {
         Document doc = new Document("docName", "docCont", new User("Barna", UserRoleEnum.ADMIN));
         em.merge(doc);
-
-
+        transaction.commit();
+        Util.begin(transaction);
         DocumentGroup group = new DocumentGroup("docGroup", "docDescr");
         group.getDocuments().add(doc);
         em.merge(group);
-
+        transaction.commit();
         DocumentGroup dbDocGroup = em.createQuery("select g from DocumentGroup g", DocumentGroup.class).getSingleResult();
         Document dbDoc = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals("docName", dbDocGroup.getDocuments().get(0).getName());
@@ -108,7 +107,6 @@ public class DocumentGroupTest {
 
     @After
     public void tearDown() throws Exception {
-        transaction.commit();
         em.close();
     }
 

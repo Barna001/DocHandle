@@ -9,7 +9,6 @@ public abstract class PermissionSubject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected String id;
     protected String name;
 

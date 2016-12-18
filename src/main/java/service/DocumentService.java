@@ -16,16 +16,12 @@ import java.util.List;
  * Created by BB on 2016.05.22..
  */
 public class DocumentService {
-    private static EntityManagerFactory emf = Util.getFactory();
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
     private static EntityManager em = emf.createEntityManager();
     private static EntityTransaction transaction = em.getTransaction();
 
     public static Document getDocumentById(String id) {
-        if (Util.isMongo()) {
-            return em.find(Document.class, id);
-        } else {
-            return em.find(Document.class, Integer.valueOf(id));
-        }
+        return em.find(Document.class, id);
     }
 
     public static List<Document> getDocumentByName(String name) {
@@ -56,11 +52,7 @@ public class DocumentService {
     public void deleteDocumentById(String id) {
         Util.begin(transaction);
         String query = "delete from Document d where d.id=:id";
-        if (Util.isMongo()) {
-            em.createQuery(query).setParameter("id", id).executeUpdate();
-        } else {
-            em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
-        }
+        em.createQuery(query).setParameter("id", id).executeUpdate();
         transaction.commit();
     }
 

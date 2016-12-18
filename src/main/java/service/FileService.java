@@ -17,16 +17,12 @@ import java.util.List;
  * Created by BB on 2016.05.22..
  */
 public class FileService {
-    private static EntityManagerFactory emf = Util.getFactory();
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
     private static EntityManager em = emf.createEntityManager();
     private static EntityTransaction transaction = em.getTransaction();
 
     public static File getFileById(String id) {
-        if (Util.isMongo()) {
-            return em.find(File.class, id);
-        } else {
-            return em.find(File.class, Integer.valueOf(id));
-        }
+        return em.find(File.class, id);
     }
 
     public static List<File> getFilesByName(String name) {
@@ -61,35 +57,23 @@ public class FileService {
 
     public static FileVersion getLatestVersion(String fileId) {
         File file;
-        if (Util.isMongo()) {
-            file = em.find(File.class, fileId);
-        } else {
-            file = em.find(File.class, Integer.valueOf(fileId));
-        }
+        file = em.find(File.class, fileId);
         return em.find(FileVersion.class, file.getLatestVersionId());
     }
 
     public static List<FileVersion> getAllVersionsForFileId(String fileId) {
-        if (Util.isMongo()) {
-            return em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class)
-                    .setParameter("id", fileId).getResultList();
-        } else {
-            return em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class)
-                    .setParameter("id", Integer.valueOf(fileId)).getResultList();
-        }
+
+        return em.createQuery("select v from FileVersion v where v.rootFileId=:id", FileVersion.class)
+                .setParameter("id", fileId).getResultList();
+
     }
 
     public void delete(String id) {
         Util.begin(transaction);
         String query = "delete from File f where f.id=:id";
         String queryVersion = "delete from FileVersion fv where fv.rootFileId=:rootId";
-        if (Util.isMongo()) {
-            em.createQuery(query).setParameter("id", id).executeUpdate();
-            em.createQuery(queryVersion).setParameter("rootId", id).executeUpdate();
-        } else {
-            em.createQuery(query).setParameter("id", Integer.valueOf(id)).executeUpdate();
-            em.createQuery(queryVersion).setParameter("rootId", Integer.valueOf(id)).executeUpdate();
-        }
+        em.createQuery(query).setParameter("id", id).executeUpdate();
+        em.createQuery(queryVersion).setParameter("rootId", id).executeUpdate();
         transaction.commit();
     }
 

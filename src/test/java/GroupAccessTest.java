@@ -20,16 +20,16 @@ public class GroupAccessTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Util.getTestFactory();
+        emf = Persistence.createEntityManagerFactory("test_pu");
     }
 
     @Before
     public void deleteAll() {
         em = emf.createEntityManager();
         transaction = em.getTransaction();
+        Util.begin(transaction);
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
         em.createQuery("delete from DocumentGroup").executeUpdate();
         em.createQuery("delete from GroupAccess ").executeUpdate();
         transaction.commit();
@@ -53,10 +53,11 @@ public class GroupAccessTest {
         DocumentGroup group = new DocumentGroup("DocGroup", "content");
         em.persist(user);
         em.persist(group);
-
+        transaction.commit();
+        Util.begin(transaction);
         GroupAccess access = new GroupAccess(user, group, GroupAccessTypeEnum.ADD_DOCUMENT, 1000);
         em.persist(access);
-
+        transaction.commit();
         GroupAccess dbAccess = em.createQuery("select a from GroupAccess a", GroupAccess.class).getSingleResult();
         Assert.assertEquals("Barna", dbAccess.getWho().getName());
         Assert.assertEquals("DocGroup", dbAccess.getWhat().getName());
@@ -70,10 +71,11 @@ public class GroupAccessTest {
         DocumentGroup docGroup = new DocumentGroup("DocG", "cont");
         em.persist(group);
         em.persist(docGroup);
-
+        transaction.commit();
+        Util.begin(transaction);
         GroupAccess access = new GroupAccess(group, docGroup, GroupAccessTypeEnum.DENY, 1);
         em.persist(access);
-
+        transaction.commit();
         GroupAccess dbAccess = em.createQuery("select a from GroupAccess a", GroupAccess.class).getSingleResult();
         Assert.assertEquals("group", dbAccess.getWho().getName());
         Assert.assertEquals("DocG", dbAccess.getWhat().getName());
@@ -97,7 +99,6 @@ public class GroupAccessTest {
 
     @After
     public void tearDown() throws Exception {
-        transaction.commit();
         em.close();
     }
 

@@ -21,7 +21,7 @@ public class UserTest {
 
     @BeforeClass
     public static void SetUpBeforeClass() throws Exception {
-        emf = Util.getTestFactory();
+        emf = Persistence.createEntityManagerFactory("test_pu");
     }
 
     @Before
@@ -32,7 +32,6 @@ public class UserTest {
         em.createQuery("delete from Document ").executeUpdate();
         em.createQuery("delete from User").executeUpdate();
         em.createQuery("delete from UserGroup").executeUpdate();
-        em.createQuery("delete from PermissionSubject").executeUpdate();
         transaction.commit();
         Util.begin(transaction);
     }
@@ -54,7 +53,7 @@ public class UserTest {
     public void testPersist() {
         User user = new User("Barna", UserRoleEnum.SUPER_ADMIN);
         em.persist(user);
-
+        transaction.commit();
         User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
         Assert.assertEquals("Barna", dbUser.getName());
         Assert.assertEquals(UserRoleEnum.SUPER_ADMIN.toString(), dbUser.getRole().toString());
@@ -69,7 +68,7 @@ public class UserTest {
         groups.add(userGroup);
         user.setGroups(groups);
         em.merge(user);
-
+        transaction.commit();
         User dbUser = em.createQuery("select u from User u", User.class).getSingleResult();
         Assert.assertEquals(1, dbUser.getGroups().size());
         Assert.assertEquals("New Group Cascade", dbUser.getGroups().get(0).getName());
@@ -105,7 +104,7 @@ public class UserTest {
         Document document = new Document("OwnedByBarna", "simple doc", user);
         user.getOwnDocuments().add(document);
         em.merge(user);
-
+        transaction.commit();
         List<Document> dbDocuments = em.createQuery("select u from User u", User.class).getSingleResult().getOwnDocuments();
         Assert.assertEquals(1, dbDocuments.size());
         Assert.assertEquals("Barna", dbDocuments.get(0).getOwner().getName());
@@ -129,9 +128,10 @@ public class UserTest {
         user.setGroups(userGroupList);
         user.getOwnDocuments().add(new Document("deleteUserButGroupAndDocumentExists", "simple doc", user));
         em.merge(user);
-
+        transaction.commit();
+        Util.begin(transaction);
         em.remove(user);
-
+        transaction.commit();
         UserGroup dbGroup = em.createQuery("select ug from UserGroup ug", UserGroup.class).getSingleResult();
         Document dbOwned = em.createQuery("select d from Document d", Document.class).getSingleResult();
         Assert.assertEquals("deleteUserButGroupAndDocumentExists", dbGroup.getName());
@@ -140,7 +140,6 @@ public class UserTest {
 
     @After
     public void tearDown() throws Exception {
-        transaction.commit();
         em.close();
     }
 

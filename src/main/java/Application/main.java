@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class main {
     public static void main(String[] args) throws IOException, InvalidAttributeValueException {
 
-        EntityManagerFactory emf = Util.getFactory();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("mongo_pu");
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 ////      Upload
