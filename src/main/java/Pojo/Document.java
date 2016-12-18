@@ -95,6 +95,7 @@ public class Document {
 
     public void setOwner(User owner) {
         this.owner = owner;
+        this.ownerName = owner.getName();
         this.modificationDate = new Date();
     }
 
@@ -114,7 +115,7 @@ public class Document {
 
     public boolean removeDocumentGroup(DocumentGroup group) {
         this.modificationDate = new Date();
-        boolean result =  this.containingGroups.remove(group);
+        boolean result = this.containingGroups.remove(group);
         createGroupNames(this.containingGroups);
         return result;
     }
@@ -127,10 +128,12 @@ public class Document {
 
     private void createGroupNames(List<DocumentGroup> groups) {
         for (DocumentGroup group : groups) {
-            if (this.groupNames.isEmpty()) {
-                this.groupNames = group.getName();
-            } else {
-                this.groupNames += "," + group.getName();
+            if (group != null) {
+                if (this.groupNames.isEmpty()) {
+                    this.groupNames = group.getName();
+                } else {
+                    this.groupNames += "," + group.getName();
+                }
             }
         }
     }
@@ -141,7 +144,9 @@ public class Document {
         return groupNames;
     }
 
-    public String getOwnerName() { return owner.getName(); }
+    public String getOwnerName() {
+        return ownerName;
+    }
 
     @Override
     public String toString() {

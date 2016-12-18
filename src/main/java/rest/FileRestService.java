@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 /**
  * Created by BB on 2016.05.22..
@@ -56,17 +57,7 @@ public class FileRestService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getLatestVersion(@QueryParam("fileId") String fileId) throws IOException {
         FileVersion version = service.getLatestVersion(fileId);
-        byte[] data = version.getData();
-        String dataS = new String(data);
-        java.io.File file = new java.io.File("d:/Munka/7_felev/szakdoga/teszt/f.docx");
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(data);
-        fos.flush();
-        fos.close();
-//        return new String(data,"ISO-8859-1");
+        byte[] data = Base64.getEncoder().encode(version.getData());
         return Response.ok(data).header("type",version.getFileType()).build();
     }
 

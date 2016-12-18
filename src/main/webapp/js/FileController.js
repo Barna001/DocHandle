@@ -59,31 +59,26 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
         console.log("A fájl id-ja:"+fileId);
         FileService.downloadLatestVersion(fileId).then(function(response){
             console.log("headers:"+response.headers('type'));
-            //var bytes = new Uint8Array(data.data);
-            var bytes = response.data;
-            //console.log(bytes);
-            //var blob = new Blob([bytes], {encoding:"ISO-8859-2",type: response.headers('type')});
-            var blob = new Blob([bytes], {type: response.headers('type')});
-            //FileSaver.saveAs(data, "name");
+            var byteString = window.atob(response.data);
+            var byteNumbers = new Array(byteString.length);
+            for (var i = 0; i < byteString.length; i++) {
+                byteNumbers[i] = byteString.charCodeAt(i);
+            }
+            var byteArray = new Uint8Array(byteNumbers);
+            var blob = new Blob([byteArray], {type: response.headers('type')});
             var hiddenElement = document.createElement('a');
             hiddenElement.href = window.URL.createObjectURL(blob);
             hiddenElement.download = fileName;
             hiddenElement.click();
-            //var clickEvent = new MouseEvent("click",{
-            //    "view":window,
-            //    "bubbles":true,
-            //    "cancelable":false
-            //});
-            //hiddenElement.dispatchEvent(clickEvent);
             window.URL.revokeObjectURL(blob);
         })
     }
 
     $scope.deleteFile = function (id) {
-        console.log("A fájl id-ja:"+id);
+        console.log("A fájl id-ja:" + id);
         FileService.deleteFile(id).then(function () {
             $scope.init();
-        },function (response) {
+        }, function (response) {
             $scope.error = response;
         });
     }
