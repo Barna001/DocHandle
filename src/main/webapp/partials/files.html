@@ -1,7 +1,7 @@
 <div class="table-title">
     <h3>Files List</h3>
 </div>
-<table class="table-fill" ng-init="init()">
+<table class="table-fill" ng-init="getFiles()">
     <thead>
     <tr>
         <th class="text-left">Name</th>
@@ -19,6 +19,7 @@
             <input type="submit" class="deleteButton" value="Delete" ng-click="deleteFile(x.id)"/>
             <input type="submit" class="downloadButton" value="Download"
                    ng-click="downloadLatestVersion(x.id, x.name)"/>
+            <input type="submit" class="saveButton" value="New Version" ng-click="setFile(x)"/>
         </td>
     </tr>
     </tbody>

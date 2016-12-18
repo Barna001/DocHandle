@@ -1,11 +1,10 @@
 /**
  * Created by Barna on 2016.09.24..
  */
-angular.module('docHandler.controllers').controller('FileController', ['$scope', 'FileService', 'DocService', /*'FileSaver',*/ function ($scope, FileService, DocService/*, FileSaver*/) {
+angular.module('docHandler.controllers').controller('FileController', ['$scope', '$window', '$routeParams', 'FileService', 'DocService', /*'FileSaver',*/ function ($scope, $window, $routeParams, FileService, DocService/*, FileSaver*/) {
     $scope.files = {};
     $scope.docs = {};
     $scope.error = "";
-    $scope.chosen = null;
     $scope.myFile = null;
     $scope.versionMessage = "";
     $scope.newVersion = {
@@ -27,8 +26,13 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
         $scope.getDocs();
     }
 
-    $scope.init = function () {
-        $scope.getFiles();
+    $scope.initFile = function () {
+        console.log($routeParams.id);
+        $scope.newVersion.rootFileId=$routeParams.id;
+    }
+
+    $scope.setFile = function (file) {
+        $window.location.href="#/addFileVersion/"+file.id;
     }
 
     $scope.getFiles = function () {
@@ -49,14 +53,12 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
 
     $scope.save = function () {
         FileService.saveFile($scope.new).then(function () {
-            $scope.init();
         }, function (response) {
             $scope.error = response;
         });
     }
 
     $scope.downloadLatestVersion = function (fileId, fileName) {
-        console.log("A fájl id-ja:"+fileId);
         FileService.downloadLatestVersion(fileId).then(function(response){
             console.log("headers:"+response.headers('type'));
             var byteString = window.atob(response.data);
@@ -75,9 +77,8 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
     }
 
     $scope.deleteFile = function (id) {
-        console.log("A fájl id-ja:" + id);
         FileService.deleteFile(id).then(function () {
-            $scope.init();
+            $scope.getFiles();
         }, function (response) {
             $scope.error = response;
         });
@@ -85,11 +86,8 @@ angular.module('docHandler.controllers').controller('FileController', ['$scope',
 
     $scope.uploadFile = function () {
         var fileVersion = $scope.myFile;
-        console.log('file is ');
-        console.dir(fileVersion);
-
+        console.log($scope.newVersion);
         FileService.uploadFileToUrl(fileVersion, $scope.newVersion.rootFileId).then(function () {
-            $scope.init();
         }, function (response) {
             $scope.error = response;
         });

@@ -10,13 +10,7 @@
         <p></p>
         <input type="submit" class="saveButton" value="Save" ng-click="save()"/>
     </div>
-    <div class="title"><h1>FileVersion</h1></div>
-    <input type="file" file-model="myFile"/>
-    <div class="title"><h1>RootFile_Of_Version</h1></div>
-    <select ng-model="newVersion.rootFileId" ng-options="file.id as file.name for file in files"></select>
     <div>
-        <p></p>
         <a href="#/files" class="button" style="margin-top: 30px">Back<span>«</span></a>
-        <input type="submit" class="saveButton" value="SaveVersionUpload" ng-click="uploadFile()"/>
     </div>
 </div>
